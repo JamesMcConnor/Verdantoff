@@ -1,0 +1,54 @@
+{
+  "name": "test",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@cometchat-pro/chat": "^3.0.2-beta1",
+    "autoprefixer": "^9.8.6",
+    "core-js": "^3.6.5",
+    "firebase": "^9.0.1",
+    "marked": "^3.0.2",
+    "postcss": "^7.0.36",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.9",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.11",
+    "emoji-mart-vue-fast": "^8.0.3",
+    "dateformat": "^4.5.1",
+    "twemoji": "^13.1.0"
+
+  },
+  "devDependencies": {
+    "@types/firebase": "^3.2.1",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^7.0.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
