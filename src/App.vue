@@ -3,6 +3,7 @@
 <div>
   <router-view></router-view>
 </div>
+
 <Login v-if="isOpen" @close="isOpen = false"/>
 <Signup v-if="isSign" @close = "isSign = false"/>
 

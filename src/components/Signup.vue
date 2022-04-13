@@ -71,11 +71,12 @@ export default {
 
   methods :{
     submit(){
+      //create user in firebase
     const auth = getAuth();
     auth.languageCode = 'en';
     createUserWithEmailAndPassword(auth, this.form.email, this.form.password)
   .then((userCredential) => {
-    // Signed in
+    // Signed in to firebase
     const user = userCredential.user;
     sendEmailVerification(auth.currentUser);
     console.log(user);
@@ -97,6 +98,11 @@ export default {
         console.log("error", error);
     }
     ).then(
+      setTimeout(() => {
+        //use to wait for the server to create user
+      }, 2)
+    ).then(
+      //login the created user
       CometChat.login(cometuid, authKey).then(
     user => {
     console.log("Login Successful:", { user });    

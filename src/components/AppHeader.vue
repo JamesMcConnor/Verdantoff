@@ -1,7 +1,6 @@
 <template>
-<nav class="relative w-full bg-gradient-to-r from-blue-800 to-blue-600 text-white px-4 py-5">
-<router-link class="mx-2" to="/calendar">About Page</router-link>
-
+<nav class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
+<router-link class="mx-2" to="/about">About Page</router-link>
 <button  class="mx-2" @click="$emit('open-sign')">Sign Up</button>
 <button v-if="isLoggedin" class = "mx-2" @click="logout">Log out</button>
 <button v-else class="mx-2" @click="$emit('open-login')">Login</button>
@@ -35,7 +34,7 @@ export default {
         logout()
     {
     const auth = getAuth();
-    this.$router.push('/calendar');
+    this.$router.push('/about');
     signOut(auth).then(() => {
         console.log("Log out successfully");
   // Sign-out successful.
