@@ -10,7 +10,7 @@ export default {
     data(){
       return {
         background: {
-          backgroundImage: 'url(' + require('../forrest.jpg') + ')',
+          backgroundImage: 'url(' + require('../ocean.jpg') + ')',
           backgroundRepeat:'no-repeat',
           backgroundSize: 'cover',
           backgoundPosition: 'center'

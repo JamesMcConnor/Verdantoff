@@ -40,8 +40,8 @@
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import {CometChat} from "@cometchat-pro/chat";
-let authKey = "bf8447c73c31952053f0e141c700723b0ead2c1b";
-const appID = "205678e972415906";
+let authKey = "c1beda629d006b6ea69610b0e1b6ee6ec30fdc04";
+const appID = "20697398880d4932";
 const region = "us";
 const appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(region).build();
 CometChat.init(appID, appSetting);
@@ -99,8 +99,9 @@ export default {
     }
     ).then(
       setTimeout(() => {
+        alert("Please wait for signning up");
         //use to wait for the server to create user
-      }, 2)
+      }, 3)
     ).then(
       //login the created user
       CometChat.login(cometuid, authKey).then(

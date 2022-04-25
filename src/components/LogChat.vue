@@ -7,7 +7,7 @@
 <script>
 import { CometChat } from "@cometchat-pro/chat";
 import { CometChatUI } from "../cometchat-pro-vue-ui-kit/CometChatWorkspace/src";
-const appID = "205678e972415906";
+const appID = "20697398880d4932";
 const region = "us";
 
 

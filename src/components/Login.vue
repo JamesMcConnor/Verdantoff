@@ -41,8 +41,8 @@
 import { getAuth, signInWithEmailAndPassword ,sendPasswordResetEmail} from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { CometChat } from "@cometchat-pro/chat";
-let authKey = "bf8447c73c31952053f0e141c700723b0ead2c1b";
-const appID = "205678e972415906";
+let authKey = "c1beda629d006b6ea69610b0e1b6ee6ec30fdc04";
+const appID = "20697398880d4932";
 const region = "us";
 const appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(region).build();
 CometChat.init(appID, appSetting);
