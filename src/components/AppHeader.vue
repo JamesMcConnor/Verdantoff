@@ -4,7 +4,7 @@
 <button  class="mx-2" @click="$emit('open-sign')">Sign Up</button>
 <button v-if="isLoggedin" class = "mx-2" @click="logout">Log out</button>
 <button v-else class="mx-2" @click="$emit('open-login')">Login</button>
-<router-link v-if = "isLoggedin" class="mx-2" to="/logchat">CometChat</router-link>
+<router-link v-if = "varified && isLoggedin"  class="mx-2" to="/logchat">CometChat</router-link>
 <div v-if="isLoggedin" class="absolute inset-y-0 right-2">Welcome {{email}} {{varifiedMessage}}</div>
 </nav>
 
@@ -28,7 +28,8 @@ export default {
     props:{
       isLoggedin:Boolean,
       email:String,
-      varifiedMessage:String
+      varifiedMessage:String,
+      varified:Boolean
     },
     methods:{
         logout()

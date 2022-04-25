@@ -40,12 +40,12 @@
 <script>
 import { getAuth, signInWithEmailAndPassword ,sendPasswordResetEmail} from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { CometChat } from "@cometchat-pro/chat";
-let authKey = "c1beda629d006b6ea69610b0e1b6ee6ec30fdc04";
+//import { CometChat } from "@cometchat-pro/chat";
+/*let authKey = "c1beda629d006b6ea69610b0e1b6ee6ec30fdc04";
 const appID = "20697398880d4932";
 const region = "us";
 const appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(region).build();
-CometChat.init(appID, appSetting);
+CometChat.init(appID, appSetting);*/
 
 const firebaseConfig = {
   apiKey: "AIzaSyD1YI91Om_clqONTREybAWTppUV-Ick41M",
@@ -81,7 +81,7 @@ export default {
     // Signed in
     const user = userCredential.user;
     console.log(user);
-    var cometuid = this.form.email;
+    /*var cometuid = this.form.email;
     cometuid = cometuid.replace('@','');
     cometuid = cometuid.replace('.','');
     console.log(cometuid); console.log(authKey);
@@ -91,7 +91,7 @@ export default {
     },
     error => {
     console.log("Login failed with exception:", { error });    
-    });
+    });*/
     this.isLoading = false;
     this.email = '';
     this.password = '';

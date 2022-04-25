@@ -64,7 +64,7 @@ export default {
       form:{
       email:'',
       password:'',
-      username:''
+      username:'',
       }
     }
   },
@@ -98,24 +98,13 @@ export default {
         console.log("error", error);
     }
     ).then(
-      setTimeout(() => {
-        alert("Please wait for signning up");
-        //use to wait for the server to create user
-      }, 3)
-    ).then(
-      //login the created user
-      CometChat.login(cometuid, authKey).then(
-    user => {
-    console.log("Login Successful:", { user });    
-    },
-    error => {
-    console.log("Login failed with exception:", { error });    
-    })
+      alert("Please verify your email to use chat fucntion, refresh the page after you verify your email")
     )
   })
   .catch((error) => {
     const errorMessage = error.message;
     console.log(errorMessage);
+    alert(errorMessage);
     // ..
   });
  
@@ -126,7 +115,6 @@ export default {
     }
 
   },
-
 }
 </script>
 
