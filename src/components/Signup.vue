@@ -40,22 +40,22 @@
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import {CometChat} from "@cometchat-pro/chat";
-let authKey = "c1beda629d006b6ea69610b0e1b6ee6ec30fdc04";
-const appID = "20697398880d4932";
-const region = "us";
+let authKey = process.env.VUE_APP_COMETCHAT_authKey;
+const appID = process.env.VUE_APP_COMETCHAT_appID;
+const region = process.env.VUE_APP_COMETCHAT_region;
 const appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(region).build();
 CometChat.init(appID, appSetting);
 
-
 const firebaseConfig = {
-  apiKey: "AIzaSyD1YI91Om_clqONTREybAWTppUV-Ick41M",
-  authDomain: "vuetest-b2bcc.firebaseapp.com",
-  projectId: "vuetest-b2bcc",
-  storageBucket: "vuetest-b2bcc.appspot.com",
-  messagingSenderId: "617902258261",
-  appId: "1:617902258261:web:a8993773f8ea9ebc3cbcdc",
-  databaseURL: "https://vuetest-b2bcc-default-rtdb.asia-southeast1.firebasedatabase.app"
+  apiKey: process.env.VUE_APP_FIREBASE_apiKey,
+  authDomain: process.env.VUE_APP_FIREBASE_authDomain,
+  projectId: process.env.VUE_APP_FIREBASE_projectId,
+  storageBucket: process.env.VUE_APP_FIREBASE_storageBucket,
+  messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
+  appId: process.env.VUE_APP_FIREBASE_appId,
+  databaseURL: process.env.VUE_APP_FIREBASE_databaseURL
 };
+
 const app = initializeApp(firebaseConfig);
 console.log(app);
 export default {
@@ -82,7 +82,8 @@ export default {
     console.log(user);
     this.close();
     // ...
-  }).then(() => {
+  })
+  .then(() => {
     //create user for cometchat
     var cometuid = this.form.email;
     cometuid = cometuid.replace('@','');
@@ -95,6 +96,7 @@ export default {
     user => {
         console.log("user created", user);
     },error => {
+        alert(error);
         console.log("error", error);
     }
     ).then(
@@ -104,7 +106,7 @@ export default {
   .catch((error) => {
     const errorMessage = error.message;
     console.log(errorMessage);
-    alert(errorMessage);
+    alert("Email address already exist, please use another email address");
     // ..
   });
  

@@ -40,21 +40,15 @@
 <script>
 import { getAuth, signInWithEmailAndPassword ,sendPasswordResetEmail} from "firebase/auth";
 import { initializeApp } from "firebase/app";
-//import { CometChat } from "@cometchat-pro/chat";
-/*let authKey = "c1beda629d006b6ea69610b0e1b6ee6ec30fdc04";
-const appID = "20697398880d4932";
-const region = "us";
-const appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(region).build();
-CometChat.init(appID, appSetting);*/
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD1YI91Om_clqONTREybAWTppUV-Ick41M",
-  authDomain: "vuetest-b2bcc.firebaseapp.com",
-  projectId: "vuetest-b2bcc",
-  storageBucket: "vuetest-b2bcc.appspot.com",
-  messagingSenderId: "617902258261",
-  appId: "1:617902258261:web:a8993773f8ea9ebc3cbcdc",
-  databaseURL: "https://vuetest-b2bcc-default-rtdb.asia-southeast1.firebasedatabase.app"
+  apiKey: process.env.VUE_APP_FIREBASE_apiKey,
+  authDomain: process.env.VUE_APP_FIREBASE_authDomain,
+  projectId: process.env.VUE_APP_FIREBASE_projectId,
+  storageBucket: process.env.VUE_APP_FIREBASE_storageBucket,
+  messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
+  appId: process.env.VUE_APP_FIREBASE_appId,
+  databaseURL: process.env.VUE_APP_FIREBASE_databaseURL
 };
 const app = initializeApp(firebaseConfig);
 console.log(app);
@@ -81,17 +75,6 @@ export default {
     // Signed in
     const user = userCredential.user;
     console.log(user);
-    /*var cometuid = this.form.email;
-    cometuid = cometuid.replace('@','');
-    cometuid = cometuid.replace('.','');
-    console.log(cometuid); console.log(authKey);
-    CometChat.login(cometuid, authKey).then(
-    user => {
-    console.log("Login Successful:", { user });    
-    },
-    error => {
-    console.log("Login failed with exception:", { error });    
-    });*/
     this.isLoading = false;
     this.email = '';
     this.password = '';

@@ -7,20 +7,20 @@
 <script>
 import { CometChat } from "@cometchat-pro/chat";
 import { CometChatUI } from "../cometchat-pro-vue-ui-kit/CometChatWorkspace/src";
-const appID = "20697398880d4932";
-const region = "us";
-var authkey = "c1beda629d006b6ea69610b0e1b6ee6ec30fdc04";
+const cometAppId = process.env.VUE_APP_COMETCHAT_appID;
+const region = process.env.VUE_APP_COMETCHAT_region;
+var authkey = process.env.VUE_APP_COMETCHAT_authKey;
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 const firebaseConfig = {
-  apiKey: "AIzaSyD1YI91Om_clqONTREybAWTppUV-Ick41M",
-  authDomain: "vuetest-b2bcc.firebaseapp.com",
-  projectId: "vuetest-b2bcc",
-  storageBucket: "vuetest-b2bcc.appspot.com",
-  messagingSenderId: "617902258261",
-  appId: "1:617902258261:web:a8993773f8ea9ebc3cbcdc",
-  databaseURL: "https://vuetest-b2bcc-default-rtdb.asia-southeast1.firebasedatabase.app"
+  apiKey: process.env.VUE_APP_FIREBASE_apiKey,
+  authDomain: process.env.VUE_APP_FIREBASE_authDomain,
+  projectId: process.env.VUE_APP_FIREBASE_projectId,
+  storageBucket: process.env.VUE_APP_FIREBASE_storageBucket,
+  messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
+  appId: process.env.VUE_APP_FIREBASE_appId,
+  databaseURL: process.env.VUE_APP_FIREBASE_databaseURL
 };
 const app = initializeApp(firebaseConfig);
 console.log(app);
@@ -30,11 +30,11 @@ export default {
   data(){
     return{
       email: '',
-      cometuid: ''
+      cometuid: '',
     }
   },
 
-  mounted(){
+  created(){
   //Get auth from firebase
   const auth = getAuth();
   //Once get auth then get the login status
@@ -52,23 +52,21 @@ export default {
   .subscribePresenceForAllUsers()
   .setRegion(region)
   .build();
-      CometChat.init(appID, appSetting)
+      CometChat.init(cometAppId, appSetting)
   .then(() => {
     console.log("Initialization completed successfully");
     // You can now call login function.
     CometChat.login(this.cometuid, authkey).then(
   user => {
-    console.log("Login Successful:", { user });    
+    console.log("Login Successful:", { user });  
   },
   error => {
     console.log("Login failed with exception:", { error });    
   }
-);
-
+  );
   },
   error => {
     console.log("Initialization failed with error:", error);
-    // Check the reason for error and take appropriate action.
   }
 );
 },
