@@ -130,6 +130,9 @@ export class CometChatManager {
       );
     });
   };
+
+  //Rejoin call
+
 }
 
 export default CometChatManager;

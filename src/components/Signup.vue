@@ -87,7 +87,7 @@ export default {
     //create user for cometchat
     var cometuid = this.form.email;
     cometuid = cometuid.replace('@','');
-    cometuid = cometuid.replace('.','');
+    cometuid = cometuid.replaceAll('.','');
     console.log(cometuid);
     var name = this.form.username;
     var cometuser = new CometChat.User(cometuid);

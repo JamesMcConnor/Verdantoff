@@ -10,7 +10,7 @@
         <h1 class="text-xl text-center">Login</h1>
         <form class="p-2 my-4 border" @submit.prevent="submit">
           <div class="my-2">
-           <label>Email or Username</label>
+           <label>Email</label>
           <input v-model="form.email" class="rounded shadow p-2 w-full" type="email"> 
           </div>
           <div class="my-2">

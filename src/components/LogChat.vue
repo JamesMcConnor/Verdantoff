@@ -45,7 +45,7 @@ export default {
     this.email = user.email;
     this.cometuid = this.email;
     this.cometuid = this.cometuid.replace('@','');
-    this.cometuid = this.cometuid.replace('.','');
+    this.cometuid = this.cometuid.replaceAll('.','');
   }
   });
   const appSetting = new CometChat.AppSettingsBuilder()

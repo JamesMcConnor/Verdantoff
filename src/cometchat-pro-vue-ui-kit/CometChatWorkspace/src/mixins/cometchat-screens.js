@@ -61,7 +61,7 @@ export default {
      * Starts an audio call
      */
     async audioCall() {
-      try {
+      /*try {
         let receiverId, receiverType;
 
         if (this.type === "user") {
@@ -83,6 +83,44 @@ export default {
       } catch (error) {
         this.logError("Call initialization failed with exception:", error);
       }
+      console.log("audio call pressed");
+      let call = CometChat.getActiveCall();
+      console.log(call);
+      var sessionId = call.sessionId;
+      var callType = call.type;
+      var callSettings = new CometChat.CallSettingsBuilder()
+									.setSessionID(sessionId)
+									.enableDefaultLayout(true)
+									.setIsAudioOnlyCall(callType == 'audio' ? true : false)
+									.build();
+      CometChat.startCall(
+        callSettings,
+        document.getElementById("chat"),
+        new CometChat.OngoingCallListener({
+          onUserListUpdated: userList => {
+            console.log("user list:", userList);
+          },
+          onCallEnded: call => {
+            console.log("Call ended:", call);
+          },
+          onError: error => {
+            console.log("Error :", error);
+          },
+          onMediaDeviceListUpdated: deviceList => {
+            console.log("Device List:", deviceList);
+          },
+          onUserMuted: (userMuted, userMutedBy) => {
+            console.log("Listener => onUserMuted:", userMuted, userMutedBy);
+          },
+          onScreenShareStarted: () => {
+            console.log("Screen sharing started.");
+          },
+          onScreenShareStopped: () => {
+
+            console.log("Screen sharing stopped.");
+          }
+        })
+      );*/
     },
     /**
      * Starts a video call

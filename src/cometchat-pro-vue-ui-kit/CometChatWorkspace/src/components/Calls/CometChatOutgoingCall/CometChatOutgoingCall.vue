@@ -41,6 +41,7 @@
           <div :style="styles.icon"></div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
