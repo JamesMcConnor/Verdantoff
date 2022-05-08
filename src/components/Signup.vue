@@ -5,8 +5,8 @@
   class="z-20 h-screen w-screen bg-gray-200 fixed top-0 opacity-50"></section>
   <!-- Use Z-Axis to make the button higher than others -->
   <div class="absolute inset-0">
-    <div class="flex h-full">
-      <div class="z-30 m-auto bg-white p-2 rounded shadow w-1/3">
+    <div class="flex h-full ">
+      <div class="z-30 m-auto bg-white p-2 rounded shadow w-1/3 ">
         <h1 class="text-xl text-center">Sign Up</h1>
         <form class="p-2 my-4 border" @submit.prevent="submit">
           <div class="my-2">
@@ -27,6 +27,11 @@
           </button>
           </div>
         </form>
+        <div class = "my-2 right-2">
+            <button @click="open" class="p-2 rounded shadow bg-blue-400 text-white">
+              Terms and conditions
+            </button>
+        </div>
       </div>
     </div>
   </div>
@@ -106,7 +111,7 @@ export default {
   .catch((error) => {
     const errorMessage = error.message;
     console.log(errorMessage);
-    alert("Email address already exist, please use another email address");
+    alert(errorMessage);
     // ..
   });
  
@@ -114,6 +119,13 @@ export default {
     close()
     {
       this.$emit('close');
+    },
+    open()
+    {
+      const routeData = this.$router.resolve({
+        path: '/term'
+      });
+      window.open(routeData.href, "_blank");
     }
 
   },
