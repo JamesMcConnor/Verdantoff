@@ -1,7 +1,7 @@
 <template>
 <div>
 <nav class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
-<router-link class="mx-2" to="/about">About Page</router-link>
+<router-link class="mx-2" to="/about">Home</router-link>
 <button  class="mx-2" @click="$emit('open-sign')">Sign Up</button>
 <button v-if="isLoggedin" class = "mx-2" @click="logout">Log out</button>
 <button v-else class="mx-2" @click="$emit('open-login')">Login</button>
