@@ -1,6 +1,6 @@
 <template>
 <div>
-<nav class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
+<nav v-if= "!$route.meta.showNav" class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
 <router-link class="mx-2" to="/about">Home</router-link>
 <button  class="mx-2" @click="$emit('open-sign')">Sign Up</button>
 <button v-if="isLoggedin" class = "mx-2" @click="logout">Log out</button>
