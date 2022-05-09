@@ -15,6 +15,7 @@ const routes = [
     { path: '/', component: About },
 
     { path: '/aboutus', component: AboutUs }
+
 ]
 const router = createRouter({
     history: createWebHashHistory(),
