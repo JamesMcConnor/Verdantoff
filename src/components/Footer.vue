@@ -18,7 +18,7 @@
                             <div class="w-full lg:w-1/2 px-6">
                                 <ul>
                                     <li>
-                                        <router-link to="/" class="text-xs lg:text-xl leading-none hover:text-brand dark:hover:text-brand text-gray-800 dark:text-gray-50">Privacy Policy</router-link>
+                                        <router-link to="/term" class="text-xs lg:text-xl leading-none hover:text-brand dark:hover:text-brand text-gray-800 dark:text-gray-50">Privacy Policy</router-link>
                                     </li>
                                    
                                 </ul>
