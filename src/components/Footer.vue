@@ -17,7 +17,7 @@
                             <div class="w-full lg:w-1/2 px-6">
                                 <ul>
                                     <li>
-                                        <router-link to="/term" target = "_blank" class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-600 dark:text-white">Privacy Policy</router-link>
+                                        <router-link to="/term" target = "_blank " class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-600 dark:text-white">Privacy Policy</router-link>
                                     </li>                                   
 
                                 </ul>
