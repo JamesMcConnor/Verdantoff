@@ -8,8 +8,8 @@
                            
                             <div class="w-full lg:w-1/2 px-6">
                                 <ul>
-                                    <li>
-                                        <a class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-800 dark:text-gray-50" href="Please input a link">About Us</a>
+                                    <li>                                       
+                                        <router-link to="/AboutUs" class="text-xs lg:text-xl leading-none hover:text-brand dark:hover:text-brand text-gray-800 dark:text-gray-50">About Us</router-link>
                                     </li>
                                 </ul>
                             </div>
@@ -18,7 +18,7 @@
                             <div class="w-full lg:w-1/2 px-6">
                                 <ul>
                                     <li>
-                                        <a href="Please input a link" class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-800 dark:text-gray-50">Privacy policy</a>
+                                        <router-link to="/" class="text-xs lg:text-xl leading-none hover:text-brand dark:hover:text-brand text-gray-800 dark:text-gray-50">Privacy Policy</router-link>
                                     </li>
                                    
                                 </ul>
@@ -72,7 +72,7 @@
                     </div>
                 </div>
             
-            <div class="py-16 flex flex-col justify-center items-center">
+            <div class="py-1 flex flex-col justify-center items-center">
                 <a href="Please input the link of the ICON">
                     <img src="../assets/VerdantoffIcon.svg" alt="Verdantoff">
                 </a>
