@@ -6,11 +6,11 @@
 <p class="pt-10 text-center mx-auto  text-2xl text-green-500 font-serif">Please Sign Up or Sign In to use the services on this site</p>
 </div>
 
-<Footer></Footer>
+<!---<Footer></Footer>--->
 </template>
 
 <script>
-import Footer from './Footer.vue';
+//import Footer from './Footer.vue';
 
 export default {
     data(){
@@ -25,7 +25,7 @@ export default {
     },
 
     components: {
-      Footer
+      //Footer
     }
 };
 </script>

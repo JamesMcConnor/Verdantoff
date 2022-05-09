@@ -7,7 +7,7 @@
 <Login v-if="isOpen" @close="isOpen = false"/>
 <Signup v-if="isSign" @close = "isSign = false"/>
 
-
+<Footer></Footer>
 </template>
 
 <script>
@@ -16,6 +16,7 @@ import Login from "./components/Login.vue";
 import Signup from "./components/Signup.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { initializeApp } from "firebase/app";
+import Footer from "./components/Footer.vue";
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_apiKey,
   authDomain: process.env.VUE_APP_FIREBASE_authDomain,
@@ -68,7 +69,7 @@ export default{
 });
   },
 
-  components:{ AppHeader, Login, Signup}
+  components:{ AppHeader, Login, Signup, Footer }
 }
 </script>
 
