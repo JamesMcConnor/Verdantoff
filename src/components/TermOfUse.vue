@@ -434,7 +434,7 @@ Arbitration proceedings under New Zealand law is governed by the Arbitration Act
 export default {
     data(){
         return {
-
+            //Page for term of use
         }
     }
 }
