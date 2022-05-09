@@ -35,7 +35,7 @@ export default {
   },
 
   mounted(){
-  //Get auth from firebase
+  //Get auth from firebase 
   const auth = getAuth();
   //Once get auth then get the login status
   onAuthStateChanged(auth, (user) => {
