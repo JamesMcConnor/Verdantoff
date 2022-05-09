@@ -1,0 +1,42 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+
+name: Build 
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm run build --if-present
+    
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Install SSH Key
+      uses: shimataro/ssh-key-action@v2
+      with:
+       key: ${{ secrets.SSH_PRIVATE_KEY }} 
+       
+   # This step should probably use a saved known hosts file, but this is fine for simplicity.
+    - name: Add Known Hosts
+      run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+      
+    - name: Deploy with rsync
+      run: rsync -avz ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:public/
