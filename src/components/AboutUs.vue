@@ -6,7 +6,7 @@
       relative
       bg-fixed
       w-full
-      h-full
+      h-screen
       margin:auto
     "
   >
