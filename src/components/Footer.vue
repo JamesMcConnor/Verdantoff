@@ -29,7 +29,14 @@
                             <div class="w-full lg:w-1/2 px-6">
                                 <ul>
                                     <li>
-                                        <p class="text-xs text-right hover:text-brand dark:hover:text-brand text-gray-400 dark:text-white">Verdantoff</p>
+                                        <div class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-600 dark:text-white">Change Backgroud?</div>
+                                    </li>
+
+                                    <li>
+                                        <div class="inline-flex">
+                                            <button class="bg-blue-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">Prev</button>
+                                            <button class="bg-blue-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">Next</button>
+                                        </div>
                                     </li>                                   
                                 </ul>
                             </div>
