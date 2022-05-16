@@ -54,10 +54,10 @@ export default{
     this.varified = user.emailVerified;
     if(this.varified == false)
     {
-      this.varifiedMessage = " (This email is not varified!)";
+      this.varifiedMessage = " (This email is not verified!)";
     }else if(this.varified == true)
     {
-      this.varifiedMessage = " (This email is varified!)";
+      this.varifiedMessage = " (This email is verified!)";
     }
     console.log(uid);
     // ...

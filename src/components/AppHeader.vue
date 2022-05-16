@@ -2,13 +2,13 @@
 <div>
 <nav v-if= "!$route.meta.showNav" class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
 
-<router-link class="mx-2" to="/about">Home</router-link>
+<router-link class="z-30 mx-2" to="/about">Home</router-link>
 
-<button  class="mx-2" @click="$emit('open-sign')">Sign Up</button>
-<button v-if="isLoggedin" class = "mx-2" @click="logout">Log out</button>
-<button v-else class="mx-2" @click="$emit('open-login')">Login</button>
-<router-link v-if = "varified && isLoggedin"  class="mx-2" to="/logchat">CometChat</router-link>
-<div v-if="isLoggedin" class="absolute inset-y-0 right-2">Welcome {{email}} {{varifiedMessage}}</div>
+<button  class="z-30 mx-2 " @click="$emit('open-sign')">Sign Up</button>
+<button v-if="isLoggedin" class = "z-30 mx-2" @click="logout">Log out</button>
+<button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
+<router-link v-if = "varified && isLoggedin"  class="z-30 mx-2" to="/logchat">CometChat</router-link>
+<p v-if="isLoggedin && !varified"  class="z-0 absolute inset-y-0 right-2 select-none text-xs">Welcome {{email}} {{varifiedMessage}}</p>
 </nav>
 </div>
 </template>
