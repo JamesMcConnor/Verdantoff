@@ -1,4 +1,8 @@
+<!--
+ * @Author: Tai Zhang
+-->
 <template>
+
     <div class="pt-0">
         <footer v-if= "!$route.meta.showNav" id="footer" class="bg-blue-200 relative z-50 dark:bg-gray-900">
             
@@ -9,6 +13,7 @@
                                 <ul>
                                     <li>                                       
                                         <router-link to="/AboutUs" class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-600 dark:text-white">About Us</router-link>
+                                        
                                     </li>
                                 </ul>
                             </div>
@@ -18,6 +23,7 @@
                                 <ul>
                                     <li>
                                         <router-link to="/term" target = "_blank " class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-600 dark:text-white">Terms and Conditions</router-link>
+                                    
                                     </li>                                   
 
                                 </ul>
@@ -29,15 +35,8 @@
                             <div class="w-full lg:w-1/2 px-6">
                                 <ul>
                                     <li>
-                                        <div class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-600 dark:text-white">Change Backgroud?</div>
+                                        <router-link to="/ContactUs" class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-600 dark:text-white">Contact Us</router-link>
                                     </li>
-
-                                    <li>
-                                        <div class="inline-flex">
-                                            <button @click="prev;print" class="bg-blue-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">Prev</button>
-                                            <button @click="next;print" class="bg-blue-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">Next</button>
-                                        </div>
-                                    </li>                                   
                                 </ul>
                             </div>
                             
@@ -47,81 +46,27 @@
             
             
         </footer>
-    </div>
+    </div>   
 </template>
 
-<!-- <script setup>
-    import {ref} from 'vue';
-    import useGetGlobalProperties from '../../hooks/useGlobal';
-    var bgCounter = useGetGlobalProperties();
-
-    const count = ref(0);
-
-</script> -->
-
-
 <script>
-// import {  getCurrentInstance, } from "vue";
-//         //let { appContext : { config: { globalProperties } } } = getCurrentInstance();
-//         let globalProperties  = getCurrentInstance()
-//         //console.log(globalProperties.$bgCounter);
-// let bgCounter =globalProperties.$bgCounter -= this.globalProperties.$bgCounter;
-// console.log(globalProperties.$bgCounter);
-// console.log(bgCounter);
-
-let bgCounter = 1;
-console.log(bgCounter);
 export default {
-    name: "index",
-
+    name: "footer",
 
 
     data() {
         return {
-        bgCounter,
+
         };
     },
-    mounted() {},
+
     methods: {
-        
 
-        prev(){
-            if (bgCounter > 1 ){
-                bgCounter -= this.bgCounter
-            }else{
-                bgCounter = 1;
-            }
-        },
-
-        next(){
-            if (bgCounter < 10 ){
-                bgCounter += this.bgCounter
-            }else{
-                bgCounter = 10;
-            }
-        },
-        print(){
-            console.log(bgCounter);
-        },
-
-        // toggle(event) {
-        //     if (event.target.value === "auto") {
-        //         this.auto = true;
-        //         this.light = false;
-        //         this.dark = false;
-        //     }
-        //     if (event.target.value === "light") {
-        //         this.auto = false;
-        //         this.light = true;
-        //         this.dark = false;
-        //     }
-        //     if (event.target.value === "dark") {
-        //         this.auto = false;
-        //         this.light = false;
-        //         this.dark = true;
-        //     }
-        // },
     },
+
+    
+    mounted() {},
+    
 };
 </script>
 

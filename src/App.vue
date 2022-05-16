@@ -1,3 +1,6 @@
+<!--
+ * @Author: Tai Zhang
+-->
 <template>
 <AppHeader :isLoggedin = "isLoggedin" @open-login="isOpen = true" @open-sign="isSign = true" :email=email :varifiedMessage=varifiedMessage :varified=varified />
 <div>
@@ -17,6 +20,8 @@ import Signup from "./components/Signup.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import Footer from "./components/Footer.vue";
+
+
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_apiKey,
   authDomain: process.env.VUE_APP_FIREBASE_authDomain,
