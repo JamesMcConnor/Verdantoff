@@ -71,9 +71,9 @@ export default {
 );
 },
   name: "chat",
-   components: {
-     CometChatUI,
-   }
+    components: {
+    CometChatUI,
+  }
 }
 </script>
 

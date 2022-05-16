@@ -12,7 +12,7 @@
   >
     <div class="ml-9 mr-9">
       <div class="container">
-        <div class="md-layout">
+        <div class="md-layout ">
           <div
             class="
               md-layout-item md-size-50 md-small-size-70 md-xsmall-size-100
@@ -52,7 +52,7 @@
             <h2 class="pt-20 text-center mx-auto text-2xl">Our Services</h2>
 
             <div class="">
-              <h4 class="leading-8 break-normal pt-10 mx-auto text-xl">
+              <h4 class="leading-8 break-normal pt-10 mx-auto text-xl text-left">
                 <p>
                   Verdantoff enables employers to maintain real-time
                   communication contact with their staff using VoIP and other
@@ -72,6 +72,10 @@
       </div>
     </div>
   </div>
+
+
+
+  
 </template>
 
 <script>
