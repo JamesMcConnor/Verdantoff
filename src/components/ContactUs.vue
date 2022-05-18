@@ -1,10 +1,7 @@
-<!--
- * @Author: Tai Zhang
--->
 <template>
     <div :style="background" class="relative bg-fixed opacity-90 w-full h-screen">
         <div class="p-10 font-serif text-4xl subpixel-antialiased font-bold leading-relaxed text-center text-white">
-            <h1 class="text-6xl">Contect Us</h1>
+            <h1 class="text-6xl">Contact Us</h1>
             <br>
                 <p>FronTech NZ</p>
                 <br>
