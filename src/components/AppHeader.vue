@@ -7,6 +7,7 @@
 <button  class="z-30 mx-2 " @click="$emit('open-sign')">Sign Up</button>
 <button v-if="isLoggedin" class = "z-30 mx-2" @click="logout">Log out</button>
 <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
+<router-link class = "z-30 mx-2" to = "/tutorial">Tutorial</router-link>
 <router-link v-if = "varified && isLoggedin"  class="z-30 mx-2" to="/logchat">CometChat</router-link>
 <p v-if="isLoggedin && !varified"  class="z-0 absolute inset-y-0 right-2 select-none text-xs">Welcome {{email}} {{varifiedMessage}}</p>
 </nav>

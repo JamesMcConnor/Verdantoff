@@ -7,6 +7,7 @@ import LogChat from './components/LogChat';
 import AboutUs from './components/AboutUs'
 import TermOfUse from './components/TermOfUse';
 import ContactUs from './components/ContactUs';
+import Tutorial from './components/tutorial';
 
 const routes = [
     { path: '/about', component: About },
@@ -17,7 +18,7 @@ const routes = [
         }
     },
     { path: '/', component: About },
-
+    { path: '/tutorial', component :Tutorial},
     { path: '/aboutus', component: AboutUs },
     { path: '/contactus', component: ContactUs },
 
