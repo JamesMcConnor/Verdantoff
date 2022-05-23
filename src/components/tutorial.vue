@@ -69,7 +69,7 @@ If the correct email was entered you can click the green button which sends an e
     <h3 class="text-2xl"><br><br> Verificat notice</h3>
   </div>
   <div>
-    If you login with an email that is not verified, a small verification notice will pop up on the top right corner in the Navbar.
+    If you login with an email that is not verified, a small verification notice will pop up on the top right corner in the navigation bar.
     <br>
     Once you verify your email the verification notice will disapper.
   </div>
@@ -130,7 +130,8 @@ If the correct email was entered you can click the green button which sends an e
  <h3 class="text-2xl"><br><br> Call Functions</h3>
  <p>
    You can create a video call by clicking the video call button. The voice call button is currently unused.
-   <br> Notice that creating a video call will invite all current online users in the char group.
+   <br> Notice that creating a video call will invite all current online users in the chat group.
+   <br> Voice call button is disabled, please use video call instead, you can switch off your camera in video calls.
  </p>
  <img src="../assets/img/callFunctions.png" class="mx-auto">
   <img src="../assets/img/ChatRooms.jpg" class="mx-auto">
@@ -147,7 +148,7 @@ If the correct email was entered you can click the green button which sends an e
     Video Session
   </h3>
   <p>
-    This is the video session UI. You can control your mic, camara and sharing screen by the buttons under.
+    This is the video session user interface. You can control your mic, camara and sharing screen by the buttons below.
     <br> You can also click on the user button to see who is in the session.
   </p>
   <br>
@@ -160,9 +161,24 @@ If the correct email was entered you can click the green button which sends an e
     Secure Meeting
   </h3>
   <p>
-    When a user leaves a video meeting or is late for a meeting, he cant join the video meeting unless the meeting creator creates another call.
+    If a user leaves a video meeting, or is late for the meeting, he or she cannot enter the meeting once the meeting has started, unless the meeting host decides to terminate the meeting and restart a fresh meeting.
     <br> This can prevent people hacking in to video meetings which happened on other websites before.
-    <br> NOTICE: If a user accidentally leaves a video meeting, the meeting creator will need to end the current meeting and makes a new meeting.
+    <br> NOTICE: If a user accidentally leaves a video meeting, he or she cannot re-enter the meeting unless the host terminates the current meeting and calls a new meeting.
+  </p>
+  <br>
+</div>
+
+<div class="group">
+  <h3 class="text-2xl">
+    <br><br>
+    Group Dialing
+  </h3>
+  <p>
+    If one person within a group starts a call all current online users will get a notification that asks them to accept or decline the call. 
+    <br><br> -Call Decline-
+    <br> When the user declines the call they will not be able to join unless a new meeting is started.
+    <br> Note - If dialing more than one user for a video meeting, it would be easier for the host to put every user attending the meeting into a group. 
+    <br> This will make it easier than dialing each user one at a time, as the host can simply dial the group instead.
   </p>
   <br>
 </div>
@@ -170,14 +186,14 @@ If the correct email was entered you can click the green button which sends an e
 
 <div class = "Chats">
   <h3 class="text-2xl">
-    <br><br>Navbar</h3>
- There are four buttons in the navbar, the first one shows a list of current chats. The second one shows a list of all users. The third one shows a list of all groups.
+    <br><br>Navigation bar</h3>
+ There are four buttons in the navigation bar, the first one shows a list of current chats. The second one shows a list of all users. The third one shows a list of all groups.
  <br>
  When a user is active they can be seen with a green dot.
  <br>
  "More" page is still under development now, so the button wont work for now
  <div>
-  <img src="../assets/img/combine.png" class="mx-auto">
+  <img src="../assets/img/combine_fix.png" class="mx-auto">
 </div>
 
   </div>
