@@ -1,3 +1,8 @@
+<!---
+This is the login page. 
+ --->
+
+
 <template>
 <div>
 <section 
@@ -6,6 +11,7 @@
   <!-- Use Z-Axis to make the button higher than others -->
   <div class="absolute inset-0">
     <div class="flex h-full">
+      <!---Login window--->
       <div class="z-30 m-auto bg-white p-2 rounded shadow w-1/3">
         <h1 class="text-xl text-center">Login</h1>
         <form class="p-2 my-4 border" @submit.prevent="submit">
@@ -22,10 +28,12 @@
              <span v-if="!isLoading">Submit</span>
              <span v-else>Processing</span>
           </button>
+          <!---Shows if user enter a wrong password or email--->
           <span v-if="isError" class="my-2 text-red-400">The email or password you entered is wrong</span>
           </div>
         </form>
         <div class="my-2">
+          <!--- Button for reset password --->
             <button @click="reset" class = "p-2 w-1/3 rounded shadow bg-green-400 text-white">Forget Password?</button>
             <span v-if="isSend" class="my-2 p-2 text-red-400" >Please check your email for reset password</span>
         </div>
@@ -38,6 +46,7 @@
 
 
 <script>
+//import components from firebase and initialize it
 import { getAuth, signInWithEmailAndPassword ,sendPasswordResetEmail} from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
@@ -65,10 +74,12 @@ export default {
     }
   },
 
+
   methods :{
     submit(){
       this.isLoading = true;
       this.form;
+      //Get status of authentication
       const auth = getAuth();
       signInWithEmailAndPassword(auth, this.form.email, this.form.password)
     .then((userCredential) => {
@@ -96,6 +107,7 @@ export default {
     {
       this.$emit('close');
     },
+    //function for sending reset password email
     reset()
     {
     const auth = getAuth();

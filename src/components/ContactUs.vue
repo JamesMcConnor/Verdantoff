@@ -1,3 +1,6 @@
+<!---
+    This is the file for contact us page. 
+ --->
 <template>
     <div :style="background" class="relative bg-fixed opacity-90 w-full h-screen">
         <div class="p-10 font-serif text-4xl subpixel-antialiased font-bold leading-relaxed text-center text-white">
@@ -22,6 +25,7 @@ export default {
 
 data(){
     return{
+        //CSS setting
         background: {
         backgroundImage: [
         "url(" + require("../assets/alterBG6.jpg") + ")",     

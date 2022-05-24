@@ -1,5 +1,5 @@
 /*
- * @Author: Tai Zhang
+ * File for controlling vue routing
  */
 import { createRouter, createWebHashHistory } from "vue-router";
 import About from './components/About';
@@ -12,7 +12,8 @@ import Tutorial from './components/tutorial';
 const routes = [
     { path: '/about', component: About },
     { path: '/logchat', component: LogChat },
-    {
+    {   
+        //Add a boolean condition to control navbar and footer.
         path: '/term', component: TermOfUse, meta: {
             showNav: true
         }

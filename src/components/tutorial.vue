@@ -1,3 +1,7 @@
+<!---
+  This is the tutorial page, all the images are imported from src/assets/img folder
+ --->
+
 <template>
 <div class="bg-black text-white text-center">
   <div class="tp">

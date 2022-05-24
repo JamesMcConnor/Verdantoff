@@ -1,3 +1,7 @@
+<!---
+This is the term of use page, using tailwindcss
+ --->
+
 <template>
     <div class="bg-blue-200">
         <h1 class="text-3xl">Frontier Technologies Customer Agreement</h1>

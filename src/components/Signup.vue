@@ -1,3 +1,7 @@
+<!---
+  This is the sign up page. 
+ --->
+
 <template>
 
 <section 
@@ -8,9 +12,10 @@
     <div class="flex h-full ">
       <div class="z-30 m-auto bg-white p-2 rounded shadow w-1/3 ">
         <h1 class="text-xl text-center">Sign Up</h1>
+        <!--- Sign up window--->
         <form class="p-2 my-4 border" @submit.prevent="submit">
           <div class="my-2">
-           <label>Email</label>
+          <label>Email</label>
           <input v-model="form.email" class="rounded shadow p-2 w-full" type="email"> 
           </div>
           <div class="my-2">
@@ -27,6 +32,7 @@
           </button>
           </div>
         </form>
+        <!--- Add a button for  terms and conditions --->
         <div class = "my-2 right-2">
             <button @click="open" class="p-2 rounded shadow bg-blue-400 text-white">
               Terms and conditions
@@ -42,6 +48,7 @@
 
 
 <script>
+//import components from firebase and cometchat and initialize them
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import {CometChat} from "@cometchat-pro/chat";
@@ -120,6 +127,7 @@ export default {
     {
       this.$emit('close');
     },
+    //Function for opening terms and condition page, written is this way for open it in a new tab
     open()
     {
       const routeData = this.$router.resolve({

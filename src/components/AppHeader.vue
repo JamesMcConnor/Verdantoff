@@ -1,5 +1,10 @@
+<!---
+  This is the file for the navbar
+ --->
+
 <template>
 <div>
+<!--- Add a v-if condition to control navbar, make it unseen in condition page --->
 <nav v-if= "!$route.meta.showNav" class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
 
 <router-link class="z-30 mx-2" to="/about">Home</router-link>
@@ -8,7 +13,9 @@
 <button v-if="isLoggedin" class = "z-30 mx-2" @click="logout">Log out</button>
 <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
 <router-link class = "z-30 mx-2" to = "/tutorial">Tutorial</router-link>
+<!--- Show button when user log in with an verified email --->
 <router-link v-if = "varified && isLoggedin"  class="z-30 mx-2" to="/logchat">CometChat</router-link>
+<!--- Only shows when user logged in with an unverified email --->
 <p v-if="isLoggedin && !varified"  class="z-0 absolute inset-y-0 right-2 select-none text-xs">Welcome {{email}} {{varifiedMessage}}</p>
 </nav>
 </div>
@@ -29,6 +36,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 console.log(app);
 export default {
+    //Get variable from app.vue
     props:{
       isLoggedin:Boolean,
       email:String,
@@ -39,6 +47,7 @@ export default {
         logout()
     {
     const auth = getAuth();
+    //When clicking logout, automatically switch back to the about page (main page)
     this.$router.push('/about');
     signOut(auth).then(() => {
         console.log("Log out successfully");

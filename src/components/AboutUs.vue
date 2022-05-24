@@ -1,3 +1,6 @@
+<!--- 
+  This is the file for about us page
+--->
 <template>
   <div
     :style="background"

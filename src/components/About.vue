@@ -1,5 +1,10 @@
+<!---
+  This is the file for about page, which is the main page of the website
+--->
+
 <template>
 <div class="front">
+  <!--- Add a condition to change background image --->
   <div v-if="isFern" :style="background_leaf_dark" class="relative bg-fixed opacity-90 w-full h-screen"> 
     <h1
       class="pt-40 font-bold text-center mx-auto text-5xl text-white font-serif"
@@ -15,6 +20,7 @@
       Please Sign Up or Sign In to use the services on this site
     </p>
 
+    <!--- Select box for switching background --->
     <div class="absolute bottom-0 right-0">
       <select @click="changeBG($event.target.value)" name="bg" class="bg-green-700 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded-l ">
       <option value="err">Select Background</option>
@@ -25,6 +31,7 @@
     </div>
   </div>
 
+  <!--- Leaf background--->
   <div v-if="isLeaf" :style="background_leaf_mid" class="relative bg-fixed opacity-90 w-full h-screen"> 
     <h1
       class="pt-40 font-bold text-center mx-auto text-5xl text-white font-serif"
@@ -50,6 +57,7 @@
     </div>
   </div>
 
+  <!--- Mountain background--->
   <div v-if="isMountain" :style="background_mountain_bright" class="relative bg-fixed opacity-90 w-full h-screen"> 
     <h1
       class="pt-40 font-bold text-center mx-auto text-5xl text-white font-serif"
@@ -120,6 +128,7 @@ export default {
   },
 
 methods: {
+  //Function to change boolean value for backgrounds
   changeBG(arg){
     this.selectedOption  = arg;
     if (this.selectedOption =="fern" ){

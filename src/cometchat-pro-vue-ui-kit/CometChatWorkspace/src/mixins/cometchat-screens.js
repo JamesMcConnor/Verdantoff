@@ -61,6 +61,7 @@ export default {
      * Starts an audio call
      */
     async audioCall() {
+      //This is the function linked to audiocall, which I disabled all the current function
       /*try {
         let receiverId, receiverType;
 

@@ -1,19 +1,23 @@
 <!--
- * @Author: Tai Zhang
+  This is entry file for the whole app
 -->
 <template>
+<!--- Send variables to appheader.vue --->1
 <AppHeader :isLoggedin = "isLoggedin" @open-login="isOpen = true" @open-sign="isSign = true" :email=email :varifiedMessage=varifiedMessage :varified=varified />
 <div>
   <router-view></router-view>
 </div>
 
+<!--- Send variables to login and signup file --->
 <Login v-if="isOpen" @close="isOpen = false"/>
 <Signup v-if="isSign" @close = "isSign = false"/>
 
+<!--- Put footer in so that it will show in all pages --->
 <Footer></Footer>
 </template>
 
 <script>
+//initialize firebase
 import AppHeader from "./components/AppHeader.vue";
 import Login from "./components/Login.vue";
 import Signup from "./components/Signup.vue";

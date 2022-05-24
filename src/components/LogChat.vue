@@ -1,3 +1,7 @@
+<!---
+  This is the cometchat page, loding the cometchat UI component
+ --->
+
 <template>
  <div id="chat" class="h-screen w-screen">
    <CometChatUI />
@@ -5,6 +9,7 @@
 </template>
 
 <script>
+//import components from cometchat and firebase and then initialize them
 import { CometChat } from "@cometchat-pro/chat";
 import { CometChatUI } from "../cometchat-pro-vue-ui-kit/CometChatWorkspace/src";
 const cometAppId = process.env.VUE_APP_COMETCHAT_appID;
@@ -34,14 +39,16 @@ export default {
     }
   },
 
+  //mounted method will run before the page is rendered
   mounted(){
-  //Get auth from firebase 
+  //Get auth from firebase, and get current user
   const auth = getAuth();
   //Once get auth then get the login status
   onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/firebase.User
+    //Convert user's email in to cometchat id, because cometchat dont allow email as id
     this.email = user.email;
     this.cometuid = this.email;
     this.cometuid = this.cometuid.replace('@','');

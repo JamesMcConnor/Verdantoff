@@ -1,9 +1,10 @@
 <!--
- * @Author: Tai Zhang
+  This is the file for the footer
 -->
 <template>
 
     <div class="pt-0">
+        <!---Add a v-if condition to hide footer in condition page--->
         <footer v-if= "!$route.meta.showNav" id="footer" class="bg-blue-200 relative z-50 dark:bg-gray-900">
             
                 <div class="mx-auto container px-4 xl:px-12 2xl:px-4">
