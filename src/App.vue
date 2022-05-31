@@ -2,7 +2,7 @@
   This is entry file for the whole app
 -->
 <template>
-<!--- Send variables to appheader.vue --->1
+<!--- Send variables to appheader.vue --->
 <AppHeader :isLoggedin = "isLoggedin" @open-login="isOpen = true" @open-sign="isSign = true" :email=email :varifiedMessage=varifiedMessage :varified=varified />
 <div>
   <router-view></router-view>
