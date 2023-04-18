@@ -16,7 +16,7 @@
             </p>
         </div>
     </div>
-w    <div v-for="(contact, i) in userContactsList" :key="i" class="px-3">
+    <div v-for="(contact, i) in userContactsList" :key="i" class="px-3">
         <strong>
             {{ contact.name }} - {{ contact.email }}
         </strong>
