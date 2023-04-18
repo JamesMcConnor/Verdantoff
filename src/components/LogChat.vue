@@ -3,9 +3,9 @@
  --->
 
 <template>
- <div id="chat" class="h-screen w-screen">
-   <CometChatUI />
- </div>
+  <div id="chat" class="h-screen w-screen">
+    <CometChatUI />
+  </div>
 </template>
 
 <script>
@@ -32,58 +32,64 @@ console.log(app);
 
 
 export default {
-  data(){
-    return{
+  data() {
+    return {
       email: '',
       cometuid: '',
     }
   },
-
+ 
   //mounted method will run before the page is rendered
-  mounted(){
-  //Get auth from firebase, and get current user
-  const auth = getAuth();
-  //Once get auth then get the login status
-  onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
-    //Convert user's email in to cometchat id, because cometchat dont allow email as id
-    this.email = user.email;
-    this.cometuid = this.email;
-    this.cometuid = this.cometuid.replace('@','');
-    this.cometuid = this.cometuid.replaceAll('.','');
-  }
-  });
-  const appSetting = new CometChat.AppSettingsBuilder()
-  .subscribePresenceForAllUsers()
-  .setRegion(region)
-  .build();
+  mounted() {
+    //Get auth from firebase, and get current user
+    const auth = getAuth();
+    //Once get auth then get the login status
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        //Convert user's email in to cometchat id, because cometchat dont allow email as id
+        this.email = user.email;
+        this.cometuid = user.email.replace('@', '').replaceAll('.', '');
+      }
+    });
+
+  },
+  watch: {
+    cometuid() {
+      this.initComeChatLogin();
+    }
+  },
+  methods: {
+    initComeChatLogin() {
+      const appSetting = new CometChat.AppSettingsBuilder()
+        .subscribePresenceForAllUsers()
+        .setRegion(region)
+        .build();
       CometChat.init(cometAppId, appSetting)
-  .then(() => {
-    console.log("Initialization completed successfully");
-    // You can now call login function.
-    CometChat.login(this.cometuid, authkey).then(
-  user => {
-    console.log("Login Successful:", { user });  
+        .then(() => {
+          console.log("Initialization completed successfully");
+          // You can now call login function.
+          CometChat.login(this.cometuid, authkey).then(
+            user => {
+              console.log("Login Successful:", { user });
+            },
+            error => {
+              console.log("Login failed with exception:", { error });
+            }
+          );
+        },
+          error => {
+            console.log("Initialization failed with error:", error);
+          }
+        );
+    }
   },
-  error => {
-    console.log("Login failed with exception:", { error });    
-  }
-  );
-  },
-  error => {
-    console.log("Initialization failed with error:", error);
-  }
-);
-},
   name: "chat",
-    components: {
+  components: {
     CometChatUI,
   }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

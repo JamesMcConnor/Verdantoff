@@ -49,7 +49,7 @@
 
 <script>
 //import components from firebase and cometchat and initialize them
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import {CometChat} from "@cometchat-pro/chat";
 let authKey = process.env.VUE_APP_COMETCHAT_authKey;
@@ -87,11 +87,11 @@ export default {
     const auth = getAuth();
     auth.languageCode = 'en';
     createUserWithEmailAndPassword(auth, this.form.email, this.form.password)
-  .then((userCredential) => {
+  .then(() => {
     // Signed in to firebase
-    const user = userCredential.user;
-    sendEmailVerification(auth.currentUser);
-    console.log(user);
+    // const user = userCredential.user;
+    // sendEmailVerification(auth.currentUser);
+    // console.log(user);
     this.close();
     // ...
   })
@@ -111,8 +111,6 @@ export default {
         alert(error);
         console.log("error", error);
     }
-    ).then(
-      alert("Please verify your email to use chat fucntion, refresh the page after you verify your email")
     )
   })
   .catch((error) => {
