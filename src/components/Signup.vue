@@ -88,25 +88,18 @@ export default {
     auth.languageCode = 'en';
     createUserWithEmailAndPassword(auth, this.form.email, this.form.password)
   .then(() => {
-    // Signed in to firebase
-    // const user = userCredential.user;
-    // sendEmailVerification(auth.currentUser);
-    // console.log(user);
     this.close();
-    // ...
   })
   .then(() => {
     //create user for cometchat
     var cometuid = this.form.email;
     cometuid = cometuid.replace('@','');
     cometuid = cometuid.replaceAll('.','');
-    console.log(cometuid);
     var name = this.form.username;
     var cometuser = new CometChat.User(cometuid);
     cometuser.setName(name);
-    CometChat.createUser(cometuser,authKey).then(
-    user => {
-        console.log("user created", user);
+    CometChat.createUser(cometuser,authKey).then(() => {
+        console.log("user created");
     },error => {
         alert(error);
         console.log("error", error);
@@ -117,7 +110,6 @@ export default {
     const errorMessage = error.message;
     console.log(errorMessage);
     alert(errorMessage);
-    // ..
   });
  
     },
