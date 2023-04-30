@@ -9,9 +9,6 @@
             <p>FronTech NZ</p>
             <br>
             <p>
-                616 Glenbrook Rd, RD4 Pukekohe
-                Auckland 2679, New Zealand.
-                <br>
                 Email: jamesfrontechcorp@gmail.com
             </p>
         </div>

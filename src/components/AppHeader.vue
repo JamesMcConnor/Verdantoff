@@ -14,7 +14,7 @@
 <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
 <router-link class = "z-30 mx-2" to = "/tutorial">Tutorial</router-link>
 <!--- Show button when user log in with an verified email --->
-<router-link v-if = "isLoggedin"  class="z-30 mx-2" to="/logchat">CALL</router-link>
+<router-link v-if = "isLoggedin"  class="z-30 mx-2" to="/logchat">Make video call</router-link>
 <!--- Only shows when user logged in with an unverified email --->
 <p v-if="isLoggedin"  class="z-0 absolute inset-y-0 right-2 select-none text-xs">Welcome {{email}}</p>
 </nav>
