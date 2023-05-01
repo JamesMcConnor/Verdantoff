@@ -3,7 +3,7 @@
 -->
 <template>
 <!--- Send variables to appheader.vue --->
-<AppHeader :isLoggedin = "isLoggedin" @open-login="isOpen = true" @open-sign="isSign = true" :email=email :varifiedMessage=varifiedMessage :varified=varified />
+<AppHeader :isLoggedin = "isLoggedin" @open-login="isOpen = true" @open-sign="isSign = true" :email=email :userId=userId :varifiedMessage=varifiedMessage :varified=varified />
 <div>
   <router-view></router-view>
 </div>
@@ -44,6 +44,7 @@ export default{
       isOpen: false,
       isSign: false,
       isLoggedin: false,
+      userId: null,
       email: '',
       varified: false,
       varifiedMessage: ''
@@ -58,7 +59,7 @@ export default{
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/firebase.User
     this.isLoggedin = true;
-    const uid = user.uid;
+    this.userId = user.uid;
     this.email = user.email;
     this.varified = user.emailVerified;
     if(this.varified == false)
