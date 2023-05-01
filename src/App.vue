@@ -69,7 +69,6 @@ export default{
     {
       this.varifiedMessage = " (This email is verified!)";
     }
-    console.log(uid);
     // ...
   } else {
     // User is signed out
