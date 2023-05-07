@@ -3,10 +3,7 @@
  --->
 
 <template>
-
-<section 
-  @click="close"
-  class="z-20 h-screen w-screen bg-gray-200 fixed top-0 opacity-50"></section>
+  <section @click="close" class="z-20 h-screen w-screen bg-gray-200 fixed top-0 opacity-50"></section>
   <!-- Use Z-Axis to make the button higher than others -->
   <div class="absolute inset-0">
     <div class="flex h-full ">
@@ -15,28 +12,32 @@
         <!--- Sign up window--->
         <form class="p-2 my-4 border" @submit.prevent="submit">
           <div class="my-2">
-          <label>Email</label>
-          <input v-model="form.email" class="rounded shadow p-2 w-full" type="email"> 
+            <label>Username</label>
+            <input v-model="form.username" class="rounded shadow p-2 w-full" type="username">
           </div>
           <div class="my-2">
-           <label>Password</label>
-          <input v-model="form.password" class="rounded shadow p-2 w-full" type="password"> 
+            <label>Email</label>
+            <input v-model="form.email" class="rounded shadow p-2 w-full" type="email">
           </div>
           <div class="my-2">
-           <label>Username</label>
-          <input v-model="form.username" class="rounded shadow p-2 w-full" type="username"> 
+            <label>Password</label>
+            <input v-model="form.password" class="rounded shadow p-2 w-full" type="password">
+          </div>
+          <div class="my-2">
+            <label>Confirm Password</label>
+            <input v-model="form.confirm_password" class="rounded shadow p-2 w-full" type="password">
           </div>
           <div class="my-2">
             <button type="submit" class="p-2 w-full rounded shadow bg-red-400 text-white">
-            Submit
-          </button>
+              Submit
+            </button>
           </div>
         </form>
         <!--- Add a button for  terms and conditions --->
-        <div class = "my-2 right-2">
-            <button @click="open" class="p-2 rounded shadow bg-blue-400 text-white">
-              Terms and conditions
-            </button>
+        <div class="my-2 right-2">
+          <button @click="open" class="p-2 rounded shadow bg-blue-400 text-white">
+            Terms and conditions
+          </button>
         </div>
       </div>
     </div>
@@ -51,7 +52,7 @@
 //import components from firebase and cometchat and initialize them
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import {CometChat} from "@cometchat-pro/chat";
+import { CometChat } from "@cometchat-pro/chat";
 let authKey = process.env.VUE_APP_COMETCHAT_authKey;
 const appID = process.env.VUE_APP_COMETCHAT_appID;
 const region = process.env.VUE_APP_COMETCHAT_region;
@@ -71,55 +72,57 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 console.log(app);
 export default {
-  data(){
+  data() {
     return {
-      form:{
-      email:'',
-      password:'',
-      username:'',
+      form: {
+        email: '',
+        password: '',
+        confirm_password: '',
+        username: '',
       }
     }
   },
 
-  methods :{
-    submit(){
+  methods: {
+    submit() {
       //create user in firebase
-    const auth = getAuth();
-    auth.languageCode = 'en';
-    createUserWithEmailAndPassword(auth, this.form.email, this.form.password)
-  .then(() => {
-    this.close();
-  })
-  .then(() => {
-    //create user for cometchat
-    var cometuid = this.form.email;
-    cometuid = cometuid.replace('@','');
-    cometuid = cometuid.replaceAll('.','');
-    var name = this.form.username;
-    var cometuser = new CometChat.User(cometuid);
-    cometuser.setName(name);
-    CometChat.createUser(cometuser,authKey).then(() => {
-        console.log("user created");
-    },error => {
-        alert(error);
-        console.log("error", error);
-    }
-    )
-  })
-  .catch((error) => {
-    const errorMessage = error.message;
-    console.log(errorMessage);
-    alert(errorMessage);
-  });
- 
+      const auth = getAuth();
+      auth.languageCode = 'en';
+      if (this.form.password !== this.form.confirm_password) {
+        alert("Confirm Password don't match.")
+      } else {
+        createUserWithEmailAndPassword(auth, this.form.email, this.form.password)
+          .then(() => {
+            this.close();
+          })
+          .then(() => {
+            //create user for cometchat
+            var cometuid = this.form.email;
+            cometuid = cometuid.replace('@', '');
+            cometuid = cometuid.replaceAll('.', '');
+            var name = this.form.username;
+            var cometuser = new CometChat.User(cometuid);
+            cometuser.setName(name);
+            CometChat.createUser(cometuser, authKey).then(() => {
+              console.log("user created");
+            }, error => {
+              alert(error);
+              console.log("error", error);
+            }
+            )
+          })
+          .catch((error) => {
+            const errorMessage = error.message;
+            console.log(errorMessage);
+            alert(errorMessage);
+          });
+      }
     },
-    close()
-    {
+    close() {
       this.$emit('close');
     },
     //Function for opening terms and condition page, written is this way for open it in a new tab
-    open()
-    {
+    open() {
       const routeData = this.$router.resolve({
         path: '/term'
       });
@@ -130,6 +133,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

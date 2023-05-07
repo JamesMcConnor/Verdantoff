@@ -12,8 +12,9 @@
       <a href="mailto:jamesfrontechcorp@gmail.com" class="z-30 mx-2">Contact Us</a>
       <router-link class="z-30 mx-2" to="/logchat">Make video call</router-link>
       <router-link class="z-30 mx-2" to="/about">About</router-link>
+      <button class="z-30 mx-2" @click="$emit('open-sign')">Sign Up</button>  
       <button v-if="isLoggedin" class="z-30 mx-2" @click="logout">Log out</button>
-      <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
+      <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>  
     </nav>
   </div>
 </template>
