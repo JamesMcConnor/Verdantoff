@@ -57,11 +57,11 @@ export default {
   },
   watch: {
     cometuid() {
-      this.initComeChatLogin();
+      this.initCometChatLogin();
     }
   },
   methods: {
-    initComeChatLogin() {
+    initCometChatLogin() {
       const appSetting = new CometChat.AppSettingsBuilder()
         .subscribePresenceForAllUsers()
         .setRegion(region)

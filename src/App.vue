@@ -13,7 +13,7 @@
 <Signup v-if="isSign" @close = "isSign = false"/>
 
 <!--- Put footer in so that it will show in all pages --->
-<Footer :isLoggedin = "isLoggedin"></Footer>
+<Footer :isLoggedIn = "isLoggedin"></Footer>
 </template>
 
 <script>

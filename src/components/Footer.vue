@@ -18,7 +18,7 @@
 
                                 </li>
                                 <li>
-                                    <router-link v-if="isLoggedin" to="/my-contacts"
+                                    <router-link v-if="isLoggedIn" to="/my-contacts"
                                         class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-600 dark:text-white">My
                                         Contacts</router-link>
 
@@ -67,7 +67,7 @@ export default {
 
     //Get variable from app.vue
     props: {
-        isLoggedin: Boolean,
+        isLoggedIn: Boolean,
     },
 };
 </script>
