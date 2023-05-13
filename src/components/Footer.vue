@@ -12,16 +12,15 @@
                         <div class="w-full lg:w-1/2 px-6">
                             <ul>
                                 <li>
-                                    <router-link to="/AboutUs"
+                                    <router-link key="about-link" to="/AboutUs"
                                         class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-600 dark:text-white">About
                                         Us</router-link>
 
                                 </li>
                                 <li>
-                                    <router-link v-if="isLoggedIn" to="/my-contacts"
+                                    <router-link v-if="isLoggedIn" key="mycontacts-link" to="/mycontacts"
                                         class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-600 dark:text-white">My
                                         Contacts</router-link>
-
                                 </li>
                             </ul>
                         </div>
@@ -30,7 +29,7 @@
                         <div class="w-full lg:w-1/2 px-6">
                             <ul>
                                 <li>
-                                    <router-link to="/term" target="_blank "
+                                    <router-link to="/term" key="terms-link"
                                         class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-600 dark:text-white">Terms
                                         and Conditions</router-link>
 
@@ -45,7 +44,7 @@
                         <div class="w-full lg:w-1/2 px-6">
                             <ul>
                                 <li>
-                                    <router-link to="/ContactUs"
+                                    <router-link key="contact-link" to="/ContactUs"
                                         class="text-xs lg:text-sm leading-none hover:text-brand dark:hover:text-brand text-gray-600 dark:text-white">Contact
                                         Us</router-link>
                                 </li>

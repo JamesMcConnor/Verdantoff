@@ -8,13 +8,13 @@
     <nav v-if="!$route.meta.showNav" class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
 
       <router-link class="navbar-brand" to="/">VerdantOff</router-link>
-      <button v-if="isLoggedin" class="z-30 mx-2" @click="importContacts">Import your Contacts</button>
+      <button v-if="isLoggedIn" class="z-30 mx-2" @click="importContacts">Import your Contacts</button>
       <a href="mailto:jamesfrontechcorp@gmail.com" class="z-30 mx-2">Contact Us</a>
       <router-link class="z-30 mx-2" to="/logchat">Make video call</router-link>
       <router-link class="z-30 mx-2" to="/about">About</router-link>
-      <button class="z-30 mx-2" @click="$emit('open-sign')">Sign Up</button>  
-      <button v-if="isLoggedin" class="z-30 mx-2" @click="logout">Log out</button>
-      <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>  
+      <button class="z-30 mx-2" @click="$emit('open-sign')">Sign Up</button>
+      <button v-if="isLoggedIn" class="z-30 mx-2" @click="logout">Log out</button>
+      <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
     </nav>
   </div>
 </template>
@@ -29,7 +29,7 @@ import { googleSdkLoaded } from "vue3-google-login"
 export default {
   //Get variable from app.vue
   props: {
-    isLoggedin: Boolean,
+    isLoggedIn: Boolean,
     email: String,
     userId: String
   },
@@ -62,7 +62,7 @@ export default {
       })
     },
     async getUserContacts(googleAccessToken) {
-      if (this.isLoggedin === true && googleAccessToken && this.userId) {
+      if (this.isLoggedIn === true && googleAccessToken && this.userId) {
         // Use Google People API to retrieve contacts
         const url = 'https://people.googleapis.com/v1/people/me/connections?personFields=emailAddresses,names';
         const headers = { 'Authorization': `Bearer ${googleAccessToken}` };

@@ -13,7 +13,7 @@
         <form class="p-2 my-4 border" @submit.prevent="submit">
           <div class="my-2">
             <label>Username</label>
-            <input v-model="form.username" class="rounded shadow p-2 w-full" type="username">
+            <input v-model="form.username" class="rounded shadow p-2 w-full" type="text">
           </div>
           <div class="my-2">
             <label>Email</label>
@@ -35,7 +35,7 @@
         </form>
         <!--- Add a button for  terms and conditions --->
         <div class="my-2 right-2">
-          <button @click="open" class="p-2 rounded shadow bg-blue-400 text-white">
+          <button @click="openTerms" class="p-2 rounded shadow bg-blue-400 text-white">
             Terms and conditions
           </button>
         </div>
@@ -50,8 +50,8 @@
 
 <script>
 //import components from firebase and cometchat and initialize them
+import app from './../utilities/firebase.js';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { initializeApp } from "firebase/app";
 import { CometChat } from "@cometchat-pro/chat";
 let authKey = process.env.VUE_APP_COMETCHAT_authKey;
 const appID = process.env.VUE_APP_COMETCHAT_appID;
@@ -59,18 +59,6 @@ const region = process.env.VUE_APP_COMETCHAT_region;
 const appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(region).build();
 CometChat.init(appID, appSetting);
 
-const firebaseConfig = {
-  apiKey: process.env.VUE_APP_FIREBASE_apiKey,
-  authDomain: process.env.VUE_APP_FIREBASE_authDomain,
-  projectId: process.env.VUE_APP_FIREBASE_projectId,
-  storageBucket: process.env.VUE_APP_FIREBASE_storageBucket,
-  messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
-  appId: process.env.VUE_APP_FIREBASE_appId,
-  databaseURL: process.env.VUE_APP_FIREBASE_databaseURL
-};
-
-const app = initializeApp(firebaseConfig);
-console.log(app);
 export default {
   data() {
     return {
@@ -86,7 +74,7 @@ export default {
   methods: {
     submit() {
       //create user in firebase
-      const auth = getAuth();
+      const auth = getAuth(app);
       auth.languageCode = 'en';
       if (this.form.password !== this.form.confirm_password) {
         alert("Confirm Password don't match.")
@@ -122,7 +110,7 @@ export default {
       this.$emit('close');
     },
     //Function for opening terms and condition page, written is this way for open it in a new tab
-    open() {
+    openTerms() {
       const routeData = this.$router.resolve({
         path: '/term'
       });

@@ -15,21 +15,8 @@ import { CometChatUI } from "../cometchat-pro-vue-ui-kit/CometChatWorkspace/src"
 const cometAppId = process.env.VUE_APP_COMETCHAT_appID;
 const region = process.env.VUE_APP_COMETCHAT_region;
 var authkey = process.env.VUE_APP_COMETCHAT_authKey;
-
+import app from './../utilities/firebase.js';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-const firebaseConfig = {
-  apiKey: process.env.VUE_APP_FIREBASE_apiKey,
-  authDomain: process.env.VUE_APP_FIREBASE_authDomain,
-  projectId: process.env.VUE_APP_FIREBASE_projectId,
-  storageBucket: process.env.VUE_APP_FIREBASE_storageBucket,
-  messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
-  appId: process.env.VUE_APP_FIREBASE_appId,
-  databaseURL: process.env.VUE_APP_FIREBASE_databaseURL
-};
-const app = initializeApp(firebaseConfig);
-console.log(app);
-
 
 export default {
   data() {
@@ -42,7 +29,7 @@ export default {
   //mounted method will run before the page is rendered
   mounted() {
     //Get auth from firebase, and get current user
-    const auth = getAuth();
+    const auth = getAuth(app);
     //Once get auth then get the login status
     onAuthStateChanged(auth, (user) => {
       if (user) {
