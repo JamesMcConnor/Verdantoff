@@ -22,7 +22,7 @@ jobs:
       VUE_APP_COMETCHAT_appID: ${{ secrets.VUE_APP_COMETCHAT_APP_ID }} 
       VUE_APP_COMETCHAT_region: ${{ secrets.VUE_APP_COMETCHAT_REGION }} 
       VUE_APP_COMETCHAT_authKey: ${{ secrets.VUE_APP_COMETCHAT_AUTH_KEY }}
-      VUE_APP_GOOGLE_CLIENT_ID: ${{ secrets.VUE_APP_GOOGLE_CLIENT_ID }}
+      VUE_APP_GOOGLE_CLIENT_ID: ${{ secrets.VUE_APP_DEV_AUTH_CLIENT_ID }}
 
     steps:
     - uses: actions/checkout@v3
