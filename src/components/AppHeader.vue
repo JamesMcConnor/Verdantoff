@@ -9,7 +9,7 @@
 
       <router-link class="navbar-brand" to="/">VerdantOff</router-link>
       <button v-if="isLoggedIn" class="z-30 mx-2" @click="importContacts">Import your Contacts</button>
-      <a href="mailto:jamesfrontechcorp@gmail.com" class="z-30 mx-2">Contact Us</a>
+      <router-link class="z-30 mx-2" to="/ContactUs">Contact Us</router-link>
       <router-link class="z-30 mx-2" to="/logchat">Make video call</router-link>
       <router-link class="z-30 mx-2" to="/about">About</router-link>
       <button class="z-30 mx-2" @click="$emit('open-sign')">Sign Up</button>
