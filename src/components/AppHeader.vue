@@ -7,11 +7,10 @@
     <!--- Add a v-if condition to control navbar, make it unseen in condition page --->
     <nav v-if="!$route.meta.showNav" class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
 
-      <router-link class="navbar-brand" to="/">VerdantOff</router-link>
+      <router-link class="navbar-brand" to="/">Home</router-link>
       <button v-if="isLoggedIn" class="z-30 mx-2" @click="importContacts">Import your Contacts</button>
       <router-link class="z-30 mx-2" to="/ContactUs">Contact Us</router-link>
       <router-link class="z-30 mx-2" to="/logchat">Make video call</router-link>
-      <router-link class="z-30 mx-2" to="/about">About</router-link>
       <button class="z-30 mx-2" @click="$emit('open-sign')">Sign Up</button>
       <button v-if="isLoggedIn" class="z-30 mx-2" @click="logout">Log out</button>
       <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
