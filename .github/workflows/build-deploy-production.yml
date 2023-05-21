@@ -1,0 +1,58 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+
+name: Build and deploy to Production
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      VUE_APP_FIREBASE_apiKey: ${{ secrets.VUE_APP_FIREBASE_API_KEY }} 
+      VUE_APP_FIREBASE_authDomain: ${{ secrets.VUE_APP_FIREBASE_AUTH_DOMAIN }} 
+      VUE_APP_FIREBASE_projectId: ${{ secrets.VUE_APP_FIREBASE_PROJECT_ID }} 
+      VUE_APP_FIREBASE_storageBucket: ${{ secrets.VUE_APP_FIREBASE_STORAGE_BUCKET }} 
+      VUE_APP_FIREBASE_messagingSenderId: ${{ secrets.VUE_APP_FIREBASE_MESSAGING_SENDER_ID }} 
+      VUE_APP_FIREBASE_appId: ${{ secrets.VUE_APP_FIREBASE_APP_ID }} 
+      VUE_APP_FIREBASE_databaseURL: ${{ secrets.VUE_APP_FIREBASE_DATABASE_URL }} 
+      VUE_APP_COMETCHAT_appID: ${{ secrets.VUE_APP_COMETCHAT_APP_ID }} 
+      VUE_APP_COMETCHAT_region: ${{ secrets.VUE_APP_COMETCHAT_REGION }} 
+      VUE_APP_COMETCHAT_authKey: ${{ secrets.VUE_APP_COMETCHAT_AUTH_KEY }}
+      VUE_APP_GOOGLE_CLIENT_ID: ${{ secrets.VUE_APP_GOOGLE_CLIENT_ID }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+        cache: 'npm'
+    - run: npm install
+    - run: npm run build --if-present
+    
+    - uses: actions/upload-artifact@master
+      with:
+        name: dist
+        path: ./dist
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Install SSH Key
+      uses: shimataro/ssh-key-action@v2
+      with:
+       key: ${{ secrets.SSH_PRIVATE_KEY }}
+       known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+
+    - uses: actions/download-artifact@master
+      with:
+        name: dist
+        path: ./dist
+
+    - name: Deploy with rsync
+      run: rsync -avz ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:public/

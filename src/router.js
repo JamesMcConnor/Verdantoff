@@ -7,6 +7,7 @@ import LogChat from './components/LogChat';
 import AboutUs from './components/AboutUs'
 import TermOfUse from './components/TermOfUse';
 import ContactUs from './components/ContactUs';
+import MyContacts from './components/MyContact';
 import Tutorial from './components/tutorial';
 
 const routes = [
@@ -22,6 +23,7 @@ const routes = [
     { path: '/tutorial', component :Tutorial},
     { path: '/aboutus', component: AboutUs },
     { path: '/contactus', component: ContactUs },
+    { path: '/mycontacts', component: MyContacts },
 
 ]
 const router = createRouter({
