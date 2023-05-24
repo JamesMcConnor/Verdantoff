@@ -1,12 +1,11 @@
-<!---
+<!--
   This is the file for the navbar
- --->
+--->
 
 <template>
   <div>
     <!--- Add a v-if condition to control navbar, make it unseen in condition page --->
     <nav v-if="!$route.meta.showNav" class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
-
       <router-link class="navbar-brand" to="/">Home</router-link>
       <button v-if="isLoggedIn" class="z-30 mx-2" @click="importContacts">Import your Contacts</button>
       <router-link class="z-30 mx-2" to="/ContactUs">Contact Us</router-link>
@@ -14,6 +13,7 @@
       <button class="z-30 mx-2" @click="$emit('open-sign')">Sign Up</button>
       <button v-if="isLoggedIn" class="z-30 mx-2" @click="logout">Log out</button>
       <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
+      <router-link class="z-30 mx-2" to="/PrivacyPolicy">Privacy Policy</router-link>
     </nav>
   </div>
 </template>
@@ -67,7 +67,7 @@ export default {
         const headers = { 'Authorization': `Bearer ${googleAccessToken}` };
         const response = await axios.get(url, { headers });
 
-        if (response.data.connections) {
+         if (response.data.connections) {
           const contacts = response.data.connections.map(connection => {
             const name = connection.names && connection.names[0] && connection.names[0].displayName || '';
             const email = connection.emailAddresses && connection.emailAddresses[0] && connection.emailAddresses[0].value || '';
