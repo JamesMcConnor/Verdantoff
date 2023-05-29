@@ -7,10 +7,11 @@
         <div id="dropdownMenu" class="dropdown-content hidden">
           <router-link to="/">Home</router-link>
           <router-link to="/ContactUs">Contact Us</router-link>
-          <button @click="$emit('open-sign')">Sign Up</button>
-          <button @click="$emit('open-login')">Login</button>
+          <router-link v-if="!isLoggedIn" to="/signup">Sign Up</router-link>
+          <router-link v-if="!isLoggedIn" to="/login">Login</router-link>
           <router-link to="/AboutUs">About Us</router-link>
           <router-link to="/TermsAndConditions">Terms and Conditions</router-link>
+          <router-link to="/PrivacyPolicy">Privacy Policy</router-link>
           <router-link to="/FAQ">FAQ</router-link>
         </div>
       </div>
@@ -22,8 +23,6 @@
 
       <!-- Logout button -->
       <button v-if="isLoggedIn" class="z-30 mx-2" @click="logout">Log out</button>
-
-      <router-link class="z-30 mx-2" to="/PrivacyPolicy">Privacy Policy</router-link>
     </nav>
   </div>
 </template>
