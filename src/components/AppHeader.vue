@@ -13,7 +13,7 @@
       <button class="z-30 mx-2" @click="$emit('open-sign')">Sign Up</button>
       <button v-if="isLoggedIn" class="z-30 mx-2" @click="logout">Log out</button>
       <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
-      <router-link class="z-30 mx-2" to="/PrivacyPolicy">Privacy Policy</router-link>
+      <router-link class="z-30 mx-2" to="/privacy">Privacy Policy</router-link>
     </nav>
   </div>
 </template>
