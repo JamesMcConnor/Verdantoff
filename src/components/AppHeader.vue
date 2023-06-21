@@ -5,18 +5,35 @@
 <template>
   <div>
     <!--- Add a v-if condition to control navbar, make it unseen in condition page --->
-    <nav v-if="!$route.meta.showNav" class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
+    <template>
+  <div>
+    <!--- Add a v-if condition to control navbar, make it unseen in condition page --->
+    <template>
+  <div>
+    <!--- Add a v-if condition to control navbar, make it unseen in condition page --->
+    <div v-if="!$route.meta.showNav" class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
       <router-link class="navbar-brand" to="/">Home</router-link>
-      <button v-if="isLoggedIn" class="z-30 mx-2" @click="importContacts">Import your Contacts</button>
-      <router-link class="z-30 mx-2" to="/ContactUs">Contact Us</router-link>
-      <router-link class="z-30 mx-2" to="/logchat">Make video call</router-link>
-      <button class="z-30 mx-2" @click="$emit('open-sign')">Sign Up</button>
-      <button v-if="isLoggedIn" class="z-30 mx-2" @click="logout">Log out</button>
-      <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
-      <router-link class="z-30 mx-2" to="/privacy">Privacy Policy</router-link>
-    </nav>
+      <div class="dropdown">
+        <button class="dropbtn">☰</button>
+        <div class="dropdown-content">
+          <button v-if="isLoggedIn" class="z-30 mx-2" @click="importContacts">Import your Contacts</button>
+          <router-link class="z-30 mx-2" to="/ContactUs">Contact Us</router-link>
+          <router-link class="z-30 mx-2" to="/logchat">Make video call</router-link>
+          <button v-if="isLoggedIn" class="z-30 mx-2" @click="logout">Log out</button>
+          <router-link class="z-30 mx-2" to="/privacy">Privacy Policy</router-link>
+          <router-link class="z-30 mx-2" to="/about-us">About Us</router-link>
+          <router-link class="z-30 mx-2" to="/terms-and-conditions">Terms and Conditions</router-link>
+          <router-link v-if="isLoggedIn" class="z-30 mx-2" to="/my-contacts">My Contacts</router-link>
+          <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
+          <button class="z-30 mx-2" @click="$emit('open-sign')">Sign Up</button>
+        </div>
+      </div>
+    </div>
+</template>
+
   </div>
 </template>
+
 
 <script>
 import app from '../utilities/firebase.js';
@@ -95,4 +112,32 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+</style>
+Changes made on June 21 2023
