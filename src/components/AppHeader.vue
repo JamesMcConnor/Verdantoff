@@ -6,7 +6,7 @@
       <div class="dropdown-content" v-show="showDropdown">
         <button v-if="isLoggedIn" class="z-30 mx-2" @click="importContacts">Import your Contacts</button>
         <router-link class="z-30 mx-2" to="/ContactUs">Contact Us</router-link>
-        <router-link class="z-30 mx-2" to="/logchat">Make video call</router-link>
+        <router-link v-if="isLoggedIn" class="z-30 mx-2" to="/logchat">Make video call</router-link>
         <button v-if="isLoggedIn" class="z-30 mx-2" @click="logout">Log out</button>
         <router-link class="z-30 mx-2" to="/privacy">Privacy Policy</router-link>
         <router-link class="z-30 mx-2" to="/about-us">About Us</router-link>
