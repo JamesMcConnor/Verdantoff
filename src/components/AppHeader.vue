@@ -4,19 +4,42 @@
 
 <template>
   <div>
-    <!--- Add a v-if condition to control navbar, make it unseen in condition page --->
-    <nav v-if="!$route.meta.showNav" class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
+    <!-- Navbar with gradient background -->
+    <nav
+      class="relative w-full bg-gradient-to-r from-green-500 from-30% via-blue-500 via-30% to-purple-500 to-90% text-white px-4 py-5">
       <router-link class="navbar-brand" to="/">Home</router-link>
-      <button v-if="isLoggedIn" class="z-30 mx-2" @click="importContacts">Import your Contacts</button>
-      <router-link class="z-30 mx-2" to="/ContactUs">Contact Us</router-link>
-      <router-link class="z-30 mx-2" to="/logchat">Make video call</router-link>
-      <button class="z-30 mx-2" @click="$emit('open-sign')">Sign Up</button>
-      <button v-if="isLoggedIn" class="z-30 mx-2" @click="logout">Log out</button>
-      <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
-      <router-link class="z-30 mx-2" to="/privacy">Privacy Policy</router-link>
+
+      <!-- Dropdown button to toggle the menu -->
+      <button ref="dropdownButton" @click="toggleDropdown" @mouseenter="showDropdown" @touchstart="onTouchStart"
+        class="z-30 mx-2 focus:outline-none relative">
+        ☰
+        <div v-if="dropdown" @mouseleave="hideDropdown"
+          class="absolute left-1 mt-2 bg-white rounded-lg shadow-md z-40 text-black">
+          <button v-if="isLoggedIn" @click="importContacts" class="block w-full px-4 py-2 text-left">
+            Import your Contacts
+          </button>
+
+          <button v-if="isLoggedIn" @click="logout" class="block w-full px-4 py-2 text-left">
+            Logout
+          </button>
+
+          <button v-else @click="$emit('open-login')" class="block w-full px-4 py-2 text-left">
+            Login
+          </button>
+
+          <button v-if="!isLoggedIn" @click="$emit('open-sign')" class="block w-full px-4 py-2 text-left">
+            Sign Up
+          </button>
+
+          <router-link to="/ContactUs" class="block w-full px-4 py-2 text-left whitespace-nowrap">
+            Contact Us
+          </router-link>
+        </div>
+      </button>
     </nav>
   </div>
 </template>
+
 
 <script>
 import app from '../utilities/firebase.js';
@@ -32,7 +55,35 @@ export default {
     email: String,
     userId: String
   },
+  data() {
+    return {
+      dropdown: false,
+    };
+  },
   methods: {
+    showDropdown() {
+      this.dropdown = true;
+    },
+    hideDropdown() {
+      this.dropdown = false;
+    },
+    toggleDropdown() {
+      this.dropdown = !this.dropdown;
+    },
+    onTouchStart(event) {
+      if (!this.dropdown) {
+        event.preventDefault(); // Prevent the default touch behavior
+        this.toggleDropdown();
+      }
+    },
+    closeDropdownOnClickOutside(event) {
+      if (this.dropdown) {
+        const dropdownButton = this.$refs.dropdownButton;
+        if (!dropdownButton.contains(event.target)) {
+          this.hideDropdown();
+        }
+      }
+    },
     logout() {
       const auth = getAuth();
       //When clicking logout, automatically switch back to the about page (main page)
@@ -67,7 +118,7 @@ export default {
         const headers = { 'Authorization': `Bearer ${googleAccessToken}` };
         const response = await axios.get(url, { headers });
 
-         if (response.data.connections) {
+        if (response.data.connections) {
           const contacts = response.data.connections.map(connection => {
             const name = connection.names && connection.names[0] && connection.names[0].displayName || '';
             const email = connection.emailAddresses && connection.emailAddresses[0] && connection.emailAddresses[0].value || '';
@@ -91,7 +142,14 @@ export default {
         console.log('You are not loggedIn on the system!')
       }
     },
-  }
+  },
+  mounted() {
+    document.body.addEventListener('click', this.closeDropdownOnClickOutside);
+  },
+
+  beforeUnmount() {
+    document.body.removeEventListener('click', this.closeDropdownOnClickOutside);
+  },
 }
 </script>
 

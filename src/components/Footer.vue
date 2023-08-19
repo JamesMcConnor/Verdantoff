@@ -49,7 +49,7 @@
 
 <script>
 export default {
-    name: "footer",
+    name: "AppFooter",
 
     //Get variable from app.vue
     props: {
