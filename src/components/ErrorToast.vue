@@ -3,7 +3,7 @@
         <div class="error-toast-container">
             <div v-for="(message, index) in errorMessages" :key="index" class="error-toast"
                 :class="{ 'active': message.active }">
-                {{ message.text }}
+                <i class="fa fa-exclamation-circle"></i> {{ message.text }}
             </div>
         </div>
     </div>

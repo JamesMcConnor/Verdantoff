@@ -109,10 +109,11 @@ export default {
     },
     triggerError(error) {
       this.errorMessages.push(error);
-      this.errorMessages.shift();
-
       // Call showErrorToast to display the error
       this.$refs.errorToast.showErrorToast();
+      setTimeout(() => {
+        this.errorMessages.shift();
+      }, 500);
     },
     logout() {
       const auth = getAuth();

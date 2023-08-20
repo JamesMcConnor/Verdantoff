@@ -123,26 +123,31 @@ export default {
     },
     //function for sending reset password email
     reset() {
-      const auth = getAuth();
-      this.isSend = true;
-      this.$forceUpdate();
-      sendPasswordResetEmail(auth, this.form.email)
+      if (this.form.email.trim() === '') {
+        this.triggerError('Email is required.');
+      } else {
+        const auth = getAuth();
+        this.isSend = true;
+        this.$forceUpdate();
+        sendPasswordResetEmail(auth, this.form.email)
 
-        .then(() => {
-          // Password reset email sent!
-          // ..
-        })
-        .catch((error) => {
-          const errorMessage = error.message || "Something went wrong";
-          this.triggerError(errorMessage);
-        });
+          .then(() => {
+            // Password reset email sent!
+            // ..
+          })
+          .catch((error) => {
+            const errorMessage = error.message || "Something went wrong";
+            this.triggerError(errorMessage);
+          });
+      }
     },
     triggerError(error) {
-      this.errorMessages.shift();
       this.errorMessages.push(error);
-
       // Call showErrorToast to display the error
       this.$refs.errorToast.showErrorToast();
+      setTimeout(() => {
+        this.errorMessages.shift();
+      }, 500);
     },
   },
 }

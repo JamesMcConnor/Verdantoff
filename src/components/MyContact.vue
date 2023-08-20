@@ -3,16 +3,21 @@
  --->
 
 <template>
-    <div :style="background" class="relative bg-fixed opacity-90 w-full h-screen">
-        <div class="p-10 font-serif text-4xl subpixel-antialiased font-bold leading-relaxed text-center text-white">
-            <h1 class="text-6xl">My Contacts</h1>
+    <div>
+        <div :style="background" class="relative bg-fixed opacity-90 w-full h-screen">
+            <div class="p-10 font-serif text-4xl subpixel-antialiased font-bold leading-relaxed text-center text-white">
+                <h1 class="text-6xl">My Contacts</h1>
+            </div>
         </div>
-    </div>
-    <div v-if="isLoggedIn">
-        <div ref="contactListContainer" id="contact-list-container">
-            <ul ref="contactList" id="contact-list">
-            </ul>
+        <div v-if="isLoggedIn">
+            <div ref="contactListContainer" id="contact-list-container">
+                <ul ref="contactList" id="contact-list">
+                </ul>
+            </div>
         </div>
+
+        <!-- Use the ErrorToast component to display errors -->
+        <error-toast ref="errorToast" :messages="errorMessages"></error-toast>
     </div>
 </template>
   
@@ -20,10 +25,13 @@
 import app from '../utilities/firebase.js';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { httpsCallable } from 'firebase/functions';
-// import axios from 'axios';
 import { getDatabase, ref, onValue } from 'firebase/database';
+import ErrorToast from './ErrorToast.vue';
 
 export default {
+    components: {
+        ErrorToast,
+    },
     name: 'MyContacts',
 
     data() {
@@ -40,6 +48,7 @@ export default {
             isLoggedIn: false,
             userId: null,
             email: null,
+            errorMessages: [],
         };
     },
 
@@ -59,7 +68,7 @@ export default {
                         .then(() => {
                             console.log('success');
                         }).catch((err) => {
-                            console.log(err);
+                            this.triggerError(err);
                         });
                 }
             } else {
@@ -97,7 +106,7 @@ export default {
                                 inviteButton.disabled = true;
                             })
                             .catch((error) => {
-                                console.error(error);
+                                this.triggerError(error);
                                 inviteButton.disabled = false;
                                 inviteButton.textContent = 'Invite to join';
                             })
@@ -106,7 +115,7 @@ export default {
                     contactList.appendChild(contactElem);
                 })
             }, error => {
-                console.log(error);
+                this.triggerError(error);
             })
         },
         async inviteContact(contactEmail) {
@@ -116,9 +125,17 @@ export default {
                     console.log('Invitation email sent successfully');
                 })
                 .catch((error) => {
-                    console.error(error);
+                    this.triggerError(error);
                 });
-        }
+        },
+        triggerError(error) {
+            this.errorMessages.push(error);
+            // Call showErrorToast to display the error
+            this.$refs.errorToast.showErrorToast();
+            setTimeout(() => {
+                this.errorMessages.shift();
+            }, 500);
+        },
     }
 }
 </script>
