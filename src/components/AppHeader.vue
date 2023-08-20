@@ -7,14 +7,16 @@
     <!-- Navbar with gradient background -->
     <nav
       class="relative w-full bg-gradient-to-r from-green-500 from-30% via-blue-500 via-30% to-purple-500 to-90% text-white px-4 py-5">
-      <router-link class="navbar-brand" to="/">Home</router-link>
 
       <!-- Dropdown button to toggle the menu -->
       <button ref="dropdownButton" @click="toggleDropdown" @mouseenter="showDropdown" @touchstart="onTouchStart"
-        class="z-30 mx-2 focus:outline-none relative">
+        class="z-50 mx-2 focus:outline-none relative md:hidden">
         ☰
         <div v-if="dropdown" @mouseleave="hideDropdown"
-          class="absolute left-1 mt-2 bg-white rounded-lg shadow-md z-40 text-black">
+          class="absolute left-1 mt-2 bg-white rounded-lg shadow-md z-50 text-sm text-black">
+          <router-link to="/" class="block w-full px-4 py-2 text-left">
+            Home
+          </router-link>
           <button v-if="isLoggedIn" @click="importContacts" class="block w-full px-4 py-2 text-left">
             Import your Contacts
           </button>
@@ -36,6 +38,19 @@
           </router-link>
         </div>
       </button>
+
+      <!-- Show navigation links for screens 768px and wider -->
+      <div class="hidden md:block text-base">
+        <router-link class="navbar-brand" to="/">Home</router-link>
+        <button v-if="isLoggedIn" class="z-30 mx-2" @click="importContacts">Import your Contacts</button>
+        <router-link class="z-30 mx-2" to="/ContactUs">Contact Us</router-link>
+        <router-link class="z-30 mx-2" to="/logchat">Make video call</router-link>
+        <button v-if="isLoggedIn" class="z-30 mx-2" @click="logout">Log out</button>
+        <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
+        <button v-if="!isLoggedIn" class="z-30 mx-2" @click="$emit('open-sign')">Sign Up</button>
+        <router-link class="z-30 mx-2" to="/privacy">Privacy Policy</router-link>
+      </div>
+
     </nav>
   </div>
 </template>
