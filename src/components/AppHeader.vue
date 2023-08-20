@@ -52,6 +52,9 @@
       </div>
 
     </nav>
+
+    <!-- Use the ErrorToast component to display errors -->
+    <error-toast ref="errorToast" :messages="errorMessages"></error-toast>
   </div>
 </template>
 
@@ -62,8 +65,12 @@ import { getAuth, signOut } from 'firebase/auth';
 import axios from 'axios';
 import { getDatabase, ref, push } from 'firebase/database';
 import { googleSdkLoaded } from "vue3-google-login"
+import ErrorToast from './ErrorToast.vue';
 
 export default {
+  components: {
+    ErrorToast,
+  },
   //Get variable from app.vue
   props: {
     isLoggedIn: Boolean,
@@ -73,6 +80,7 @@ export default {
   data() {
     return {
       dropdown: false,
+      errorMessages: [],
     };
   },
   methods: {
@@ -99,6 +107,13 @@ export default {
         }
       }
     },
+    triggerError(error) {
+      this.errorMessages.push(error);
+      this.errorMessages.shift();
+
+      // Call showErrorToast to display the error
+      this.$refs.errorToast.showErrorToast();
+    },
     logout() {
       const auth = getAuth();
       //When clicking logout, automatically switch back to the about page (main page)
@@ -107,8 +122,7 @@ export default {
         console.log("Log out successfully");
         // Sign-out successful.
       }).catch((error) => {
-        // An error happened.
-        console.log(error);
+        this.triggerError(error)
       });
     },
     importContacts() {
@@ -154,7 +168,7 @@ export default {
           }
         }
       } else {
-        console.log('You are not loggedIn on the system!')
+        this.triggerError('You are not loggedIn on the system!');
       }
     },
   },
