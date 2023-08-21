@@ -15,9 +15,6 @@
                 </ul>
             </div>
         </div>
-
-        <!-- Use the ErrorToast component to display errors -->
-        <error-toast ref="errorToast" :messages="errorMessages"></error-toast>
     </div>
 </template>
   
@@ -26,12 +23,11 @@ import app from '../utilities/firebase.js';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { httpsCallable } from 'firebase/functions';
 import { getDatabase, ref, onValue } from 'firebase/database';
-import ErrorToast from './ErrorToast.vue';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 export default {
-    components: {
-        ErrorToast,
-    },
     name: 'MyContacts',
 
     data() {
@@ -48,7 +44,6 @@ export default {
             isLoggedIn: false,
             userId: null,
             email: null,
-            errorMessages: [],
         };
     },
 
@@ -66,9 +61,9 @@ export default {
                 if (this.$refs.contactListContainer) {
                     this.displayContacts()
                         .then(() => {
-                            console.log('success');
+                            toast.success('success');
                         }).catch((err) => {
-                            this.triggerError(err);
+                            toast.error(err);
                         });
                 }
             } else {
@@ -104,9 +99,10 @@ export default {
                             .then(() => {
                                 inviteButton.textContent = 'Invite sent!';
                                 inviteButton.disabled = true;
+                                toast.success("Invite sent!")
                             })
                             .catch((error) => {
-                                this.triggerError(error);
+                                toast.error(error);
                                 inviteButton.disabled = false;
                                 inviteButton.textContent = 'Invite to join';
                             })
@@ -115,17 +111,17 @@ export default {
                     contactList.appendChild(contactElem);
                 })
             }, error => {
-                this.triggerError(error);
+                toast.error(error);
             })
         },
         async inviteContact(contactEmail) {
             // Send invitation email to contact using Firebase functions
             httpsCallable('sendInviteEmail')({ email: contactEmail })
                 .then(() => {
-                    console.log('Invitation email sent successfully');
+                    toast.success('Invitation email sent successfully');
                 })
                 .catch((error) => {
-                    this.triggerError(error);
+                    toast.error(error);
                 });
         },
         triggerError(error) {
