@@ -79,7 +79,7 @@ export default {
   },
   data() {
     return {
-      dropdown: false,
+      mobileMenuOpen: false,
       errorMessages: [],
     };
   },
