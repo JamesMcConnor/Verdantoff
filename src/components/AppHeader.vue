@@ -26,16 +26,6 @@
               <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 to="/">Home</router-link>
             </li>
-            <li v-if="isLoggedIn">
-              <button class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-base"
-                @click="importContacts">Import
-                your Contacts</button>
-            </li>
-            <li v-if="isLoggedIn">
-              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                to="/logchat">Make video
-                call</router-link>
-            </li>
             <li>
               <button v-if="isLoggedIn" class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 @click="logout">Logout</button>
@@ -47,15 +37,25 @@
                 @click="$emit('open-sign')">Sign
                 Up</button>
             </li>
-            <li>
+            <li v-if="isLoggedIn">
+              <button class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-base"
+                @click="importContacts">Import
+                your Contacts</button>
+            </li>
+            <li v-if="isLoggedIn">
               <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                to="/ContactUs">Contact
-                Us</router-link>
+                to="/logchat">Make video
+                call</router-link>
             </li>
             <li>
               <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 to="/privacy">Privacy
                 Policy</router-link>
+            </li>
+            <li>
+              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                to="/ContactUs">Contact
+                Us</router-link>
             </li>
           </ul>
         </div>
