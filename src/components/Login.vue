@@ -108,6 +108,7 @@ export default {
       this.$emit('close');
     },
     //function for sending reset password email
+<<<<<<< HEAD
     reset()
     {
     const auth = getAuth();
@@ -124,6 +125,35 @@ export default {
     console.log(errorMessage);
   });
     }
+=======
+    reset() {
+      if (this.form.email.trim() === '') {
+        this.triggerError('Email is required.');
+      } else {
+        const auth = getAuth();
+        this.isSend = true;
+        this.$forceUpdate();
+        sendPasswordResetEmail(auth, this.form.email)
+
+          .then(() => {
+            // Password reset email sent!
+            // ..
+          })
+          .catch((error) => {
+            const errorMessage = error.message || "Something went wrong";
+            this.triggerError(errorMessage);
+          });
+      }
+    },
+    triggerError(error) {
+      this.errorMessages.push(error);
+      // Call showErrorToast to display the error
+      this.$refs.errorToast.showErrorToast();
+      setTimeout(() => {
+        this.errorMessages.shift();
+      }, 500);
+    },
+>>>>>>> 12f3a3e (feat: error toast message)
   },
 }
 </script>
