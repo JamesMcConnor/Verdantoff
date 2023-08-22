@@ -38,7 +38,7 @@
                 Up</button>
             </li>
             <li v-if="isLoggedIn">
-              <button class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-base"
+              <button class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-base"
                 @click="importContacts">Import
                 your Contacts</button>
             </li>
