@@ -43,8 +43,6 @@
         </div>
       </div>
     </div>
-    <!-- Use the ErrorToast component to display errors -->
-    <error-toast ref="errorToast" :messages="errorMessages"></error-toast>
   </div>
 </template>
 
@@ -57,7 +55,10 @@
 import app from './../utilities/firebase.js';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { CometChat } from "@cometchat-pro/chat";
-import ErrorToast from './ErrorToast.vue';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
+
 let authKey = process.env.VUE_APP_COMETCHAT_authKey;
 const appID = process.env.VUE_APP_COMETCHAT_appID;
 const region = process.env.VUE_APP_COMETCHAT_region;
@@ -65,9 +66,6 @@ const appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUse
 CometChat.init(appID, appSetting);
 
 export default {
-  components: {
-    ErrorToast,
-  },
   data() {
     return {
       form: {
@@ -76,7 +74,6 @@ export default {
         confirm_password: '',
         username: '',
       },
-      errorMessages: [],
     }
   },
 
@@ -86,9 +83,9 @@ export default {
       const auth = getAuth(app);
       auth.languageCode = 'en';
       if (this.form.email.trim() === '' || this.form.email.trim() === '' || this.form.password.trim() === '' || this.form.confirm_password.trim() === '') {
-        this.triggerError('Username, email and password fields are required.');
+        toast.error('Username, email and password fields are required.');
       } else if (this.form.password !== this.form.confirm_password) {
-        this.triggerError("Confirm Password don't match.");
+        toast.error("Confirm Password don't match.");
       } else {
         createUserWithEmailAndPassword(auth, this.form.email, this.form.password)
           .then(() => {
@@ -103,15 +100,15 @@ export default {
             var cometuser = new CometChat.User(cometuid);
             cometuser.setName(name);
             CometChat.createUser(cometuser, authKey).then(() => {
-              console.log("user created");
+              toast.info("user created");
             }, error => {
-              this.triggerError(error);
+              toast.error(error);
             }
             )
           })
           .catch((error) => {
             const errorMessage = error.message;
-            this.triggerError(errorMessage);
+            toast.error(errorMessage);
           });
       }
     },
@@ -125,15 +122,6 @@ export default {
       });
       window.open(routeData.href, "_blank");
     },
-    triggerError(error) {
-      this.errorMessages.push(error);
-      // Call showErrorToast to display the error
-      this.$refs.errorToast.showErrorToast();
-      setTimeout(() => {
-        this.errorMessages.shift();
-      }, 500);
-    },
-
   },
 }
 </script>

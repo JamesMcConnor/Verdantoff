@@ -72,6 +72,9 @@ import { getAuth, signOut } from 'firebase/auth';
 import axios from 'axios';
 import { getDatabase, ref, push } from 'firebase/database';
 import { googleSdkLoaded } from "vue3-google-login"
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 export default {
   //Get variable from app.vue
@@ -114,11 +117,9 @@ export default {
       //When clicking logout, automatically switch back to the about page (main page)
       this.$router.push('/about');
       signOut(auth).then(() => {
-        console.log("Log out successfully");
-        // Sign-out successful.
+        toast.success("Log out successfully");
       }).catch((error) => {
-        // An error happened.
-        console.log(error);
+        toast.error(error)
       });
     },
     importContacts() {
@@ -129,7 +130,7 @@ export default {
                   https://www.googleapis.com/auth/contacts.readonly',
           callback: async (response) => {
             if (google.accounts.oauth2.hasGrantedAllScopes(response, 'https://www.googleapis.com/auth/contacts.readonly')) {
-              console.log("Access granted");
+              toast.info("Access granted");
               await this.getUserContacts(response.access_token)
             }
           }
@@ -164,17 +165,10 @@ export default {
           }
         }
       } else {
-        console.log('You are not loggedIn on the system!')
+        toast.error('You are not loggedIn on the system!');
       }
     },
-  },
-  mounted() {
-    document.body.addEventListener('click', this.closeDropdownOnClickOutside);
-  },
-
-  beforeUnmount() {
-    document.body.removeEventListener('click', this.closeDropdownOnClickOutside);
-  },
+  }
 }
 </script>
 

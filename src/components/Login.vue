@@ -46,114 +46,80 @@ This is the login page.
 
 
 <script>
-//import components from firebase and initialize it
-import { getAuth, signInWithEmailAndPassword ,sendPasswordResetEmail} from "firebase/auth";
-import { initializeApp } from "firebase/app";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import app from '../utilities/firebase.js';
+import { useToast } from 'vue-toastification';
 
-const firebaseConfig = {
-  apiKey: process.env.VUE_APP_FIREBASE_apiKey,
-  authDomain: process.env.VUE_APP_FIREBASE_authDomain,
-  projectId: process.env.VUE_APP_FIREBASE_projectId,
-  storageBucket: process.env.VUE_APP_FIREBASE_storageBucket,
-  messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
-  appId: process.env.VUE_APP_FIREBASE_appId,
-  databaseURL: process.env.VUE_APP_FIREBASE_databaseURL
-};
-const app = initializeApp(firebaseConfig);
-console.log(app);
+const toast = useToast();
+
 export default {
-  data(){
+  data() {
     return {
-      form:{
-      email:'',
-      password:'',
-      isLoading: false,
+      form: {
+        email: '',
+        password: '',
+      },
       isError: false,
+      isLoading: false,
       isSend: false,
-      }
     }
   },
 
-
-  methods :{
-    submit(){
+  methods: {
+    submit(event) {
       this.isLoading = true;
-      this.form;
-      //Get status of authentication
-      const auth = getAuth();
-      signInWithEmailAndPassword(auth, this.form.email, this.form.password)
-    .then((userCredential) => {
-    // Signed in
-    const user = userCredential.user;
-    console.log(user);
-    this.isLoading = false;
-    this.email = '';
-    this.password = '';
-    this.isError = false;
-    this.$forceUpdate();
-    this.close();
-    // ...
-    })
-    .catch((error) => {
-    // const errorCode = error.code;
-    const errorMessage = error.message;
-    this.isLoading = false;
-    this.isError = true;
-    this.$forceUpdate();
-    console.log(errorMessage);
-  });
-  },
-    close()
-    {
-      this.$emit('close');
-    },
-    //function for sending reset password email
-<<<<<<< HEAD
-    reset()
-    {
-    const auth = getAuth();
-    this.isSend = true;
-    this.$forceUpdate();
-    sendPasswordResetEmail(auth, this.form.email)
-    
-  .then(() => {
-    // Password reset email sent!
-    // ..
-  })
-  .catch((error) => {
-    const errorMessage = error.message;
-    console.log(errorMessage);
-  });
-    }
-=======
-    reset() {
-      if (this.form.email.trim() === '') {
-        this.triggerError('Email is required.');
-      } else {
-        const auth = getAuth();
-        this.isSend = true;
-        this.$forceUpdate();
-        sendPasswordResetEmail(auth, this.form.email)
+      // Prevent the default form submission
+      event.preventDefault();
 
+      // Check if the fields are empty
+      if (this.form.email.trim() === '' || this.form.password.trim() === '') {
+        toast.error("Email and password are required fields.");
+      } else {
+
+        //Get status of authentication
+        const auth = getAuth(app);
+        signInWithEmailAndPassword(auth, this.form.email, this.form.password)
           .then(() => {
-            // Password reset email sent!
-            // ..
+            // Signed in
+            this.isLoading = false;
+            this.email = '';
+            this.password = '';
+            this.isError = false;
+            this.$forceUpdate();
+            this.close();
+            // ...
           })
           .catch((error) => {
-            const errorMessage = error.message || "Something went wrong";
-            this.triggerError(errorMessage);
+            // const errorCode = error.code;
+            const errorMessage = error.message || "The email or password you entered is wrong";
+            this.isLoading = false;
+            // this.isError = true;
+            this.$forceUpdate();
+            toast.error(errorMessage)
           });
       }
     },
-    triggerError(error) {
-      this.errorMessages.push(error);
-      // Call showErrorToast to display the error
-      this.$refs.errorToast.showErrorToast();
-      setTimeout(() => {
-        this.errorMessages.shift();
-      }, 500);
+    close() {
+      this.$emit('close');
     },
->>>>>>> 12f3a3e (feat: error toast message)
+    //function for sending reset password email
+    reset() {
+      if (this.form.email.trim() === '') {
+        toast.error('Email is required.');
+      } else {
+        const auth = getAuth(app);
+        this.isSend = true;
+        this.$forceUpdate();
+        sendPasswordResetEmail(auth, this.form.email)
+          .then(() => {
+            toast.success("Password reset email sent!")
+          })
+          .catch((error) => {
+            const errorMessage = error.message || "Something went wrong";
+            toast.error(errorMessage);
+          });
+      }
+    },
   },
 }
 </script>
