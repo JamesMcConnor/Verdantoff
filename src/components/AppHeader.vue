@@ -5,104 +5,57 @@
 <template>
   <div>
     <!-- Navbar with gradient background -->
-    <nav class="bg-gradient-to-r from-green-500 from-30% via-blue-500 via-30% to-purple-500 to-90% text-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
-      <div class="max-w-screen-xl flex flex-wrap items-center justify-start mx-auto px-4 py-2.5">
-        <button data-collapse-toggle="navbar-dropdown" type="button"
-          class="inline-flex items-center p-2 ml-3 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="navbar-dropdown" aria-expanded="false" @click="toggleMobileMenu">
+    <nav
+      class="bg-gradient-to-r from-green-500 from-30% via-blue-500 via-30% to-purple-500 to-90% text-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+      <div class="w-full block auto">
+        <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
+          class="inline-flex items-center p-2 ml-3 w-10 h-10 text-gray-700 rounded bg-transparent md:border-0 md:w-auto dark:text-gray-400 dark:hover:text-white dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+          @click="toggleDropdownMenu" @mouseenter="openDropdownMenu" @touchstart="onTouchStart">
           <span class="sr-only">Open main menu</span>
           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M1 1h15M1 7h15M1 13h15" />
-          </svg>
-        </button>
+          </svg></button>
 
-        <!-- Show navigation links for small screens (less than 768px) -->
-        <div class="w-full md:hidden lg:hidden xl:hidden" id="navbar-dropdown" v-show="mobileMenuOpen">
-          <ul
-            class="flex flex-col p-4 mt-4 dark:text-white">
+        <!-- Dropdown menu -->
+        <div v-if="dropdownMenuOpen" id="dropdownNavbar"
+          class="absolute z-10 ml-3 font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+          @mouseleave="closeDropdownMenu">
+          <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
             <li>
-              <router-link
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
+              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 to="/">Home</router-link>
             </li>
             <li v-if="isLoggedIn">
-              <button 
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0 text-base"
-                @click="importContacts">Import your Contacts</button>
+              <button class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-base"
+                @click="importContacts">Import
+                your Contacts</button>
             </li>
             <li v-if="isLoggedIn">
-              <router-link
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
-                to="/logchat">Make video call</router-link>
+              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                to="/logchat">Make video
+                call</router-link>
             </li>
             <li>
-              <button v-if="isLoggedIn"
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
+              <button v-if="isLoggedIn" class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 @click="logout">Logout</button>
-              <button v-else
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
+              <button v-else class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 @click="$emit('open-login')">Login</button>
             </li>
             <li v-if="!isLoggedIn">
-              <button
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
-                @click="$emit('open-sign')">Sign Up</button>
+              <button class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                @click="$emit('open-sign')">Sign
+                Up</button>
             </li>
             <li>
-              <router-link
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
-                to="/ContactUs">Contact Us</router-link>
+              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                to="/ContactUs">Contact
+                Us</router-link>
             </li>
             <li>
-              <router-link
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
-                to="/privacy">Privacy Policy</router-link>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Show navigation links for screens 768px and wider -->
-        <div class="hidden md:block lg:block xl:block">
-          <ul
-            class="flex flex-col p-4 mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm dark:text-white">
-            <li>
-              <router-link
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
-                to="/">Home</router-link>
-            </li>
-            <li v-if="isLoggedIn">
-              <button 
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0 text-base"
-                @click="importContacts">Import your Contacts</button>
-            </li>
-            <li v-if="isLoggedIn">
-              <router-link
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
-                to="/logchat">Make video call</router-link>
-            </li>
-            <li>
-              <button v-if="isLoggedIn"
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
-                @click="logout">Logout</button>
-              <button v-else
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
-                @click="$emit('open-login')">Login</button>
-            </li>
-            <li v-if="!isLoggedIn">
-              <button
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
-                @click="$emit('open-sign')">Sign Up</button>
-            </li>
-            <li>
-              <router-link
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
-                to="/ContactUs">Contact Us</router-link>
-            </li>
-            <li>
-              <router-link
-                class="block py-2 pl-3 pr-4 md:bg-transparent md:p-0"
-                to="/privacy">Privacy Policy</router-link>
+              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                to="/privacy">Privacy
+                Policy</router-link>
             </li>
           </ul>
         </div>
@@ -129,12 +82,32 @@ export default {
   },
   data() {
     return {
-      mobileMenuOpen: false,
+      dropdownMenuOpen: false,
     };
   },
   methods: {
-    toggleMobileMenu() {
-      this.mobileMenuOpen = !this.mobileMenuOpen;
+    openDropdownMenu() {
+      this.dropdownMenuOpen = true;
+    },
+    closeDropdownMenu() {
+      this.dropdownMenuOpen = false;
+    },
+    toggleDropdownMenu() {
+      this.dropdownMenuOpen = !this.dropdownMenuOpen;
+    },
+    onTouchStart(event) {
+      if (!this.dropdownMenuOpen) {
+        event.preventDefault(); // Prevent the default touch behavior
+        this.toggleDropdownMenu();
+      }
+    },
+    closeDropdownOnClickOutside(event) {
+      if (this.dropdownMenuOpen) {
+        const dropdownButton = this.$refs.dropdownButton;
+        if (!dropdownButton.contains(event.target)) {
+          this.hideDropdown();
+        }
+      }
     },
     logout() {
       const auth = getAuth();
@@ -194,7 +167,14 @@ export default {
         console.log('You are not loggedIn on the system!')
       }
     },
-  }
+  },
+  mounted() {
+    document.body.addEventListener('click', this.closeDropdownOnClickOutside);
+  },
+
+  beforeUnmount() {
+    document.body.removeEventListener('click', this.closeDropdownOnClickOutside);
+  },
 }
 </script>
 
