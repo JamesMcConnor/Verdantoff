@@ -90,8 +90,6 @@ export default {
         createUserWithEmailAndPassword(auth, this.form.email, this.form.password)
           .then(() => {
             this.close();
-          })
-          .then(() => {
             //create user for cometchat
             var cometuid = this.form.email;
             cometuid = cometuid.replace('@', '');

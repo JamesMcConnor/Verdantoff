@@ -27,19 +27,23 @@
                 to="/">Home</router-link>
             </li>
             <li>
-              <button v-if="isLoggedIn" class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              <button v-if="isLoggedIn"
+                class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 @click="logout">Logout</button>
-              <button v-else class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              <button v-else
+                class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 @click="$emit('open-login')">Login</button>
             </li>
             <li v-if="!isLoggedIn">
-              <button class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              <button
+                class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 @click="$emit('open-sign')">Sign
                 Up</button>
             </li>
             <li v-if="isLoggedIn">
-              <button class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-base"
-                @click="importContacts">Import
+              <button
+                class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                @click="importContacts" :disabled="processing">Import
                 your Contacts</button>
             </li>
             <li v-if="isLoggedIn">
@@ -86,6 +90,7 @@ export default {
   data() {
     return {
       dropdownMenuOpen: false,
+      processing: false
     };
   },
   methods: {
@@ -123,6 +128,7 @@ export default {
       });
     },
     importContacts() {
+      this.processing = true;
       googleSdkLoaded((google) => {
         google.accounts.oauth2.initTokenClient({
           client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID,
@@ -136,6 +142,9 @@ export default {
           }
         }).requestAccessToken()
       })
+      setTimeout(() => {
+        this.processing = false;
+      }, 10000);
     },
     async getUserContacts(googleAccessToken) {
       if (this.isLoggedIn === true && googleAccessToken && this.userId) {
