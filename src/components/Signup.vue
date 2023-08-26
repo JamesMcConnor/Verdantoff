@@ -3,43 +3,41 @@
  --->
 
 <template>
-  <div>
-    <section @click="close" class="z-20 h-screen w-screen bg-gray-200 fixed top-0 opacity-50"></section>
-    <!-- Use Z-Axis to make the button higher than others -->
-    <div class="absolute inset-0">
-      <div class="flex h-full ">
-        <div class="z-30 m-auto bg-white p-2 rounded shadow w-1/3 ">
-          <h1 class="text-xl text-center">Sign Up</h1>
-          <!--- Sign up window--->
-          <form class="p-2 my-4 border" @submit.prevent="submit">
-            <div class="my-2">
-              <label>Username</label>
-              <input v-model="form.username" class="rounded shadow p-2 w-full" type="text">
-            </div>
-            <div class="my-2">
-              <label>Email</label>
-              <input v-model="form.email" class="rounded shadow p-2 w-full" type="email">
-            </div>
-            <div class="my-2">
-              <label>Password</label>
-              <input v-model="form.password" class="rounded shadow p-2 w-full" type="password">
-            </div>
-            <div class="my-2">
-              <label>Confirm Password</label>
-              <input v-model="form.confirm_password" class="rounded shadow p-2 w-full" type="password">
-            </div>
-            <div class="my-2">
-              <button type="submit" class="p-2 w-full rounded shadow bg-red-400 text-white">
-                Submit
-              </button>
-            </div>
-          </form>
-          <!--- Add a button for  terms and conditions --->
-          <div class="my-2 right-2">
-            <button @click="openTerms" class="p-2 rounded shadow bg-blue-400 text-white">
-              Terms and conditions
+  <section @click="close" class="z-20 h-screen w-screen bg-gray-200 fixed top-0 opacity-50"></section>
+  <!-- Use Z-Axis to make the button higher than others -->
+  <div class="absolute inset-0">
+    <div class="flex h-full ">
+      <div class="z-30 m-auto bg-white p-2 rounded shadow w-1/3 ">
+        <h1 class="text-xl text-center">Sign Up</h1>
+        <!--- Sign up window--->
+        <form class="p-2 my-4 border" @submit.prevent="submit">
+          <div class="my-2">
+            <label>Username</label>
+            <input v-model="form.username" class="rounded shadow p-2 w-full" type="text">
+          </div>
+          <div class="my-2">
+            <label>Email</label>
+            <input v-model="form.email" class="rounded shadow p-2 w-full" type="email">
+          </div>
+          <div class="my-2">
+            <label>Password</label>
+            <input v-model="form.password" class="rounded shadow p-2 w-full" type="password">
+          </div>
+          <div class="my-2">
+            <label>Confirm Password</label>
+            <input v-model="form.confirm_password" class="rounded shadow p-2 w-full" type="password">
+          </div>
+          <div class="my-2">
+            <button type="submit" class="p-2 w-full rounded shadow bg-red-400 text-white">
+              Submit
             </button>
           </div>
+        </form>
+        <!--- Add a button for  terms and conditions --->
+        <div class="my-2 right-2">
+          <button @click="openTerms" class="p-2 rounded shadow bg-blue-400 text-white">
+            Terms and conditions
+          </button>
         </div>
       </div>
     </div>
@@ -55,10 +53,6 @@
 import app from './../utilities/firebase.js';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { CometChat } from "@cometchat-pro/chat";
-import { useToast } from 'vue-toastification';
-
-const toast = useToast();
-
 let authKey = process.env.VUE_APP_COMETCHAT_authKey;
 const appID = process.env.VUE_APP_COMETCHAT_appID;
 const region = process.env.VUE_APP_COMETCHAT_region;
@@ -73,7 +67,7 @@ export default {
         password: '',
         confirm_password: '',
         username: '',
-      },
+      }
     }
   },
 
@@ -82,10 +76,8 @@ export default {
       //create user in firebase
       const auth = getAuth(app);
       auth.languageCode = 'en';
-      if (this.form.email.trim() === '' || this.form.email.trim() === '' || this.form.password.trim() === '' || this.form.confirm_password.trim() === '') {
-        toast.error('Username, email and password fields are required.');
-      } else if (this.form.password !== this.form.confirm_password) {
-        toast.error("Confirm Password don't match.");
+      if (this.form.password !== this.form.confirm_password) {
+        alert("Confirm Password don't match.")
       } else {
         createUserWithEmailAndPassword(auth, this.form.email, this.form.password)
           .then(() => {
@@ -100,15 +92,17 @@ export default {
             var cometuser = new CometChat.User(cometuid);
             cometuser.setName(name);
             CometChat.createUser(cometuser, authKey).then(() => {
-              toast.info("user created");
+              console.log("user created");
             }, error => {
-              toast.error(error);
+              alert(error);
+              console.log("error", error);
             }
             )
           })
           .catch((error) => {
             const errorMessage = error.message;
-            toast.error(errorMessage);
+            console.log(errorMessage);
+            alert(errorMessage);
           });
       }
     },
@@ -121,7 +115,8 @@ export default {
         path: '/term'
       });
       window.open(routeData.href, "_blank");
-    },
+    }
+
   },
 }
 </script>
