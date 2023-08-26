@@ -69,7 +69,6 @@
   </div>
 </template>
 
-
 <script>
 import app from '../utilities/firebase.js';
 import { getAuth, signOut } from 'firebase/auth';
@@ -153,7 +152,7 @@ export default {
         const headers = { 'Authorization': `Bearer ${googleAccessToken}` };
         const response = await axios.get(url, { headers });
 
-        if (response.data.connections) {
+         if (response.data.connections) {
           const contacts = response.data.connections.map(connection => {
             const name = connection.names && connection.names[0] && connection.names[0].displayName || '';
             const email = connection.emailAddresses && connection.emailAddresses[0] && connection.emailAddresses[0].value || '';
