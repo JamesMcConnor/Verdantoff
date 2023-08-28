@@ -4,17 +4,68 @@
 
 <template>
   <div>
-    <!--- Add a v-if condition to control navbar, make it unseen in condition page --->
-    <nav v-if="!$route.meta.showNav" class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
-      <router-link class="navbar-brand" to="/">Home</router-link>
-      <button v-if="isLoggedIn" class="z-30 mx-2" @click="importContacts">Import your Contacts</button>
-      <router-link class="z-30 mx-2" to="/ContactUs">Contact Us</router-link>
-      <router-link class="z-30 mx-2" to="/logchat">Make video call</router-link>
-      <button class="z-30 mx-2" @click="$emit('open-sign')">Sign Up</button>
-      <button v-if="isLoggedIn" class="z-30 mx-2" @click="logout">Log out</button>
-      <button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
-      <router-link class="z-30 mx-2" to="/privacy">Privacy Policy</router-link>
+    <!-- Navbar with gradient background -->
+    <nav
+      class="bg-gradient-to-r from-green-500 from-30% via-blue-500 via-30% to-purple-500 to-90% text-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+      <div class="w-full block auto">
+        <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
+          class="inline-flex items-center p-2 ml-3 w-10 h-10 text-gray-700 rounded bg-transparent md:border-0 md:w-auto dark:text-gray-400 dark:hover:text-white dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+          @click="toggleDropdownMenu" @mouseenter="openDropdownMenu" @touchstart="onTouchStart">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15" />
+          </svg></button>
+
+        <!-- Dropdown menu -->
+        <div v-if="dropdownMenuOpen" id="dropdownNavbar"
+          class="absolute z-10 ml-3 font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+          @mouseleave="closeDropdownMenu">
+          <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+            <li>
+              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                to="/">Home</router-link>
+            </li>
+            <li>
+              <button v-if="isLoggedIn"
+                class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                @click="logout">Logout</button>
+              <button v-else
+                class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                @click="$emit('open-login')">Login</button>
+            </li>
+            <li v-if="!isLoggedIn">
+              <button
+                class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                @click="$emit('open-sign')">Sign
+                Up</button>
+            </li>
+            <li v-if="isLoggedIn">
+              <button
+                class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                @click="importContacts" :disabled="processing">Import
+                your Contacts</button>
+            </li>
+            <li v-if="isLoggedIn">
+              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                to="/logchat">Make video
+                call</router-link>
+            </li>
+            <li>
+              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                to="/privacy">Privacy
+                Policy</router-link>
+            </li>
+            <li>
+              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                to="/ContactUs">Contact
+                Us</router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
+
   </div>
 </template>
 
@@ -24,6 +75,9 @@ import { getAuth, signOut } from 'firebase/auth';
 import axios from 'axios';
 import { getDatabase, ref, push } from 'firebase/database';
 import { googleSdkLoaded } from "vue3-google-login"
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 export default {
   //Get variable from app.vue
@@ -32,20 +86,48 @@ export default {
     email: String,
     userId: String
   },
+  data() {
+    return {
+      dropdownMenuOpen: false,
+      processing: false
+    };
+  },
   methods: {
+    openDropdownMenu() {
+      this.dropdownMenuOpen = true;
+    },
+    closeDropdownMenu() {
+      this.dropdownMenuOpen = false;
+    },
+    toggleDropdownMenu() {
+      this.dropdownMenuOpen = !this.dropdownMenuOpen;
+    },
+    onTouchStart(event) {
+      if (!this.dropdownMenuOpen) {
+        event.preventDefault(); // Prevent the default touch behavior
+        this.toggleDropdownMenu();
+      }
+    },
+    closeDropdownOnClickOutside(event) {
+      if (this.dropdownMenuOpen) {
+        const dropdownButton = this.$refs.dropdownButton;
+        if (!dropdownButton.contains(event.target)) {
+          this.hideDropdown();
+        }
+      }
+    },
     logout() {
       const auth = getAuth();
       //When clicking logout, automatically switch back to the about page (main page)
       this.$router.push('/about');
       signOut(auth).then(() => {
-        console.log("Log out successfully");
-        // Sign-out successful.
+        toast.success("Log out successfully");
       }).catch((error) => {
-        // An error happened.
-        console.log(error);
+        toast.error(error)
       });
     },
     importContacts() {
+      this.processing = true;
       googleSdkLoaded((google) => {
         google.accounts.oauth2.initTokenClient({
           client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID,
@@ -53,12 +135,15 @@ export default {
                   https://www.googleapis.com/auth/contacts.readonly',
           callback: async (response) => {
             if (google.accounts.oauth2.hasGrantedAllScopes(response, 'https://www.googleapis.com/auth/contacts.readonly')) {
-              console.log("Access granted");
+              toast.info("Access granted");
               await this.getUserContacts(response.access_token)
             }
           }
         }).requestAccessToken()
       })
+      setTimeout(() => {
+        this.processing = false;
+      }, 10000);
     },
     async getUserContacts(googleAccessToken) {
       if (this.isLoggedIn === true && googleAccessToken && this.userId) {
@@ -88,7 +173,7 @@ export default {
           }
         }
       } else {
-        console.log('You are not loggedIn on the system!')
+        toast.error('You are not loggedIn on the system!');
       }
     },
   }
