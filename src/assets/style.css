@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --background-color: #000000;
+    --font-color-gold: #c5a647;
+    --font-color-gold-light: #d4af37;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--font-color-gold);
+    font-family: 'Arial', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, button {
+    color: var(--font-color-gold-light);
+}
+
+a, .button {
+    color: var(--font-color-gold);
+    transition: color 0.3s ease;
+}
+
+a:hover, .button:hover {
+    color: var(--font-color-gold-light);
+}
+
+.gold-text {
+    color: var(--font-color-gold);
+}
+
+.gold-text-light {
+    color: var(--font-color-gold-light);
+}
+
+.text-with-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}

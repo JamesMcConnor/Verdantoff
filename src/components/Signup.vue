@@ -4,11 +4,11 @@
 
 <template>
   <div>
-    <section @click="close" class="z-20 h-screen w-screen bg-gray-200 fixed top-0 opacity-50"></section>
+    <section @click="close" class="z-20 h-screen w-screen bg-white gold-text fixed top-0 opacity-50"></section>
     <!-- Use Z-Axis to make the button higher than others -->
     <div class="absolute inset-0">
       <div class="flex h-full ">
-        <div class="z-30 m-auto bg-white p-2 rounded shadow w-1/3 ">
+        <div class="z-30 m-auto bg-black gold-text p-2 rounded shadow w-1/3 ">
           <h1 class="text-xl text-center">Sign Up</h1>
           <!--- Sign up window--->
           <form class="p-2 my-4 border" @submit.prevent="submit">

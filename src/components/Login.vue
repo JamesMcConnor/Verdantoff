@@ -7,12 +7,12 @@ This is the login page.
 <div>
 <section 
   @click="close"
-  class="z-20 h-screen w-screen bg-gray-200 fixed top-0 opacity-50"></section>
+  class="z-20 h-screen w-screen bg-white gold-text fixed top-0 opacity-50"></section>
   <!-- Use Z-Axis to make the button higher than others -->
   <div class="absolute inset-0">
     <div class="flex h-full">
       <!---Login window--->
-      <div class="z-30 m-auto bg-white p-2 rounded shadow w-1/3">
+      <div class="z-30 m-auto bg-black gold-text p-2 rounded shadow w-1/3">
         <h1 class="text-xl text-center">Login</h1>
         <form class="p-2 my-4 border" @submit.prevent="submit">
           <div class="my-2">
@@ -74,6 +74,7 @@ export default {
       // Check if the fields are empty
       if (this.form.email.trim() === '' || this.form.password.trim() === '') {
         toast.error("Email and password are required fields.");
+        this.isLoading = false;
       } else {
 
         //Get status of authentication

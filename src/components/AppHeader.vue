@@ -9,7 +9,7 @@
       class="bg-gradient-to-r from-green-500 from-30% via-blue-500 via-30% to-purple-500 to-90% text-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
       <div class="w-full block auto">
         <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
-          class="inline-flex items-center p-2 ml-3 w-10 h-10 text-gray-700 rounded bg-transparent md:border-0 md:w-auto dark:text-gray-400 dark:hover:text-white dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+          class="inline-flex items-center p-2 ml-3 w-10 h-10 gold-text-light shadow rounded bg-transparent border border-white md:w-auto dark:text-gray-400 dark:hover:text-white dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
           @click="toggleDropdownMenu" @mouseenter="openDropdownMenu" @touchstart="onTouchStart">
           <span class="sr-only">Open main menu</span>
           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
@@ -19,7 +19,7 @@
 
         <!-- Dropdown menu -->
         <div v-if="dropdownMenuOpen" id="dropdownNavbar"
-          class="absolute z-10 ml-3 font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+          class="absolute z-10 ml-3 font-normal bg-black border divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
           @mouseleave="closeDropdownMenu">
           <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
             <li>

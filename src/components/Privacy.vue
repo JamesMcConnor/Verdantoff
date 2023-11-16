@@ -1,5 +1,5 @@
 <template>
-  <div class="c bg-blue-200">
+  <div class="container mx-auto px-4 bg-black text-justify">
     <h1 class="text-3xl">Privacy Policy – Verdantoff Technical</h1>
     <br>
     <h2 class="text-2xl">What Personal Information About Customers Does Verdantoff Collect?</h2>

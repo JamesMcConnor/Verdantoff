@@ -9,7 +9,7 @@ import TermOfUse from './components/TermOfUse';
 import ContactUs from './components/ContactUs';
 import MyContacts from './components/MyContact';
 import Tutorial from './components/tutorial';
-import Privacy from './components/privacy';
+import Privacy from './components/Privacy';
 
 const routes = [
     {path: '/about', component: About},
