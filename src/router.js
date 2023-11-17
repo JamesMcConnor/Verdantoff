@@ -10,6 +10,7 @@ import ContactUs from './components/ContactUs';
 import MyContacts from './components/MyContact';
 import Tutorial from './components/tutorial';
 import Privacy from './components/Privacy';
+import Home from './components/Home';
 
 const routes = [
     {path: '/about', component: About},
@@ -20,7 +21,7 @@ const routes = [
             showNav: true
         }
     },
-    {path: '/', component: About},
+    {path: '/', component: Home},
     {path: '/tutorial', component: Tutorial},
     {path: '/privacy', component: Privacy},
     {path: '/aboutus', component: AboutUs},

@@ -6,7 +6,7 @@
   <div>
     <!-- Navbar with gradient background -->
     <nav
-      class="bg-gradient-to-r from-green-500 from-30% via-blue-500 via-30% to-purple-500 to-90% text-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+      class="bg-gradient-to-r from-white from-20% via-black-500 via-50% to-black-700 to-90% text-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 drop-shadow-lg">
       <div class="w-full block auto">
         <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
           class="inline-flex items-center p-2 ml-3 w-10 h-10 gold-text-light shadow rounded bg-transparent border border-white md:w-auto dark:text-gray-400 dark:hover:text-white dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"

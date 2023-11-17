@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-4 bg-black text-justify">
+  <div class="container mx-auto px-4 bg-black text-justify py-4">
     <h1 class="text-3xl">Privacy Policy – Verdantoff Technical</h1>
     <br>
     <h2 class="text-2xl">What Personal Information About Customers Does Verdantoff Collect?</h2>
@@ -180,7 +180,6 @@
 <script>
 export default {
   name: 'privacy',
-  props: {}
 }
 </script>
 
