@@ -138,6 +138,7 @@ export default {
   font-size: 16px;
   line-height: 1.5;
   text-align: center;
+  font-weight: 500;
 }
 
 .prev,
