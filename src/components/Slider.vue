@@ -3,16 +3,25 @@
     <transition-group name="fade" tag="div">
       <div :key="currentIndex" class="slide">
         <img :src="currentImg" />
+        <div class="slider-text">
+          <p>
+            Discover the freedom and flexibility of remote work with VerdantOff. Join a growing
+            community of remote workers and experience the advantages of a flexible work schedule,
+            increased productivity, and a better work-life balance. Remote work isn't just a trend; it's a
+            sustainable choice that can positively impact our planet. Explore the possibilities of remote
+            work and be part of a movement that's shaping the future of work.
+          </p>
+        </div>
       </div>
     </transition-group>
-    <a class="prev gold-text-light" @click="prev" href="#">
+    <a class="prev" @click="prev" href="#">
       <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-chevron-left"
         viewBox="0 0 16 16">
         <path fill-rule="evenodd"
           d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
       </svg>
     </a>
-    <a class="next gold-text-light" @click="next" href="#">
+    <a class="next" @click="next" href="#">
       <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-chevron-right"
         viewBox="0 0 16 16">
         <path fill-rule="evenodd"
@@ -31,8 +40,12 @@ export default {
         './images/banner-1.jpg',
         './images/banner-2.jpg',
         './images/banner-3.jpg',
+        './images/banner-4.jpg',
+        './images/banner-5.jpg',
+        './images/banner-6.jpg',
       ],
       timer: null,
+      transitionTimeout: null,
       isTransitioning: false,
       currentIndex: 0,
     };
@@ -48,23 +61,37 @@ export default {
     },
 
     next() {
+      this.clearTimer();
       if (!this.isTransitioning) {
         this.isTransitioning = true;
         this.currentIndex += 1;
-        setTimeout(() => {
+        this.clearTransitionTimeout();
+        this.transitionTimeout = setTimeout(() => {
           this.isTransitioning = false;
-        }, 1000);
+        }, 500);
       }
     },
 
     prev() {
+      this.clearTimer();
       if (!this.isTransitioning) {
         this.isTransitioning = true;
         this.currentIndex -= 1;
-        setTimeout(() => {
+        this.clearTransitionTimeout();
+        this.transitionTimeout = setTimeout(() => {
           this.isTransitioning = false;
-        }, 1000);
+        }, 500);
       }
+    },
+
+    clearTimer() {
+      clearInterval(this.timer);
+      this.startSlide();
+    },
+
+    clearTransitionTimeout() {
+      clearTimeout(this.transitionTimeout);
+      this.transitionTimeout = null;
     },
   },
 
@@ -76,6 +103,7 @@ export default {
 
   beforeUnmount() {
     clearInterval(this.timer);
+    this.clearTransitionTimeout();
   },
 };
 </script>
@@ -88,9 +116,28 @@ export default {
 }
 
 .slide {
+  position: relative;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.slider-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: var(--font-color-gold-light);
+  max-width: 80%;
+}
+
+.slider-text p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
 }
 
 .prev,
@@ -101,13 +148,13 @@ export default {
   transform: translateY(-50%);
   width: auto;
   padding: 16px;
-  color: white;
   font-weight: bold;
   font-size: 18px;
-  transition: 0.7s ease;
+  transition: 0.5s ease;
   text-decoration: none;
   user-select: none;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: var(--font-color-gold-light);
 }
 
 .next {

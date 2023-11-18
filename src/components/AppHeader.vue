@@ -3,7 +3,7 @@
 --->
 
 <template>
-  <div>
+  <div @mouseleave="closeDropdownMenu">
     <!-- Navbar with gradient background -->
     <nav
       class="bg-gradient-to-r from-white from-20% via-black-500 via-50% to-black-700 to-90% text-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 drop-shadow-lg">
@@ -19,7 +19,7 @@
 
         <!-- Dropdown menu -->
         <div v-if="dropdownMenuOpen" id="dropdownNavbar"
-          class="absolute z-10 ml-3 font-normal bg-black border divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+          class="absolute z-50 ml-3 font-normal bg-black border divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
           @mouseleave="closeDropdownMenu">
           <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
             <li>
@@ -152,7 +152,7 @@ export default {
         const headers = { 'Authorization': `Bearer ${googleAccessToken}` };
         const response = await axios.get(url, { headers });
 
-         if (response.data.connections) {
+        if (response.data.connections) {
           const contacts = response.data.connections.map(connection => {
             const name = connection.names && connection.names[0] && connection.names[0].displayName || '';
             const email = connection.emailAddresses && connection.emailAddresses[0] && connection.emailAddresses[0].value || '';
