@@ -178,4 +178,13 @@ p {
   left: 0;
   border-radius: 0 4px 4px 0;
 }
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
 </style>
