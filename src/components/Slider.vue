@@ -129,6 +129,9 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .slider-text {
@@ -181,10 +184,13 @@ p {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
+  transform: translateX(-100%);
 }
 </style>
+
