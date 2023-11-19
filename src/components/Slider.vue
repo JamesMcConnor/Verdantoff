@@ -1,21 +1,21 @@
 <template>
   <div class="slider-container">
     <transition-group name="fade" tag="div">
-      <div :key="currentIndex" class="slide">
+      <div :key="currentIndex" class="slide" @before-enter="beforeEnter" @enter="enter" @leave="leave">
         <div class="slider-text">
           <p class="large-font">{{ currentText }}</p>
         </div>
         <img :src="currentImg" />
       </div>
     </transition-group>
-    <a class="prev" @click="prev" href="#">
+    <a class="prev" @click="navigate(-1)" href="#">
       <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-chevron-left"
         viewBox="0 0 16 16">
         <path fill-rule="evenodd"
           d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
       </svg>
     </a>
-    <a class="next" @click="next" href="#">
+    <a class="next" @click="navigate(1)" href="#">
       <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-chevron-right"
         viewBox="0 0 16 16">
         <path fill-rule="evenodd"
@@ -49,7 +49,6 @@ export default {
         "Explore the possibilities of remote work and be part of a movement that's shaping the future of work.",
       ],
       timer: null,
-      transitionTimeout: null,
       isTransitioning: false,
       currentIndex: 0,
     };
@@ -64,28 +63,9 @@ export default {
       this.timer = setInterval(this.next, 4000);
     },
 
-    next() {
+    navigate(direction) {
       this.clearTimer();
-      if (!this.isTransitioning) {
-        this.isTransitioning = true;
-        this.currentIndex += 1;
-        this.clearTransitionTimeout();
-        this.transitionTimeout = setTimeout(() => {
-          this.isTransitioning = false;
-        }, 500);
-      }
-    },
-
-    prev() {
-      this.clearTimer();
-      if (!this.isTransitioning) {
-        this.isTransitioning = true;
-        this.currentIndex -= 1;
-        this.clearTransitionTimeout();
-        this.transitionTimeout = setTimeout(() => {
-          this.isTransitioning = false;
-        }, 500);
-      }
+      this.currentIndex += direction;
     },
 
     clearTimer() {
@@ -93,9 +73,32 @@ export default {
       this.startSlide();
     },
 
-    clearTransitionTimeout() {
-      clearTimeout(this.transitionTimeout);
-      this.transitionTimeout = null;
+    beforeEnter(el) {
+      el.style.opacity = 0;
+    },
+
+    enter(el, done) {
+      const delay = el.dataset.index * 100;
+      setTimeout(() => {
+        el.offsetHeight;
+        el.style.transition = "opacity 0.5s ease";
+        el.style.opacity = 1;
+        done();
+      }, delay);
+    },
+
+    leave(el, done) {
+      el.style.transition = "opacity 0.5s ease";
+      el.style.opacity = 0;
+      done();
+    },
+
+    next() {
+      if (!this.isTransitioning) {
+        this.isTransitioning = true;
+        this.currentIndex += 1;
+        this.isTransitioning = false;
+      }
     },
   },
 
@@ -110,7 +113,6 @@ export default {
 
   beforeUnmount() {
     clearInterval(this.timer);
-    this.clearTransitionTimeout();
   },
 };
 </script>
