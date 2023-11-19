@@ -2,16 +2,10 @@
   <div class="slider-container">
     <transition-group name="fade" tag="div">
       <div :key="currentIndex" class="slide">
-        <img :src="currentImg" />
         <div class="slider-text">
-          <p>
-            Discover the freedom and flexibility of remote work with VerdantOff. Join a growing
-            community of remote workers and experience the advantages of a flexible work schedule,
-            increased productivity, and a better work-life balance. Remote work isn't just a trend; it's a
-            sustainable choice that can positively impact our planet. Explore the possibilities of remote
-            work and be part of a movement that's shaping the future of work.
-          </p>
+          <p class="large-font">{{ currentText }}</p>
         </div>
+        <img :src="currentImg" />
       </div>
     </transition-group>
     <a class="prev" @click="prev" href="#">
@@ -43,6 +37,16 @@ export default {
         './images/banner-4.jpg',
         './images/banner-5.jpg',
         './images/banner-6.jpg',
+        './images/banner-7.jpg',
+        './images/banner-8.jpg',
+        './images/banner-9.jpg',
+      ],
+      sentences: [
+        "Discover the freedom and flexibility of remote work with VerdantOff.",
+        "Join a growing community of remote workers and experience the advantages of a flexible work schedule.",
+        "Increased productivity and a better work-life balance await you.",
+        "Remote work isn't just a trend; it's a sustainable choice that can positively impact our planet.",
+        "Explore the possibilities of remote work and be part of a movement that's shaping the future of work.",
       ],
       timer: null,
       transitionTimeout: null,
@@ -99,6 +103,9 @@ export default {
     currentImg() {
       return this.images[Math.abs(this.currentIndex) % this.images.length];
     },
+    currentText() {
+      return this.sentences[Math.abs(this.currentIndex) % this.sentences.length];
+    },
   },
 
   beforeUnmount() {
@@ -124,21 +131,23 @@ export default {
 
 .slider-text {
   position: absolute;
-  top: 50%;
+  top: 5%;
   left: 50%;
-  transform: translate(-50%, -60%);
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.7);
+  transform: translateX(-50%);
+  padding: 8px;
+  background-color: rgba(0, 0, 0, 0.5);
   color: var(--font-color-gold-light);
-  max-width: 80%;
+  max-width: 100%;
+  text-align: center;
+  transition: opacity 0.5s ease;
 }
 
-.slider-text p {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.5;
-  text-align: center;
-  font-weight: 500;
+.large-font {
+  font-size: 28px;
+}
+
+p {
+  margin: 0px;
 }
 
 .prev,

@@ -8,8 +8,7 @@
             <br>
             <p>FronTech NZ</p>
             <br>
-            <p>w
-                Email: jamesfrontechcorp@gmail.com
+            <p>Email: jamesfrontechcorp@gmail.com
             </p>
         </div>
     </div>
