@@ -60,7 +60,7 @@ export default {
 
   methods: {
     startSlide() {
-      this.timer = setInterval(this.next, 5000);
+      this.timer = setInterval(this.next, 9000);
     },
 
     navigate(direction) {
@@ -142,16 +142,10 @@ export default {
   padding: 8px;
   background-color: rgba(0, 0, 0, 0.5);
   color: var(--font-color-gold-light);
-  max-width: 100%;
+  max-width: 80%;
   text-align: center;
-}
-
-.large-font {
-  font-size: 28px;
-}
-
-p {
-  margin: 0px;
+  font-size: 1.9rem;
+  font-weight: 700;
 }
 
 .prev,
@@ -189,5 +183,12 @@ p {
 .slide-enter,
 .slide-leave-to {
   transform: translateX(-100%);
+}
+
+@media (max-width: 768px) {
+  .slider-text {
+    font-size: 1rem; 
+    padding: 4px;
+  }
 }
 </style>
