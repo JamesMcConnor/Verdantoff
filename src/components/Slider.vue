@@ -60,7 +60,7 @@ export default {
 
   methods: {
     startSlide() {
-      this.timer = setInterval(this.next, 4000);
+      this.timer = setInterval(this.next, 5000);
     },
 
     navigate(direction) {
@@ -122,15 +122,15 @@ export default {
   position: relative;
   height: calc(100vw * 9 / 16);
   overflow: hidden;
+  background-color: var(--font-color-gold);
 }
 
 .slide {
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  opacity: 1;
+  transition: transform 1s cubic-bezier(0.47, 0, 0.745, 0.715);
   transform: translateX(0);
 }
 
@@ -144,7 +144,6 @@ export default {
   color: var(--font-color-gold-light);
   max-width: 100%;
   text-align: center;
-  transition: opacity 0.5s ease;
 }
 
 .large-font {
@@ -182,15 +181,13 @@ p {
   border-radius: 0 4px 4px 0;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease, transform 0.5s ease;
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 1s cubic-bezier(0.47, 0, 0.745, 0.715);
 }
 
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+.slide-enter,
+.slide-leave-to {
   transform: translateX(-100%);
 }
 </style>
-
