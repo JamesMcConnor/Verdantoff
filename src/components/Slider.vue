@@ -129,7 +129,7 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.5s ease-in-out, transform 1s cubic-bezier(0.47, 0, 0.745, 0.715);
+  transition: opacity 0.5s ease, transform 1s cubic-bezier(0.47, 0, 0.745, 0.715);
   transform: translateX(0);
 }
 
@@ -145,7 +145,6 @@ export default {
   text-align: center;
   font-size: 2.4rem;
   font-weight: 700;
-  transition: opacity 0.5s ease-in-out;
 }
 
 .prev,
