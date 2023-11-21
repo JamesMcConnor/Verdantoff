@@ -143,7 +143,7 @@ export default {
   color: var(--font-color-gold-light);
   max-width: 80%;
   text-align: center;
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   font-weight: 700;
   transition: opacity 0.5s ease-in-out;
 }
@@ -187,7 +187,7 @@ export default {
 
 @media (max-width: 768px) {
   .slider-text {
-    font-size: 1.3rem; 
+    font-size: 1.2rem; 
     padding: 4px;
   }
 
