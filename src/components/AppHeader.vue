@@ -27,18 +27,14 @@
                 to="/">Home</router-link>
             </li>
             <li>
-              <button v-if="isLoggedIn"
-                class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                @click="logout">Logout</button>
-              <button v-else
-                class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                @click="$emit('open-login')">Login</button>
+              <div v-if="isLoggedIn" class="block px-4 py-2 gold-text hover:bg-white cursor-pointer" @click="logout">
+                Logout</div>
+              <div v-else class="block px-4 py-2 gold-text hover:bg-white cursor-pointer" @click="handleLoginClick">Login
+              </div>
             </li>
             <li v-if="!isLoggedIn">
-              <button
-                class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                @click="$emit('open-sign')">Sign
-                Up</button>
+              <div class="block px-4 py-2 gold-text hover:bg-white cursor-pointer" @click="handleSignUpClick">Sign
+                Up</div>
             </li>
             <li v-if="isLoggedIn">
               <button
@@ -92,6 +88,9 @@ export default {
       processing: false
     };
   },
+  watch: {
+    $route: 'closeDropdownMenu',
+  },
   methods: {
     openDropdownMenu() {
       this.dropdownMenuOpen = true;
@@ -115,6 +114,14 @@ export default {
           this.hideDropdown();
         }
       }
+    },
+    handleLoginClick() {
+      this.closeDropdownMenu();
+      this.$emit('open-login')
+    },
+    handleSignUpClick() {
+      this.closeDropdownMenu();
+      this.$emit('open-sign')
     },
     logout() {
       const auth = getAuth();

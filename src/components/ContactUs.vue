@@ -8,7 +8,7 @@
             <br>
             <p>FronTech NZ</p>
             <br>
-            <p>Email: jamesfrontechcorp@gmail.com
+            <p class="email-text">Email: jamesfrontechcorp@gmail.com
             </p>
         </div>
     </div>
@@ -34,4 +34,10 @@ export default {
 }
 
 </script>
-<style scoped lang='less'></style>
+<style scoped>
+@media (max-width: 768px) {
+  .email-text {
+    font-size: 1.4rem;
+  }
+}
+</style>
