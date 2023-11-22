@@ -47,6 +47,7 @@ export default {
         "Increased productivity and a better work-life balance await you.",
         "Remote work isn't just a trend; it's a sustainable choice that can positively impact our planet.",
         "Explore the possibilities of remote work and be part of a movement that's shaping the future of work.",
+        "Why continue to operate service businesses like 19th-century factories, when 21st-century technology enables remote work and online collaboration?"
       ],
       timer: null,
       isTransitioning: false,
@@ -186,14 +187,19 @@ export default {
 
 @media (max-width: 768px) {
   .slider-text {
-    font-size: 1.2rem; 
-    padding: 4px;
+    font-size: .8rem;
+    padding: 2px;
   }
 
   .prev,
   .next {
-    padding: 8px;
-    font-size: 14px;
+    padding: 2px;
+    font-size: 10px;
+  }
+
+  .bi .bi-chevron-left,
+  .bi-chevron-right {
+    height: 25px;
   }
 }
 </style>
