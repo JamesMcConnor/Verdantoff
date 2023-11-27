@@ -1,7 +1,5 @@
 //Method to initialize firebase
 import { initializeApp } from "firebase/app";
-import {} from "firebase/auth";
-import {} from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -16,8 +14,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// console.log(app);
-// var database = firebase.database();
 
 export default app;
 

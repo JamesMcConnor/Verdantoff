@@ -3,7 +3,7 @@ This is the term of use page, using tailwindcss
  --->
 
 <template>
-    <div class="bg-blue-200">
+    <div class="container mx-auto px-4 bg-black text-justify py-4">
         <h1 class="text-3xl">Frontier Technologies Customer Agreement</h1>
         <br>Last updated: 3 May 2022<br>
         <br>

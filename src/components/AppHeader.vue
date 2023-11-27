@@ -1,66 +1,190 @@
-<!---
+<!--
   This is the file for the navbar
- --->
+--->
 
 <template>
-<div>
-<!--- Add a v-if condition to control navbar, make it unseen in condition page --->
-<nav v-if= "!$route.meta.showNav" class="relative w-full bg-gradient-to-r bg-blue-600 text-white px-4 py-5">
+  <div @mouseleave="closeDropdownMenu">
+    <!-- Navbar with gradient background -->
+    <nav
+      class="bg-gradient-to-r from-white from-20% via-black-500 via-50% to-black-700 to-90% text-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 drop-shadow-lg">
+      <div class="w-full block auto">
+        <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
+          class="inline-flex items-center p-2 ml-3 w-10 h-10 gold-text-light shadow rounded bg-transparent border border-white md:w-auto dark:text-gray-400 dark:hover:text-white dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+          @click="toggleDropdownMenu" @mouseenter="openDropdownMenu" @touchstart="onTouchStart">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15" />
+          </svg></button>
 
-<router-link class="z-30 mx-2" to="/about">Home</router-link>
+        <!-- Dropdown menu -->
+        <div v-if="dropdownMenuOpen" id="dropdownNavbar"
+          class="absolute z-50 ml-3 font-normal bg-black border divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+          @mouseleave="closeDropdownMenu">
+          <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+            <li>
+              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                to="/">Home</router-link>
+            </li>
+            <li>
+              <div v-if="isLoggedIn" class="block px-4 py-2 gold-text hover:bg-white cursor-pointer" @click="logout">
+                Logout</div>
+              <div v-else class="block px-4 py-2 gold-text hover:bg-white cursor-pointer" @click="handleLoginClick">Login
+              </div>
+            </li>
+            <li v-if="!isLoggedIn">
+              <div class="block px-4 py-2 gold-text hover:bg-white cursor-pointer" @click="handleSignUpClick">Sign
+                Up</div>
+            </li>
+            <li v-if="isLoggedIn">
+              <button
+                class="w-full flex flex-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                @click="importContacts" :disabled="processing">Import
+                your Contacts</button>
+            </li>
+            <li v-if="isLoggedIn">
+              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                to="/logchat">Make video
+                call</router-link>
+            </li>
+            <li>
+              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                to="/privacy">Privacy
+                Policy</router-link>
+            </li>
+            <li>
+              <router-link class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                to="/ContactUs">Contact
+                Us</router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-<button  class="z-30 mx-2 " @click="$emit('open-sign')">Sign Up</button>
-<button v-if="isLoggedin" class = "z-30 mx-2" @click="logout">Log out</button>
-<button v-else class="z-30 mx-2" @click="$emit('open-login')">Login</button>
-<router-link class = "z-30 mx-2" to = "/tutorial">Tutorial</router-link>
-<!--- Show button when user log in with an verified email --->
-<router-link v-if = "varified && isLoggedin"  class="z-30 mx-2" to="/logchat">CALL</router-link>
-<!--- Only shows when user logged in with an unverified email --->
-<p v-if="isLoggedin && !varified"  class="z-0 absolute inset-y-0 right-2 select-none text-xs">Welcome {{email}} {{varifiedMessage}}</p>
-</nav>
-</div>
+  </div>
 </template>
 
 <script>
-import { getAuth, signOut } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-const firebaseConfig = {
-  apiKey: process.env.VUE_APP_FIREBASE_apiKey,
-  authDomain: process.env.VUE_APP_FIREBASE_authDomain,
-  projectId: process.env.VUE_APP_FIREBASE_projectId,
-  storageBucket: process.env.VUE_APP_FIREBASE_storageBucket,
-  messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
-  appId: process.env.VUE_APP_FIREBASE_appId,
-  databaseURL: process.env.VUE_APP_FIREBASE_databaseURL
-};
-const app = initializeApp(firebaseConfig);
-console.log(app);
+import app from '../utilities/firebase.js';
+import { getAuth, signOut } from 'firebase/auth';
+import axios from 'axios';
+import { getDatabase, ref, push } from 'firebase/database';
+import { googleSdkLoaded } from "vue3-google-login"
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
+
 export default {
-    //Get variable from app.vue
-    props:{
-      isLoggedin:Boolean,
-      email:String,
-      varifiedMessage:String,
-      varified:Boolean
+  //Get variable from app.vue
+  props: {
+    isLoggedIn: Boolean,
+    email: String,
+    userId: String
+  },
+  data() {
+    return {
+      dropdownMenuOpen: false,
+      processing: false
+    };
+  },
+  watch: {
+    $route: 'closeDropdownMenu',
+  },
+  methods: {
+    openDropdownMenu() {
+      this.dropdownMenuOpen = true;
     },
-    methods:{
-        logout()
-    {
-    const auth = getAuth();
-    //When clicking logout, automatically switch back to the about page (main page)
-    this.$router.push('/about');
-    signOut(auth).then(() => {
-        console.log("Log out successfully");
-  // Sign-out successful.
-    }).catch((error) => {
-  // An error happened.
-  console.log(error);
-    });
+    closeDropdownMenu() {
+      this.dropdownMenuOpen = false;
+    },
+    toggleDropdownMenu() {
+      this.dropdownMenuOpen = !this.dropdownMenuOpen;
+    },
+    onTouchStart(event) {
+      if (!this.dropdownMenuOpen) {
+        event.preventDefault(); // Prevent the default touch behavior
+        this.toggleDropdownMenu();
+      }
+    },
+    closeDropdownOnClickOutside(event) {
+      if (this.dropdownMenuOpen) {
+        const dropdownButton = this.$refs.dropdownButton;
+        if (!dropdownButton.contains(event.target)) {
+          this.hideDropdown();
         }
-    }
+      }
+    },
+    handleLoginClick() {
+      this.closeDropdownMenu();
+      this.$emit('open-login')
+    },
+    handleSignUpClick() {
+      this.closeDropdownMenu();
+      this.$emit('open-sign')
+    },
+    logout() {
+      const auth = getAuth();
+      //When clicking logout, automatically switch back to the about page (main page)
+      this.$router.push('/about');
+      signOut(auth).then(() => {
+        toast.success("Log out successfully");
+      }).catch((error) => {
+        toast.error(error)
+      });
+    },
+    importContacts() {
+      this.processing = true;
+      googleSdkLoaded((google) => {
+        google.accounts.oauth2.initTokenClient({
+          client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID,
+          scope: 'https://www.googleapis.com/auth/userinfo.email \
+                  https://www.googleapis.com/auth/contacts.readonly',
+          callback: async (response) => {
+            if (google.accounts.oauth2.hasGrantedAllScopes(response, 'https://www.googleapis.com/auth/contacts.readonly')) {
+              toast.info("Access granted");
+              await this.getUserContacts(response.access_token)
+            }
+          }
+        }).requestAccessToken()
+      })
+      setTimeout(() => {
+        this.processing = false;
+      }, 10000);
+    },
+    async getUserContacts(googleAccessToken) {
+      if (this.isLoggedIn === true && googleAccessToken && this.userId) {
+        // Use Google People API to retrieve contacts
+        const url = 'https://people.googleapis.com/v1/people/me/connections?personFields=emailAddresses,names';
+        const headers = { 'Authorization': `Bearer ${googleAccessToken}` };
+        const response = await axios.get(url, { headers });
+
+        if (response.data.connections) {
+          const contacts = response.data.connections.map(connection => {
+            const name = connection.names && connection.names[0] && connection.names[0].displayName || '';
+            const email = connection.emailAddresses && connection.emailAddresses[0] && connection.emailAddresses[0].value || '';
+            return { name, email };
+          });
+
+          if (contacts && contacts.length > 0) {
+            // Store contacts in Firebase Realtime Database
+            const db = getDatabase(app);
+            const contactsRef = ref(db, `users/${this.userId}/contacts`);
+
+            contacts.forEach(contact => {
+              push(contactsRef, {
+                name: contact.name,
+                email: contact.email
+              });
+            });
+          }
+        }
+      } else {
+        toast.error('You are not loggedIn on the system!');
+      }
+    },
+  }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
