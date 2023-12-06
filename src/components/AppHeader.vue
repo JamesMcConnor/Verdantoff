@@ -73,8 +73,6 @@ import { useToast } from 'vue-toastification';
 import { googleSdkLoaded } from "vue3-google-login";
 import app from '../utilities/firebase.js';
 
-const googleClientId = process.env.VUE_APP_GOOGLE_CLIENT_ID;
-console.log("🚀 ~ file: AppHeader.vue:77 ~ googleClientId:", googleClientId)
 const toast = useToast();
 
 export default {
@@ -127,8 +125,7 @@ export default {
     },
     logout() {
       const auth = getAuth();
-      //When clicking logout, automatically switch back to the about page (main page)
-      this.$router.push('/about');
+      this.$router.push('/');
       signOut(auth).then(() => {
         toast.success("Log out successfully");
       }).catch((error) => {
@@ -144,12 +141,8 @@ export default {
                   https://www.googleapis.com/auth/contacts.readonly',
           callback: async (response) => {
             if (google.accounts.oauth2.hasGrantedAllScopes(response, 'https://www.googleapis.com/auth/contacts.readonly')) {
-              toast.info("Access granted");
               await this.getUserContacts(response.access_token)
-            } else {
-              console.log("🚀 ~ file: AppHeader.vue:146 ~ callback: ~ response:", response)
             }
-
           }
         }).requestAccessToken()
       })
@@ -173,6 +166,12 @@ export default {
           const db = getDatabase(app);
           const contactsRef = ref(db, `users/${this.userId}/contacts`);
           set(contactsRef, contacts.map(contact => ({ name: contact.name, email: contact.email })));
+
+          if (contacts?.length > 0) {
+            toast.success('Contacts are successfully imported!');
+          }
+        } else {
+          toast.info('You have no contacts in this gmail account!');
         }
       } else {
         toast.error('You are not loggedIn on the system!');
