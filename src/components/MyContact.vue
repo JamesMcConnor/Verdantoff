@@ -2,26 +2,33 @@
 
 <template>
     <div>
-        <div :style="background" class="relative bg-fixed opacity-90 w-full h-screen">
-            <div class="p-10 font-serif text-4xl subpixel-antialiased font-bold leading-relaxed text-center text-white">
+        <div :style="backgroundStyle" class="relative bg-fixed opacity-90 w-full h-full">
+            <div class="p-10 font-serif subpixel-antialiased font-bold leading-relaxed text-center text-white">
                 <h1 class="text-6xl">My Contacts</h1>
+                <div v-if="isLoadingContacts" class="bg-light-black text-center mt-4">
+                    Loading contacts...
+                </div>
+                <div v-else-if="isLoggedIn && contacts.length > 0">
+                    <div id="contact-list-container" class="container bg-light-black mx-auto mt-4 px-4 py-4">
+                        <ul id="contact-list">
+                            <li v-for="contact in contacts" :key="contact.email" class="mb-4">
+                                <div class="flex items-center justify-evenly">
+                                    <span class="mr-4">{{ contact.name }}</span>
+                                    <button @click="handleInviteButtonClick(contact, $event)"
+                                        class="btn bg-gold text-white px-4 py-2 rounded">
+                                        Invite to joinw
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div v-else-if="isLoggedIn && contacts.length === 0">
+                    <p class="bg-light-black text-center text-white mt-4">No Contacts Found!</p>
+                </div>
             </div>
         </div>
-        <div v-if="isLoggedIn">
-            <div id="contact-list-container" class="container mx-auto px-4 py-4">
-                <ul id="contact-list">
-                    <li v-for="contact in contacts" :key="contact.email" class="mb-4">
-                        <div class="flex items-center justify-start">
-                            <span class="mr-4">{{ contact.name }}</span>
-                            <button @click="handleInviteButtonClick(contact, $event)"
-                                class="btn bg-gold text-white px-4 py-2 rounded">
-                                Invite to join
-                            </button>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+
     </div>
 </template>
   
@@ -52,8 +59,27 @@ export default {
             userId: null,
             email: null,
             contacts: [],
+            isLoadingContacts: false,
         };
     },
+
+    computed: {
+        backgroundStyle() {
+            const commonStyle = {
+                backgroundImage: `url(${require("../assets/alterBG6.jpg")})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+            };
+
+            if (this.contacts.length === 0 || !this.isLoggedIn) {
+                return { ...commonStyle, height: "100vh" };
+            } else {
+                return commonStyle;
+            }
+        },
+    },
+
 
     mounted() {
         const auth = getAuth(app);
@@ -66,6 +92,7 @@ export default {
                 this.displayContacts().catch((err) => {
                     toast.error(err);
                 });
+                this.isLoadingContacts = false
             } else {
                 this.isLoggedIn = false
             }
@@ -73,6 +100,7 @@ export default {
     },
     methods: {
         async displayContacts() {
+            this.isLoadingContacts = true;
             const db = getDatabase(app);
             const contactsRef = ref(db, `users/${this.userId}/contacts`);
 
@@ -83,6 +111,8 @@ export default {
                     const contact = childSnapshot.val();
                     this.contacts.push(contact);
                 });
+
+                this.isLoadingContacts = false
             });
         },
         async handleInviteButtonClick(contact, event) {
