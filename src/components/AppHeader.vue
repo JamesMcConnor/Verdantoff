@@ -66,13 +66,15 @@
 </template>
 
 <script>
-import app from '../utilities/firebase.js';
-import { getAuth, signOut } from 'firebase/auth';
 import axios from 'axios';
-import { getDatabase, ref, push } from 'firebase/database';
-import { googleSdkLoaded } from "vue3-google-login"
+import { getAuth, signOut } from 'firebase/auth';
+import { getDatabase, ref, set } from 'firebase/database';
 import { useToast } from 'vue-toastification';
+import { googleSdkLoaded } from "vue3-google-login";
+import app from '../utilities/firebase.js';
 
+const googleClientId = process.env.VUE_APP_GOOGLE_CLIENT_ID;
+console.log("🚀 ~ file: AppHeader.vue:77 ~ googleClientId:", googleClientId)
 const toast = useToast();
 
 export default {
@@ -144,7 +146,10 @@ export default {
             if (google.accounts.oauth2.hasGrantedAllScopes(response, 'https://www.googleapis.com/auth/contacts.readonly')) {
               toast.info("Access granted");
               await this.getUserContacts(response.access_token)
+            } else {
+              console.log("🚀 ~ file: AppHeader.vue:146 ~ callback: ~ response:", response)
             }
+
           }
         }).requestAccessToken()
       })
@@ -165,19 +170,9 @@ export default {
             const email = connection.emailAddresses && connection.emailAddresses[0] && connection.emailAddresses[0].value || '';
             return { name, email };
           });
-
-          if (contacts && contacts.length > 0) {
-            // Store contacts in Firebase Realtime Database
-            const db = getDatabase(app);
-            const contactsRef = ref(db, `users/${this.userId}/contacts`);
-
-            contacts.forEach(contact => {
-              push(contactsRef, {
-                name: contact.name,
-                email: contact.email
-              });
-            });
-          }
+          const db = getDatabase(app);
+          const contactsRef = ref(db, `users/${this.userId}/contacts`);
+          set(contactsRef, contacts.map(contact => ({ name: contact.name, email: contact.email })));
         }
       } else {
         toast.error('You are not loggedIn on the system!');
