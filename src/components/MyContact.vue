@@ -13,10 +13,10 @@
                         <ul id="contact-list">
                             <li v-for="contact in contacts" :key="contact.email" class="mb-4">
                                 <div class="flex items-center justify-evenly">
-                                    <span class="mr-4">{{ contact.name }}</span>
+                                    <span class="mr-4">{{ contact.name }}{{ contact.email ? ' · ' + contact.email : '' }}</span>
                                     <button @click="handleInviteButtonClick(contact, $event)"
                                         class="btn bg-gold text-white px-4 py-2 rounded">
-                                        Invite to joinw
+                                        Invite to join
                                     </button>
                                 </div>
                             </li>
