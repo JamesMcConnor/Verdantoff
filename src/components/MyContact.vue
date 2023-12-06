@@ -1,6 +1,4 @@
-<!---
-  This is the file for the navbar
- --->
+<!--- This is the file for the navbar --->
 
 <template>
     <div>
@@ -10,8 +8,17 @@
             </div>
         </div>
         <div v-if="isLoggedIn">
-            <div ref="contactListContainer" id="contact-list-container">
-                <ul ref="contactList" id="contact-list">
+            <div id="contact-list-container" class="container mx-auto px-4 py-4">
+                <ul id="contact-list">
+                    <li v-for="contact in contacts" :key="contact.email" class="mb-4">
+                        <div class="flex items-center justify-start">
+                            <span class="mr-4">{{ contact.name }}</span>
+                            <button @click="handleInviteButtonClick(contact, $event)"
+                                class="btn bg-gold text-white px-4 py-2 rounded">
+                                Invite to join
+                            </button>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -32,18 +39,19 @@ export default {
 
     data() {
         return {
-            //CSS setting
+            // CSS setting
             background: {
                 backgroundImage: [
                     "url(" + require("../assets/alterBG6.jpg") + ")",
                 ],
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
-                backgoundPosition: "center",
+                backgroundPosition: "center", // Fix the typo here
             },
             isLoggedIn: false,
             userId: null,
             email: null,
+            contacts: [],
         };
     },
 
@@ -51,21 +59,13 @@ export default {
         const auth = getAuth(app);
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/firebase.User
                 this.isLoggedIn = true;
                 this.userId = user.uid;
                 this.email = user.email;
 
-                // Display contact list only for authenticated users
-                if (this.$refs.contactListContainer) {
-                    this.displayContacts()
-                        .then(() => {
-                            toast.success('success');
-                        }).catch((err) => {
-                            toast.error(err);
-                        });
-                }
+                this.displayContacts().catch((err) => {
+                    toast.error(err);
+                });
             } else {
                 this.isLoggedIn = false
             }
@@ -73,64 +73,47 @@ export default {
     },
     methods: {
         async displayContacts() {
-            // Get contacts from Firebase Realtime Database
             const db = getDatabase(app);
             const contactsRef = ref(db, `users/${this.userId}/contacts`);
 
             onValue(contactsRef, snapshot => {
-                // Loop through the snapshot data using forEach()
+                this.contacts = [];
+
                 snapshot.forEach(childSnapshot => {
-                    // Get the data from each child snapshot
                     const contact = childSnapshot.val();
+                    this.contacts.push(contact);
+                });
+            });
+        },
+        async handleInviteButtonClick(contact, event) {
+            if (!contact?.email) {
+                toast.warning('Email is empty for this contact');
+                return;
+            }
 
-                    const contactList = this.$refs.contactList;
-                    contactList.innerHTML = '';
+            const inviteButton = event.target;
+            inviteButton.disabled = true;
+            inviteButton.textContent = 'Please wait...';
 
-                    const contactElem = document.createElement('li');
-                    contactElem.textContent = contact.name;
-                    const inviteButton = document.createElement('button');
-                    inviteButton.textContent = 'Invite to join';
-
-                    inviteButton.addEventListener('click', () => {
-                        inviteButton.disabled = true;
-                        inviteButton.textContent = 'Please wait...';
-
-                        this.inviteContact(contact.email)
-                            .then(() => {
-                                inviteButton.textContent = 'Invite sent!';
-                                inviteButton.disabled = true;
-                                toast.success("Invite sent!")
-                            })
-                            .catch((error) => {
-                                toast.error(error);
-                                inviteButton.disabled = false;
-                                inviteButton.textContent = 'Invite to join';
-                            })
-                    });
-                    contactElem.appendChild(inviteButton);
-                    contactList.appendChild(contactElem);
-                })
-            }, error => {
+            try {
+                await this.inviteContact(contact.email);
+                inviteButton.textContent = 'Invite sent!';
+                toast.success('Invite sent!');
+            } catch (error) {
                 toast.error(error);
-            })
+            } finally {
+                inviteButton.disabled = false;
+                inviteButton.textContent = 'Invite to join';
+            }
         },
         async inviteContact(contactEmail) {
-            // Send invitation email to contact using Firebase functions
             httpsCallable('sendInviteEmail')({ email: contactEmail })
                 .then(() => {
                     toast.success('Invitation email sent successfully');
                 })
-                .catch((error) => {
-                    toast.error(error);
+                .catch((err) => {
+                    toast.error(err);
                 });
-        },
-        triggerError(error) {
-            this.errorMessages.push(error);
-            // Call showErrorToast to display the error
-            this.$refs.errorToast.showErrorToast();
-            setTimeout(() => {
-                this.errorMessages.shift();
-            }, 500);
         },
     }
 }
