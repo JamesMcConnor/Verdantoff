@@ -13,7 +13,8 @@
                         <ul id="contact-list">
                             <li v-for="contact in contacts" :key="contact.email" class="mb-4">
                                 <div class="flex items-center justify-evenly">
-                                    <span class="mr-4">{{ contact.name }}{{ contact.email ? ' · ' + contact.email : '' }}</span>
+                                    <span class="mr-4">{{ contact.name }}{{ contact.email ? ' · ' + contact.email : ''
+                                    }}</span>
                                     <button @click="handleInviteButtonClick(contact, $event)"
                                         class="btn bg-gold text-white px-4 py-2 rounded">
                                         Invite to join
@@ -23,7 +24,8 @@
                         </ul>
                     </div>
                 </div>
-                <div v-else-if="isLoggedIn && contacts.length === 0">
+
+                <div v-else-if="isLoggedIn && !isLoadingContacts">
                     <p class="bg-light-black text-center text-white mt-4">No Contacts Found!</p>
                 </div>
             </div>
@@ -33,11 +35,11 @@
 </template>
   
 <script>
-import app from '../utilities/firebase.js';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { get, getDatabase, ref } from 'firebase/database';
 import { httpsCallable } from 'firebase/functions';
-import { getDatabase, ref, onValue } from 'firebase/database';
 import { useToast } from 'vue-toastification';
+import app from '../utilities/firebase.js';
 
 const toast = useToast();
 
@@ -89,10 +91,10 @@ export default {
                 this.userId = user.uid;
                 this.email = user.email;
 
+                this.isLoadingContacts = true;
                 this.displayContacts().catch((err) => {
                     toast.error(err);
                 });
-                this.isLoadingContacts = false
             } else {
                 this.isLoggedIn = false
             }
@@ -104,7 +106,8 @@ export default {
             const db = getDatabase(app);
             const contactsRef = ref(db, `users/${this.userId}/contacts`);
 
-            onValue(contactsRef, snapshot => {
+            try {
+                const snapshot = await get(contactsRef);
                 this.contacts = [];
 
                 snapshot.forEach(childSnapshot => {
@@ -112,8 +115,11 @@ export default {
                     this.contacts.push(contact);
                 });
 
-                this.isLoadingContacts = false
-            });
+                this.isLoadingContacts = false;
+            } catch (error) {
+                this.isLoadingContacts = false;
+                toast.error("Error fetching contacts:", error);
+            }
         },
         async handleInviteButtonClick(contact, event) {
             if (!contact?.email) {
