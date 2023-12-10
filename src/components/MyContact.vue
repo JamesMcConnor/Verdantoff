@@ -3,9 +3,9 @@
 <template>
     <div>
         <div :style="backgroundStyle" class="relative bg-fixed opacity-90 w-full h-full">
-            <div class="p-10 font-serif subpixel-antialiased font-bold leading-relaxed text-center text-white">
+            <div class="p-10 font-serif subpixel-antialiased font-bold leading-relaxed text-center gold-text-light">
                 <h1 class="text-6xl">My Contacts</h1>
-                <div v-if="isLoadingContacts" class="bg-light-black text-center mt-4">
+                <div v-if="isLoadingContacts" class="bg-light-black gold-text-light text-center mt-4">
                     Loading contacts...
                 </div>
                 <div v-else-if="isLoggedIn && contacts.length > 0">
@@ -16,7 +16,7 @@
                                     <span class="mr-4">{{ contact.name }}{{ contact.email ? ' · ' + contact.email : ''
                                     }}</span>
                                     <button @click="handleInviteButtonClick(contact, $event)"
-                                        class="btn bg-gold text-white px-4 py-2 rounded">
+                                        class="btn bg-gold text-black px-4 py-2 rounded">
                                         Invite to join
                                     </button>
                                 </div>
@@ -26,7 +26,7 @@
                 </div>
 
                 <div v-else-if="isLoggedIn && !isLoadingContacts">
-                    <p class="bg-light-black text-center text-white mt-4">No Contacts Found!</p>
+                    <p class="bg-light-black gold-text-light text-center mt-4">No Contacts Found!</p>
                 </div>
             </div>
         </div>
