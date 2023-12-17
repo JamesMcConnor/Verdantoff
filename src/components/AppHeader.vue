@@ -231,9 +231,11 @@ export default {
           callback: async (response) => {
             if (google.accounts.oauth2.hasGrantedAnyScope(response, 'https://www.googleapis.com/auth/contacts.readonly', 'https://www.googleapis.com/auth/contacts.other.readonly')) {
               const userContacts = await this.getUserContacts(response.access_token);
-              this.showModal = true;
-              this.userContacts = userContacts;
-              this.selectedContacts = [];
+              if (this.userContacts.length > 0) {
+                this.showModal = true;
+                this.userContacts = userContacts;
+                this.selectedContacts = [];
+              }
             } else {
               toast.info("You haven't provided access to your Google contacts.");
             }
