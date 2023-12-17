@@ -115,15 +115,15 @@ export default {
                     this.contacts.push(contact);
                 });
 
-                this.contacts = this.contacts.slice().sort((a, b) => {
-                    return a.name.localeCompare(b.name);
-                });
-
                 this.isLoadingContacts = false;
             } catch (error) {
                 this.isLoadingContacts = false;
                 toast.error("Error fetching contacts:", error);
             }
+
+            this.contacts = this.contacts.slice().sort((a, b) => {
+                return a.name.localeCompare(b.name);
+            });
         },
         async handleInviteButtonClick(contact, event) {
             if (!contact?.email) {
