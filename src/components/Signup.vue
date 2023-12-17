@@ -2,15 +2,15 @@
   This is the sign up page. 
  --->
 
-<template>
+ <template>
   <div>
     <section @click="close" class="z-20 h-screen w-screen bg-white gold-text fixed top-0 opacity-50"></section>
     <!-- Use Z-Axis to make the button higher than others -->
     <div class="absolute inset-0">
-      <div class="flex h-full ">
-        <div class="z-30 m-auto bg-black gold-text p-2 rounded shadow w-1/3 ">
+      <div class="flex h-full">
+        <!--- Sign up window--->
+        <div class="z-30 m-auto bg-black gold-text p-4 rounded shadow w-full md:w-2/3 lg:w-1/3 xl:w-1/3">
           <h1 class="text-xl text-center">Sign Up</h1>
-          <!--- Sign up window--->
           <form class="p-2 my-4 border" @submit.prevent="submit">
             <div class="my-2">
               <label>Username</label>
@@ -29,14 +29,13 @@
               <input v-model="form.confirm_password" class="rounded shadow p-2 w-full" type="password">
             </div>
             <div class="my-2">
-              <button type="submit" class="p-2 w-full rounded shadow bg-red-400 text-white">
+              <button type="submit" class="p-2 w-full rounded shadow bg-gold text-black hover:text-white">
                 Submit
               </button>
             </div>
           </form>
-          <!--- Add a button for  terms and conditions --->
           <div class="my-2 right-2">
-            <button @click="openTerms" class="p-2 rounded shadow bg-blue-400 text-white">
+            <button @click="openTerms" class="p-2 rounded shadow bg-gold text-black hover:text-white">
               Terms and conditions
             </button>
           </div>
@@ -45,10 +44,6 @@
     </div>
   </div>
 </template>
-
-
-
-
 
 <script>
 //import components from firebase and cometchat and initialize them
