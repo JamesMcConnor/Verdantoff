@@ -2,14 +2,14 @@
 
 <template>
     <div>
-        <div :style="backgroundStyle" class="relative bg-fixed opacity-90 w-full h-full">
+        <div :style="backgroundStyle" class="relative bg-fixed opacity-90 min-h-screen w-full h-full">
             <div class="p-10 font-serif subpixel-antialiased font-bold leading-relaxed text-center gold-text-light">
                 <h1 class="text-6xl">My Contacts</h1>
                 <div v-if="isLoadingContacts" class="bg-light-black gold-text-light text-center mt-4">
                     Loading contacts...
                 </div>
                 <div v-else-if="isLoggedIn && contacts.length > 0">
-                    <div id="contact-list-container" class="container bg-light-black mx-auto mt-4 px-4 py-4">
+                    <div id="contact-list-container" class="container bg-light-black mx-auto mt-4 px-4 py-4 pb-12 z-50">
                         <ul id="contact-list">
                             <li v-for="contact in contacts" :key="contact.email" class="mb-4">
                                 <div class="flex items-center justify-evenly">
@@ -113,6 +113,10 @@ export default {
                 snapshot.forEach(childSnapshot => {
                     const contact = childSnapshot.val();
                     this.contacts.push(contact);
+                });
+
+                this.contacts = this.contacts.slice().sort((a, b) => {
+                    return a.name.localeCompare(b.name);
                 });
 
                 this.isLoadingContacts = false;
