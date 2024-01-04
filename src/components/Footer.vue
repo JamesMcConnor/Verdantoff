@@ -58,7 +58,7 @@ export default {
     bottom: 0;
     width: 100%;
     background-color: var(--background-color);
-    z-index: 1000;
+    z-index: 1;
   }
 
   .footer-container {

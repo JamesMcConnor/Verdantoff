@@ -63,15 +63,84 @@
     </nav>
 
   </div>
+
+  <!-- Contact Selection Modal -->
+  <div id="default-modal" v-if="showModal" tabindex="-1" aria-hidden="true"
+    class="overflow-y-auto overflow-x-hidden fixed inset-0 z-50 flex justify-center items-center max-h-screen">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+      <!-- Modal content -->
+      <div class="relative bg-black rounded-lg shadow border">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+          <h3 class="text-xl font-semibold gold-text-light dark:text-white">
+            Select Contacts to Import
+          </h3>
+          <button type="button"
+            class="gold-text-light bg-transparent hover:text-white rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            @click="closeModal">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+        <!-- Modal body with fixed height -->
+        <div class="p-4 md:p-5 space-y-4 overflow-y-auto" style="height: 60vh!important;">
+          <div class="flex justify-between items-center mb-4">
+            <!-- Search input -->
+            <div class="relative flex-grow">
+              <input v-model="searchQuery" type="text" placeholder="Search contacts"
+                class="p-2 w-full rounded-md border-0 bg-gray-100 focus:outline-none focus:ring focus:border-gold dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300">
+              <span class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <!-- Add a search icon if desired -->
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-5-5m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </span>
+            </div>
+
+            <!-- Sorting button -->
+            <button @click="toggleSortOrder"
+              class="bg-gold text-black hover:text-white focus:outline-none p-1 md:p-2 lg:p-2 ml-2">
+              {{ sortOrder === 'asc' ? 'Sort A-Z' : 'Sort Z-A' }}
+            </button>
+          </div>
+
+          <!-- Select All checkbox -->
+          <div class="mb-4">
+            <input v-model="selectAll" type="checkbox" @change="toggleSelectAll" class="mr-2">
+            <label>Select All</label>
+          </div>
+          <!-- Individual contacts -->
+          <div v-for="(contact, index) in sortedAndFilteredContacts" :key="index" class="mb-4">
+            <input :checked="isSelected(contact)" @change="toggleContact(contact)" type="checkbox" class="mr-2">
+            <label>{{ contact.name }} {{ contact.email ? '(' + contact.email + ')' : '' }}</label>
+          </div>
+        </div>
+        <!-- Modal footer -->
+        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
+          <button @click="closeModal" class="px-4 py-2 bg-gold text-black hover:text-white rounded">Cancel</button>
+          <button @click="importSelectedContacts"
+            class="ml-2 px-4 py-2 bg-gold text-black hover:text-white rounded">Import
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Selection Modal -->
 </template>
 
 <script>
-import app from '../utilities/firebase.js';
-import { getAuth, signOut } from 'firebase/auth';
 import axios from 'axios';
-import { getDatabase, ref, push } from 'firebase/database';
-import { googleSdkLoaded } from "vue3-google-login"
+import { getAuth, signOut } from 'firebase/auth';
+import { getDatabase, ref, set } from 'firebase/database';
 import { useToast } from 'vue-toastification';
+import { googleSdkLoaded } from "vue3-google-login";
+import app from '../utilities/firebase.js';
 
 const toast = useToast();
 
@@ -79,17 +148,38 @@ export default {
   //Get variable from app.vue
   props: {
     isLoggedIn: Boolean,
-    email: String,
-    userId: String
+    userId: String,
   },
   data() {
     return {
       dropdownMenuOpen: false,
-      processing: false
+      processing: false,
+      showModal: false,
+      userContacts: [],
+      selectedContacts: [],
+      selectAll: false,
+      sortOrder: 'asc',
+      searchQuery: '',
     };
   },
   watch: {
     $route: 'closeDropdownMenu',
+  },
+  computed: {
+    sortedAndFilteredContacts() {
+      // Apply sorting
+      const sortedContacts = this.userContacts.slice().sort((a, b) => {
+        const order = this.sortOrder === 'asc' ? 1 : -1;
+        return order * a.name.localeCompare(b.name);
+      });
+
+      // Apply filtering based on search query
+      const filteredContacts = sortedContacts.filter((contact) =>
+        contact.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+
+      return filteredContacts;
+    },
   },
   methods: {
     openDropdownMenu() {
@@ -125,8 +215,7 @@ export default {
     },
     logout() {
       const auth = getAuth();
-      //When clicking logout, automatically switch back to the about page (main page)
-      this.$router.push('/about');
+      this.$router.push('/');
       signOut(auth).then(() => {
         toast.success("Log out successfully");
       }).catch((error) => {
@@ -138,12 +227,17 @@ export default {
       googleSdkLoaded((google) => {
         google.accounts.oauth2.initTokenClient({
           client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID,
-          scope: 'https://www.googleapis.com/auth/userinfo.email \
-                  https://www.googleapis.com/auth/contacts.readonly',
+          scope: "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/contacts.readonly https://www.googleapis.com/auth/contacts.other.readonly",
           callback: async (response) => {
-            if (google.accounts.oauth2.hasGrantedAllScopes(response, 'https://www.googleapis.com/auth/contacts.readonly')) {
-              toast.info("Access granted");
-              await this.getUserContacts(response.access_token)
+            if (google.accounts.oauth2.hasGrantedAnyScope(response, 'https://www.googleapis.com/auth/contacts.readonly', 'https://www.googleapis.com/auth/contacts.other.readonly')) {
+              const userContacts = await this.getUserContacts(response.access_token);
+              if (this.userContacts.length > 0) {
+                this.showModal = true;
+                this.userContacts = userContacts;
+                this.selectedContacts = [];
+              }
+            } else {
+              toast.info("You haven't provided access to your Google contacts.");
             }
           }
         }).requestAccessToken()
@@ -155,7 +249,7 @@ export default {
     async getUserContacts(googleAccessToken) {
       if (this.isLoggedIn === true && googleAccessToken && this.userId) {
         // Use Google People API to retrieve contacts
-        const url = 'https://people.googleapis.com/v1/people/me/connections?personFields=emailAddresses,names';
+        const url = 'https://people.googleapis.com/v1/people/me/connections?personFields=emailAddresses,names,addresses';
         const headers = { 'Authorization': `Bearer ${googleAccessToken}` };
         const response = await axios.get(url, { headers });
 
@@ -166,22 +260,52 @@ export default {
             return { name, email };
           });
 
-          if (contacts && contacts.length > 0) {
-            // Store contacts in Firebase Realtime Database
-            const db = getDatabase(app);
-            const contactsRef = ref(db, `users/${this.userId}/contacts`);
-
-            contacts.forEach(contact => {
-              push(contactsRef, {
-                name: contact.name,
-                email: contact.email
-              });
-            });
-          }
+          return contacts;
+        } else {
+          toast.info('You have no contacts in this gmail account!');
         }
       } else {
         toast.error('You are not loggedIn on the system!');
       }
+    },
+    isSelected(contact) {
+      return this.selectedContacts.some((selectedContact) =>
+        selectedContact.name === contact.name && selectedContact.email === contact.email
+      );
+    },
+    toggleContact(contact) {
+      const index = this.selectedContacts.findIndex((c) => c.name === contact.name && c.email === contact.email);
+      if (index !== -1) {
+        this.selectedContacts.splice(index, 1);
+      } else {
+        this.selectedContacts.push(contact);
+      }
+
+      this.selectAll = this.selectedContacts.length === this.userContacts.length;
+    },
+    toggleSelectAll() {
+      if (this.selectAll) {
+        this.selectedContacts = [...this.userContacts];
+      } else {
+        this.selectedContacts = [];
+      }
+    },
+    closeModal() {
+      this.showModal = false;
+      this.selectAll = false
+    },
+    importSelectedContacts() {
+      const db = getDatabase(app);
+      const contactsRef = ref(db, `users/${this.userId}/contacts`);
+      set(contactsRef, this.selectedContacts);
+      toast.success('Selected contacts are successfully imported!');
+
+      // Close the modal
+      this.showModal = false;
+      this.selectAll = false;
+    },
+    toggleSortOrder() {
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
     },
   }
 }
