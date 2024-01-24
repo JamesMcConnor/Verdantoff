@@ -230,10 +230,10 @@ export default {
           scope: "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/contacts.readonly https://www.googleapis.com/auth/contacts.other.readonly",
           callback: async (response) => {
             if (google.accounts.oauth2.hasGrantedAnyScope(response, 'https://www.googleapis.com/auth/contacts.readonly', 'https://www.googleapis.com/auth/contacts.other.readonly')) {
-              const userContacts = await this.getUserContacts(response.access_token);
-              if (this.userContacts.length > 0) {
+              const getUserContacts = await this.getUserContacts(response.access_token);
+              if (getUserContacts.length > 0) {
                 this.showModal = true;
-                this.userContacts = userContacts;
+                this.userContacts = getUserContacts;
                 this.selectedContacts = [];
               }
             } else {

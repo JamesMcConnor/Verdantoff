@@ -103,10 +103,10 @@ export default {
     methods: {
         async displayContacts() {
             this.isLoadingContacts = true;
-            const db = getDatabase(app);
-            const contactsRef = ref(db, `users/${this.userId}/contacts`);
-
             try {
+                const db = getDatabase(app);
+                const contactsRef = ref(db, `users/${this.userId}/contacts`);
+                
                 const snapshot = await get(contactsRef);
                 this.contacts = [];
 
@@ -118,7 +118,7 @@ export default {
                 this.isLoadingContacts = false;
             } catch (error) {
                 this.isLoadingContacts = false;
-                toast.error("Error fetching contacts:", error);
+                toast.error("Error fetching contacts!");
             }
 
             this.contacts = this.contacts.slice().sort((a, b) => {
