@@ -49,7 +49,7 @@ jobs:
        key: ${{ secrets.SSH_PRIVATE_KEY }}
        known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
 
-    - uses: actions/download-artifact@master
+    - uses: actions/download-artifact@v4
       with:
         name: dist
         path: ./dist
