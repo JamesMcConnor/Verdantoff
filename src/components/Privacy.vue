@@ -9,8 +9,7 @@
 
     <h3 class="text-2xl">Information You Give Us:</h3>
 
-    <p>We receive and store any information you provide in relation to Verdantoff services. [Provide a hyperlink here
-      for users to see examples of what we collect.] You can choose not to provide certain information, but then you
+    <p>We receive and store any information you provide in relation to Verdantoff services. You can choose not to provide certain information, but then you
       might not be able to take advantage of many of our Verdantoff Services.</P>
 
     <h4>Automatic Information:</h4>
@@ -170,9 +169,15 @@
     <h2 class="text-2xl">Contact Us</h2>
 
     <p>If you have any questions or concerns about this Privacy Policy or its implementation, you may contact us at
-      jadconnor@gmail.com, or contact our support team via our website: https://www.verdantoff.com.
+      <a href="mailto:jadconnor@gmail.com" class="link">jadconnor@gmail.com</a>, or contact our support team via our website: <a
+        href="https://www.verdantoff.com" class="link">https://www.verdantoff.com</a>.
 
       Your use of Verdantoff Services is subject to this Privacy Policy as well as our Terms of Service.</p>
+
+    <p>For a detailed demonstration of the contacts import feature and its privacy implications, please watch our video on
+      YouTube <a href="https://www.youtube.com/watch?v=GKVMIMKIqAY" target="_blank"
+        class="link">https://www.youtube.com/watch?v=GKVMIMKIqAY</a>.
+    </p>
 
   </div>
 </template>
@@ -190,5 +195,10 @@ export default {
 
 p {
   margin: 10px 0 20px 0;
+}
+
+.link:hover {
+  color: var(--font-color-gold);
+  text-decoration: underline;
 }
 </style>
