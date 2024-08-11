@@ -2,7 +2,7 @@
   This is the sign up page. 
  --->
 
- <template>
+<template>
   <div>
     <section @click="close" class="z-20 h-screen w-screen bg-white gold-text fixed top-0 opacity-50"></section>
     <!-- Use Z-Axis to make the button higher than others -->
@@ -11,7 +11,7 @@
         <!--- Sign up window--->
         <div class="z-30 m-auto bg-black gold-text p-4 rounded shadow w-full md:w-2/3 lg:w-1/3 xl:w-1/3">
           <h1 class="text-xl text-center">Sign Up</h1>
-          <form class="p-2 my-4 border" @submit.prevent="submit">
+          <form class="p-2 my-4 border" autocomplete="off" @submit.prevent="submit">
             <div class="my-2">
               <label>Username</label>
               <input v-model="form.username" class="rounded shadow p-2 w-full" type="text">
@@ -30,7 +30,8 @@
             </div>
             <div class="my-2">
               <button type="submit" class="p-2 w-full rounded shadow bg-gold text-black hover:text-white">
-                Submit
+                <span v-if="!isSubmitting">Submit</span>
+                <span v-else>Processing</span>
               </button>
             </div>
           </form>
@@ -54,7 +55,7 @@ import { useToast } from 'vue-toastification';
 
 const toast = useToast();
 
-let authKey = process.env.VUE_APP_COMETCHAT_authKey;
+// let authKey = process.env.VUE_APP_COMETCHAT_authKey;
 const appID = process.env.VUE_APP_COMETCHAT_appID;
 const region = process.env.VUE_APP_COMETCHAT_region;
 const appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(region).build();
@@ -69,37 +70,43 @@ export default {
         confirm_password: '',
         username: '',
       },
+      isSubmitting: false,
     }
   },
 
   methods: {
     submit() {
       //create user in firebase
+      this.isSubmitting = true;
       const auth = getAuth(app);
       auth.languageCode = 'en';
       if (this.form.email.trim() === '' || this.form.email.trim() === '' || this.form.password.trim() === '' || this.form.confirm_password.trim() === '') {
+        this.isSubmitting = false;
         toast.error('Username, email and password fields are required.');
       } else if (this.form.password !== this.form.confirm_password) {
+        this.isSubmitting = false;
         toast.error("Confirm Password don't match.");
       } else {
         createUserWithEmailAndPassword(auth, this.form.email, this.form.password)
           .then(() => {
+            this.isSubmitting = false;
             this.close();
             //create user for cometchat
-            var cometuid = this.form.email;
-            cometuid = cometuid.replace('@', '');
-            cometuid = cometuid.replaceAll('.', '');
-            var name = this.form.username;
-            var cometuser = new CometChat.User(cometuid);
-            cometuser.setName(name);
-            CometChat.createUser(cometuser, authKey).then(() => {
-              toast.info("user created");
-            }, error => {
-              toast.error(error);
-            }
-            )
+            // var cometuid = this.form.email;
+            // cometuid = cometuid.replace('@', '');
+            // cometuid = cometuid.replaceAll('.', '');
+            // var name = this.form.username;
+            // var cometuser = new CometChat.User(cometuid);
+            // cometuser.setName(name);
+            // CometChat.createUser(cometuser, authKey).then(() => {
+            // }, error => {
+            //   console.log(error, "==> error")
+            //   toast.error(error);
+            // }
+            // )
           })
           .catch((error) => {
+            this.isSubmitting = false;
             const errorMessage = error.message;
             toast.error(errorMessage);
           });

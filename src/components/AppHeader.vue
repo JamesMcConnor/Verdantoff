@@ -3,6 +3,10 @@
 --->
 
 <template>
+  <div v-if="processing" class="loader">
+    <div class="spinner"></div>
+  </div>
+
   <div @mouseleave="closeDropdownMenu">
     <!-- Navbar with gradient background -->
     <nav
@@ -29,7 +33,8 @@
             <li>
               <div v-if="isLoggedIn" class="block px-4 py-2 gold-text hover:bg-white cursor-pointer" @click="logout">
                 Logout</div>
-              <div v-else class="block px-4 py-2 gold-text hover:bg-white cursor-pointer" @click="handleLoginClick">Login
+              <div v-else class="block px-4 py-2 gold-text hover:bg-white cursor-pointer" @click="handleLoginClick">
+                Login
               </div>
             </li>
             <li v-if="!isLoggedIn">
@@ -136,10 +141,9 @@
 
 <script>
 import axios from 'axios';
-import { getAuth, signOut } from 'firebase/auth';
+import { getAuth, signOut, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { getDatabase, ref, set } from 'firebase/database';
 import { useToast } from 'vue-toastification';
-import { googleSdkLoaded } from "vue3-google-login";
 import app from '../utilities/firebase.js';
 
 const toast = useToast();
@@ -224,27 +228,33 @@ export default {
     },
     importContacts() {
       this.processing = true;
-      googleSdkLoaded((google) => {
-        google.accounts.oauth2.initTokenClient({
-          client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID,
-          scope: "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/contacts.readonly https://www.googleapis.com/auth/contacts.other.readonly",
-          callback: async (response) => {
-            if (google.accounts.oauth2.hasGrantedAnyScope(response, 'https://www.googleapis.com/auth/contacts.readonly', 'https://www.googleapis.com/auth/contacts.other.readonly')) {
-              const getUserContacts = await this.getUserContacts(response.access_token);
-              if (getUserContacts.length > 0) {
-                this.showModal = true;
-                this.userContacts = getUserContacts;
-                this.selectedContacts = [];
-              }
-            } else {
-              toast.info("You haven't provided access to your Google contacts.");
-            }
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+      provider.addScope('https://www.googleapis.com/auth/contacts.other.readonly');
+
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          const googleAccessToken = result._tokenResponse.oauthAccessToken;
+          return this.getUserContacts(googleAccessToken);
+        })
+        .then((contacts) => {
+          if (contacts?.length > 0) {
+            this.userContacts = contacts;
+            this.selectedContacts = [];
+            this.processing = false;
+            this.showModal = true;
+          } else {
+            toast.info('You have no contacts on this account!');
           }
-        }).requestAccessToken()
-      })
-      setTimeout(() => {
-        this.processing = false;
-      }, 10000);
+        })
+        .catch((error) => {
+          this.processing = false;
+          toast.error(error.message);
+        })
+        .finally(() => {
+          this.processing = false;
+        });
     },
     async getUserContacts(googleAccessToken) {
       if (this.isLoggedIn === true && googleAccessToken && this.userId) {
@@ -261,8 +271,6 @@ export default {
           });
 
           return contacts;
-        } else {
-          toast.info('You have no contacts in this gmail account!');
         }
       } else {
         toast.error('You are not loggedIn on the system!');
@@ -311,4 +319,31 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+.spinner {
+  border: 10px solid black;
+  border-top: 10px solid #d4af37;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
