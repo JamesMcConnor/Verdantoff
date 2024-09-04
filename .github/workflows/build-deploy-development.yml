@@ -1,10 +1,10 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code, and run tests across different versions of node
 
 name: Build and deploy to Development
 
 on:
   push:
-    branch:
+    branches:
       - "development"
       - "feature/*"
 
@@ -25,35 +25,35 @@ jobs:
       VUE_APP_GOOGLE_CLIENT_ID: ${{ secrets.VUE_APP_DEV_AUTH_CLIENT_ID }}
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: 16.x
-        cache: 'npm'
-    - run: npm install
-    - run: npm run build --if-present
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x   # Updated Node.js version
+          cache: 'npm'
+      - run: npm install
+      - run: npm run build --if-present
     
-    - uses: actions/upload-artifact@master
-      with:
-        name: dist
-        path: ./dist
+      - uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: ./dist
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
 
     steps:
-    - name: Install SSH Key
-      uses: shimataro/ssh-key-action@v2
-      with:
-       key: ${{ secrets.SSH_PRIVATE_KEY }}
-       known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
 
-    - uses: actions/download-artifact@v4
-      with:
-        name: dist
-        path: ./dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: ./dist
 
-    - name: Deploy with rsync
-      run: rsync -avz ./dist/ ${{ secrets.SSH_DEV_USER }}@${{ secrets.SSH_HOST }}:public/
+      - name: Deploy with rsync
+        run: rsync -avz ./dist/ ${{ secrets.SSH_DEV_USER }}@${{ secrets.SSH_HOST }}:public/
