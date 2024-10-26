@@ -1,13 +1,48 @@
-import React, { useState } from 'react';
+// src/Chat.js
+
+import React, { useState, useEffect } from 'react';
+import { db } from './firebaseConfig';
+import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
+
+console.log("Chat component loaded");
 
 function Chat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
 
-  const handleSendMessage = () => {
+  useEffect(() => {
+    // Reference to the "messages" subcollection inside the "rooms" collection
+    const messagesRef = collection(db, 'rooms', 'xyncRvVODCmac1p0un1B', 'messages');
+
+    // Query to get messages ordered by timestamp
+    const q = query(messagesRef, orderBy('timestamp'));
+
+    // Listen for real-time updates
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const messagesData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setMessages(messagesData);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+
     if (newMessage.trim()) {
-      setMessages([...messages, newMessage]);
-      setNewMessage(''); // Clear the input after sending
+      // Reference to the "messages" subcollection
+      const messagesRef = collection(db, 'rooms', 'xyncRvVODCmac1p0un1B', 'messages');
+
+      // Add new message with timestamp
+      await addDoc(messagesRef, {
+        text: newMessage,
+        timestamp: serverTimestamp()
+      });
+
+      setNewMessage(''); // Clear input field
     }
   };
 
@@ -15,18 +50,21 @@ function Chat() {
     <div>
       <h2>Live Chat</h2>
       <div style={{ border: '1px solid black', padding: '10px', height: '200px', overflowY: 'scroll' }}>
-        {messages.map((message, index) => (
-          <p key={index}>{message}</p>
+        {messages.map((message) => (
+          <div key={message.id}>
+            <strong>{message.timestamp?.toDate().toLocaleString() || 'Sending...'}:</strong> {message.text}
+          </div>
         ))}
       </div>
-      <input
-        type="text"
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-        placeholder="Type a message..."
-        style={{ width: '80%' }}
-      />
-      <button onClick={handleSendMessage}>Send</button>
+      <form onSubmit={handleSendMessage}>
+        <input
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          placeholder="Type a message"
+        />
+        <button type="submit">Send</button>
+      </form>
     </div>
   );
 }
