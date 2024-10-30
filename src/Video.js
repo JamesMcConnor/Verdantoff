@@ -13,6 +13,13 @@ function Video() {
         }
       } catch (err) {
         console.error("Error accessing media devices.", err);
+        if (err.name === "NotAllowedError") {
+          alert("Permission to access camera and microphone is required.");
+        } else if (err.name === "NotFoundError") {
+          alert("No media devices found.");
+        } else {
+          alert("Error accessing media devices.");
+        }
       }
     }
     getMedia();

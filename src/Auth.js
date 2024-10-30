@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { auth } from './firebaseConfig';
-import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 
 function Auth() {
   const [email, setEmail] = useState('');
@@ -35,6 +35,15 @@ function Auth() {
     }
   };
 
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      console.log("User signed out");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   return (
     <div>
       <h2>{isRegistering ? "Register" : "Sign In"}</h2>
@@ -59,6 +68,7 @@ function Auth() {
       <button onClick={() => setIsRegistering(!isRegistering)}>
         {isRegistering ? "Already have an account? Sign In" : "Create an account"}
       </button>
+      <button onClick={handleSignOut}>Sign Out</button> {/* Sign-Out Button */}
     </div>
   );
 }
