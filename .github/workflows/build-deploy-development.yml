@@ -1,10 +1,8 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code, and run tests across different versions of node
-
 name: Build and deploy to Development
 
 on:
   push:
-    branches:
+    branch:
       - "development"
       - "feature/*"
 
@@ -12,48 +10,43 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      VUE_APP_FIREBASE_apiKey: ${{ secrets.VUE_APP_FIREBASE_API_KEY }} 
-      VUE_APP_FIREBASE_authDomain: ${{ secrets.VUE_APP_FIREBASE_AUTH_DOMAIN }} 
-      VUE_APP_FIREBASE_projectId: ${{ secrets.VUE_APP_FIREBASE_PROJECT_ID }} 
-      VUE_APP_FIREBASE_storageBucket: ${{ secrets.VUE_APP_FIREBASE_STORAGE_BUCKET }} 
-      VUE_APP_FIREBASE_messagingSenderId: ${{ secrets.VUE_APP_FIREBASE_MESSAGING_SENDER_ID }} 
-      VUE_APP_FIREBASE_appId: ${{ secrets.VUE_APP_FIREBASE_APP_ID }} 
-      VUE_APP_FIREBASE_databaseURL: ${{ secrets.VUE_APP_FIREBASE_DATABASE_URL }} 
-      VUE_APP_COMETCHAT_appID: ${{ secrets.VUE_APP_COMETCHAT_APP_ID }} 
-      VUE_APP_COMETCHAT_region: ${{ secrets.VUE_APP_COMETCHAT_REGION }} 
-      VUE_APP_COMETCHAT_authKey: ${{ secrets.VUE_APP_COMETCHAT_AUTH_KEY }}
-      VUE_APP_GOOGLE_CLIENT_ID: ${{ secrets.VUE_APP_DEV_AUTH_CLIENT_ID }}
+      # Define environment variables for your React app here if needed
+      # Example: 
+      #   REACT_APP_API_KEY: ${{ secrets.MY_REACT_APP_API_KEY }} 
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js
+      - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: 20.x   # Updated Node.js version
+          node-version: 18
           cache: 'npm'
-      - run: npm install
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+      - run: npm ci
       - run: npm run build --if-present
-    
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@master
         with:
           name: dist
-          path: ./dist
+          path: ./dist  # Adjust the path if your build output is in a different location
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
-
     steps:
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
-
       - uses: actions/download-artifact@v4
         with:
           name: dist
           path: ./dist
-
       - name: Deploy with rsync
-        run: rsync -avz ./dist/ ${{ secrets.SSH_DEV_USER }}@${{ secrets.SSH_HOST }}:public/
+        run: rsync -avz ./dist/ ${{ secrets.SSH_DEV_USER }}@${{ secrets.SSH_HOST }}:public/  # Adjust the path if needed
