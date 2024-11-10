@@ -1,58 +1,32 @@
 {
-  "name": "test",
+  "name": "webrtc-react-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "dependencies": {
-    "autoprefixer": "^10.4.20",
     "axios": "^1.4.0",
     "core-js": "^3.6.5",
-    "dateformat": "^4.5.1",
-    "emoji-mart-vue-fast": "^8.0.3",
-    "firebase": "^10.13.1",
-    "marked": "^14.1.1",
-    "postcss": "^7.0.36",
-    "react-firebase-hooks": "^5.1.1",
-    "simple-peer": "^9.11.1",
-    "socket.io-client": "^4.7.5",
+    "firebase": "^9.0.1",
+    "marked": "^3.0.2",
     "swiper": "^11.0.4",
-    "tailwindcss": "@tailwindcss/postcss7-compat@^2.2.9",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.9",
     "twemoji": "^13.1.0",
-    "vue": "^3.0.0",
-    "vue-router": "^4.0.11",
-    "vue-toastification": "^2.0.0-rc.5",
-    "vue3-google-login": "^2.0.15",
-    "webrtc-adapter": "^9.0.1"
+    "react-scripts": "^5.0.1",
+    "emoji-mart": "^5.4.0"
   },
   "devDependencies": {
     "@types/firebase": "^3.2.1",
-    "@vue/cli-plugin-babel": "^5.0.8",
-    "@vue/cli-plugin-eslint": "^5.0.8",
-    "@vue/cli-service": "^3.3.1",
-    "@vue/compiler-sfc": "^3.5.0",
-    "babel-eslint": "^10.1.0",
-    "css-loader": "^5.2.7",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0",
-    "vue-loader": "^17.4.2",
-    "vue-template-compiler": "^2.7.16",
-    "webpack": "^5.94.0"
+    "eslint": "^6.7.2"
   },
   "eslintConfig": {
     "root": true,
     "env": {
       "node": true
-    },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
     },
     "rules": {}
   },
