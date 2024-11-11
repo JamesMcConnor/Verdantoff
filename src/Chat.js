@@ -1,44 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
-
-const socket = io('http://localhost:4000'); // Connect to the socket server
+import React, { useState } from 'react';
 
 function Chat() {
-  const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
 
-  useEffect(() => {
-    // Listen for incoming messages
-    socket.on('message', (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
-
-    return () => {
-      socket.off('message');
-    };
-  }, []);
-
-  const sendMessage = () => {
-    if (message) {
-      socket.emit('message', message);
-      setMessage('');
+  const handleSendMessage = () => {
+    if (newMessage.trim()) {
+      setMessages([...messages, newMessage]);
+      setNewMessage(''); // Clear the input after sending
     }
   };
 
   return (
     <div>
-      <div>
-        {messages.map((msg, index) => (
-          <div key={index}>{msg}</div>
+      <h2>Live Chat</h2>
+      <div style={{ border: '1px solid black', padding: '10px', height: '200px', overflowY: 'scroll' }}>
+        {messages.map((message, index) => (
+          <p key={index}>{message}</p>
         ))}
       </div>
       <input
         type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        value={newMessage}
+        onChange={(e) => setNewMessage(e.target.value)}
         placeholder="Type a message..."
+        style={{ width: '80%' }}
       />
-      <button onClick={sendMessage}>Send</button>
+      <button onClick={handleSendMessage}>Send</button>
     </div>
   );
 }
