@@ -1,0 +1,27 @@
+version: 1.0.{build}
+image: Ubuntu
+branches:
+  only:
+    - Feature-app-WebRTC-React
+
+environment:
+  nodejs_version: "14"
+
+install:
+  - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+  - export NVM_DIR="$HOME/.nvm"
+  - [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  - nvm install $nodejs_version
+  - nvm use $nodejs_version
+  - node -v
+  - npm install
+
+build_script:
+  - npm run build
+
+test_script:
+  - npm test
+
+artifacts:
+  - path: build
+    name: build
