@@ -3,3 +3,8 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+
+// Mock for getUserMedia to avoid errors in a non-browser CI environment
+global.navigator.mediaDevices = {
+  getUserMedia: jest.fn(() => Promise.resolve())
+};
