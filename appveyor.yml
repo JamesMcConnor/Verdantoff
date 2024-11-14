@@ -7,14 +7,17 @@ branches:
     - Feature-app-WebRTC-React
 
 environment:
-  nodejs_version: "14"
+  nodejs_version: "14"  # Node.js version
+
+cache:
+  - ~/.nvm  # Cache NVM directory for faster builds
 
 install:
   - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
   - export NVM_DIR="$HOME/.nvm"
-  - [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  - nvm install $nodejs_version
-  - nvm use $nodejs_version
+  - "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\""  # Load NVM
+  - nvm install --lts "$nodejs_version"  # Install latest LTS version of Node.js 14
+  - nvm use "$nodejs_version"
   - node -v
   - npm install
 
