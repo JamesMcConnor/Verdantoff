@@ -1,5 +1,7 @@
 version: 1.0.{build}
 image: Ubuntu
+build: off  # Turn off MSBuild mode
+
 branches:
   only:
     - Feature-app-WebRTC-React
