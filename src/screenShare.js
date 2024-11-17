@@ -10,10 +10,21 @@ export const startScreenShare = async (videoRef) => {
   }
 };
 
-export const stopScreenShare = (videoRef) => {
+export const stopScreenShare = async (videoRef) => {
   if (videoRef.current && videoRef.current.srcObject) {
     const tracks = videoRef.current.srcObject.getTracks();
     tracks.forEach(track => track.stop()); // Stop all tracks to end the screen share
     videoRef.current.srcObject = null; // Clear the video source
+
+    // Reinitialize the webcam stream after stopping screen share
+    try {
+      const webcamStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true // Include audio if needed
+      });
+      videoRef.current.srcObject = webcamStream; // Set the webcam stream back to the video element
+    } catch (err) {
+      console.error("Error reinitializing webcam after screen share:", err);
+    }
   }
 };

@@ -43,11 +43,14 @@ function Chat() {
 
     if (newMessage.trim() !== "") {
       try {
-        await addDoc(collection(db, "messages"), {
-          text: newMessage,
-          timestamp: serverTimestamp(),
-          senderId: auth.currentUser.uid, // Assuming you have auth set up
-        });
+        await addDoc(
+          collection(db, "rooms", "xyncRvVODCmac1p0un1B", "messages"),
+          {
+            text: newMessage,
+            timestamp: serverTimestamp(),
+            senderId: auth.currentUser?.uid || "Anonymous", // Safeguard if user is not logged in
+          }
+        );
         setNewMessage("");
       } catch (error) {
         console.error("Error adding message: ", error);
@@ -68,12 +71,10 @@ function Chat() {
       >
         {messages.map((message) => (
           <div key={message.id}>
-            {/* Display message text only if it exists */}
             {message.text && (
               <>
                 <strong>
-                  {message.timestamp?.toDate().toLocaleString() ||
-                    "Sending..."}
+                  {message.timestamp?.toDate().toLocaleString() || "Sending..."}
                   :
                 </strong>{" "}
                 {message.text}
