@@ -4,6 +4,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import Chat from './Chat'; // Import the Chat component
+import Contacts from './components/Contacts'; // Import the Contacts component
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { startScreenShare, stopScreenShare } from './screenShare'; // Import screen sharing functions
 import { generateRoomUrl } from './roomUrl'; // Import room URL generation function
 import './App.css'; // Import the CSS file
@@ -49,34 +51,47 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>Live Video Streaming with Chat</h1>
-      {user ? (
-        <div className="container">
-          <div className="video-container">
-            <video ref={videoRef} autoPlay playsInline></video>
-            <div className="button-container">
-              <button onClick={() => startScreenShare(videoRef)}>Share Screen</button>
-              <button onClick={() => stopScreenShare(videoRef)}>Stop Sharing</button>
-              <button onClick={() => {
-                const url = generateRoomUrl();
-                setRoomUrl(url);
-                alert(`Meeting Room URL: ${url}`);
-              }}>
-                Generate Room URL
-              </button>
-            </div>
-          </div>
-          <div className="chat-container">
-            {roomUrl && <p>Meeting Room URL: {roomUrl}</p>}
-            <Chat /> {/* Render the Chat component */}
-          </div>
-          <button onClick={handleSignOut}>Sign Out</button>
-        </div>
-      ) : (
-        <Auth />
-      )}
-    </div>
+    <Router>
+      <div>
+        <h1>Live Video Streaming with Chat</h1>
+        <nav>
+          <Link to="/">Home</Link> | <Link to="/contacts">Contacts</Link>
+        </nav>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              user ? (
+                <div className="container">
+                  <div className="video-container">
+                    <video ref={videoRef} autoPlay playsInline></video>
+                    <div className="button-container">
+                      <button onClick={() => startScreenShare(videoRef)}>Share Screen</button>
+                      <button onClick={() => stopScreenShare(videoRef)}>Stop Sharing</button>
+                      <button onClick={() => {
+                        const url = generateRoomUrl();
+                        setRoomUrl(url);
+                        alert(`Meeting Room URL: ${url}`);
+                      }}>
+                        Generate Room URL
+                      </button>
+                    </div>
+                  </div>
+                  <div className="chat-container">
+                    {roomUrl && <p>Meeting Room URL: {roomUrl}</p>}
+                    <Chat /> {/* Render the Chat component */}
+                  </div>
+                  <button onClick={handleSignOut}>Sign Out</button>
+                </div>
+              ) : (
+                <Auth />
+              )
+            }
+          />
+          <Route path="/contacts" element={<Contacts />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
