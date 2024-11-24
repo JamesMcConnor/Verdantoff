@@ -10,6 +10,7 @@ import { startScreenShare, stopScreenShare } from './screenShare'; // Import scr
 import { generateRoomUrl } from './roomUrl'; // Import room URL generation function
 import './App.css'; // Import the CSS file
 import Auth from './Auth';
+import DatabaseTest from './components/DatabaseTest'; // Import the DatabaseTest component
 
 function App() {
   const [user, setUser] = useState(null); // Track authenticated user state
@@ -90,6 +91,7 @@ function App() {
           />
           <Route path="/contacts" element={<Contacts />} />
         </Routes>
+        <DatabaseTest /> {/* Add the DatabaseTest component at the bottom */}
       </div>
     </Router>
   );
