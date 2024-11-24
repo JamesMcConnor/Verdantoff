@@ -1,9 +1,12 @@
+// src/components/Contacts.js
+
 import React, { useState, useEffect } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
-import { db, auth } from "../firebaseConfig"; // Adjust the path if needed
+import { ref, push, onValue } from "firebase/database";
+import { realtimeDB, auth } from "../firebaseConfig";
 
 function Contacts() {
   const [contacts, setContacts] = useState([]);
+  const [newContact, setNewContact] = useState({ name: "", email: "" });
 
   useEffect(() => {
     if (!auth.currentUser) {
@@ -11,18 +14,37 @@ function Contacts() {
       return;
     }
 
-    const contactsRef = collection(db, "users", auth.currentUser.uid, "contacts");
+    const userId = auth.currentUser.uid;
+    const contactsRef = ref(realtimeDB, `contacts/${userId}`);
 
-    const unsubscribe = onSnapshot(contactsRef, (snapshot) => {
-      const contactsData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setContacts(contactsData);
+    const unsubscribe = onValue(contactsRef, (snapshot) => {
+      const data = snapshot.val();
+      const contactsArray = data
+        ? Object.entries(data).map(([id, details]) => ({
+            id,
+            ...details,
+          }))
+        : [];
+      setContacts(contactsArray);
     });
 
     return () => unsubscribe();
   }, []);
+
+  const handleAddContact = () => {
+    if (!auth.currentUser) {
+      console.error("User is not logged in.");
+      return;
+    }
+
+    const userId = auth.currentUser.uid;
+    const contactsRef = ref(realtimeDB, `contacts/${userId}`);
+
+    if (newContact.name.trim() && newContact.email.trim()) {
+      push(contactsRef, newContact);
+      setNewContact({ name: "", email: "" });
+    }
+  };
 
   return (
     <div>
@@ -34,6 +56,21 @@ function Contacts() {
           </li>
         ))}
       </ul>
+      <div>
+        <input
+          type="text"
+          placeholder="Name"
+          value={newContact.name}
+          onChange={(e) => setNewContact({ ...newContact, name: e.target.value })}
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={newContact.email}
+          onChange={(e) => setNewContact({ ...newContact, email: e.target.value })}
+        />
+        <button onClick={handleAddContact}>Add Contact</button>
+      </div>
     </div>
   );
 }
