@@ -1,6 +1,6 @@
 // src/components/DatabaseTest.js
+import { onValue, push, ref, set } from "firebase/database";
 import React, { useState } from "react";
-import { ref, set, push, get, onValue } from "firebase/database";
 import { realtimeDB } from "../firebaseConfig";
 
 const DatabaseTest = () => {
