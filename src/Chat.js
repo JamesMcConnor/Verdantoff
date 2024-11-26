@@ -15,6 +15,7 @@ function Chat() {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
+    // Reference to the messages collection in Firestore
     const messagesRef = collection(
       db,
       "rooms",
@@ -23,6 +24,7 @@ function Chat() {
     );
     const q = query(messagesRef, orderBy("timestamp"));
 
+    // Realtime listener for messages
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const messagesData = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -35,23 +37,26 @@ function Chat() {
   }, []);
 
   useEffect(() => {
+    // Scroll to the most recent message
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const handleSendMessage = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
 
     if (newMessage.trim() !== "") {
+      const message = newMessage; // Cache the current message
+      setNewMessage(""); // Clear input immediately
+
       try {
         await addDoc(
           collection(db, "rooms", "xyncRvVODCmac1p0un1B", "messages"),
           {
-            text: newMessage,
+            text: message, // Use cached message
             timestamp: serverTimestamp(),
-            senderId: auth.currentUser?.uid || "Anonymous", // Safeguard if user is not logged in
+            senderId: auth.currentUser?.uid || "Anonymous", // Fallback to 'Anonymous' if not logged in
           }
         );
-        setNewMessage("");
       } catch (error) {
         console.error("Error adding message: ", error);
       }
@@ -84,14 +89,20 @@ function Chat() {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <form onSubmit={handleSendMessage}>
+      <form
+        onSubmit={handleSendMessage}
+        style={{ display: "flex", marginTop: "10px" }}
+      >
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type a message"
+          style={{ flex: 1, marginRight: "10px", padding: "5px" }}
         />
-        <button type="submit">Send</button>
+        <button type="submit" style={{ padding: "5px 15px" }}>
+          Send
+        </button>
       </form>
     </div>
   );
