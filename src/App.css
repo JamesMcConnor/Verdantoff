@@ -9,20 +9,24 @@ body {
 .container {
   display: flex; /* Use flexbox to align video and chat side by side */
   align-items: flex-start; /* Align items at the start */
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
 .video-container {
   margin-right: 20px; /* Space between video and chat */
+  flex: 1 1 100%; /* Full width on smaller screens */
 }
 
 video {
   border: 2px solid #000;
-  width: 500px; /* Fixed width for video */
+  width: 100%; /* Flexible width for video */
+  max-width: 500px; /* Limit width on larger screens */
   height: auto; /* Maintain aspect ratio */
 }
 
 .button-container {
   display: flex;
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
   gap: 10px;
   margin-top: 10px; /* Space above buttons */
 }
@@ -43,11 +47,28 @@ button:hover {
 }
 
 .chat-container {
-  width: 300px; /* Fixed width for chat */
+  width: 100%; /* Flexible width for chat */
+  max-width: 300px; /* Limit width on larger screens */
+  margin-top: 20px; /* Add space above chat on smaller screens */
 }
 
-p {
-  margin-top: 10px;
-  font-weight: bold;
-}
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column; /* Stack content vertically on smaller screens */
+    padding: 10px; /* Reduce padding */
+  }
 
+  .container {
+    flex-direction: column; /* Stack video and chat vertically */
+  }
+
+  .video-container {
+    margin-right: 0; /* Remove side margin */
+    margin-bottom: 20px; /* Add space below video */
+  }
+
+  .chat-container {
+    margin-top: 0;
+  }
+}

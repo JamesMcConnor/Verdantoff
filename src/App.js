@@ -3,21 +3,56 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import Chat from './Chat'; // Import the Chat component
-import Contacts from './components/Contacts'; // Import the Contacts component
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { startScreenShare, stopScreenShare } from './screenShare'; // Import screen sharing functions
-import { generateRoomUrl } from './roomUrl'; // Import room URL generation function
-import './App.css'; // Import the CSS file
+import Chat from './Chat';
+import Contacts from './components/Contacts';
+import { BrowserRouter as Router, Route, Routes, Link, useParams } from 'react-router-dom';
+import { startScreenShare, stopScreenShare } from './screenShare';
+import { generateRoomUrl } from './roomUrl';
+import './App.css';
 import Auth from './Auth';
-import DatabaseTest from './components/DatabaseTest'; // Import the DatabaseTest component
+import DatabaseTest from './components/DatabaseTest';
+
+function MeetingRoom() {
+  const { roomId } = useParams();
+  console.log('Entered Room ID:', roomId);
+
+  return (
+    <div>
+      <h2>Meeting Room: {roomId}</h2>
+      <div className="video-container">
+        <p>Video and chat for room: {roomId}</p>
+        <Chat />
+      </div>
+    </div>
+  );
+}
+
+function ChatPage() {
+  const { contactId } = useParams();
+  return (
+    <div>
+      <h2>Chat with Contact: {contactId}</h2>
+      <Chat />
+    </div>
+  );
+}
+
+function CallPage() {
+  const { contactId } = useParams();
+  return (
+    <div>
+      <h2>Calling Contact: {contactId}</h2>
+      <p>Video call functionality for {contactId} goes here.</p>
+    </div>
+  );
+}
 
 function App() {
-  const [user, setUser] = useState(null); // Track authenticated user state
-  const videoRef = useRef(null); // Reference for the video element
-  const [roomUrl, setRoomUrl] = useState(''); // State for storing the generated room URL
+  const [user, setUser] = useState(null);
+  const [isChatVisible, setIsChatVisible] = useState(false); // Chat visibility state
+  const [roomUrl, setRoomUrl] = useState(''); // Meeting room URL
+  const videoRef = useRef(null);
 
-  // Monitor authentication state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -25,7 +60,6 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  // Load video stream if authenticated
   useEffect(() => {
     if (user) {
       async function getMediaStream() {
@@ -45,9 +79,9 @@ function App() {
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      console.log("User signed out");
+      console.log('User signed out');
     } catch (error) {
-      console.error("Error signing out:", error);
+      console.error('Error signing out:', error);
     }
   };
 
@@ -69,20 +103,37 @@ function App() {
                     <div className="button-container">
                       <button onClick={() => startScreenShare(videoRef)}>Share Screen</button>
                       <button onClick={() => stopScreenShare(videoRef)}>Stop Sharing</button>
-                      <button onClick={() => {
-                        const url = generateRoomUrl();
-                        setRoomUrl(url);
-                        alert(`Meeting Room URL: ${url}`);
-                      }}>
+                      <button
+                        onClick={() => {
+                          const url = generateRoomUrl();
+                          setRoomUrl(url);
+                        }}
+                      >
                         Generate Room URL
                       </button>
                     </div>
                   </div>
-                  <div className="chat-container">
-                    {roomUrl && <p>Meeting Room URL: {roomUrl}</p>}
-                    <Chat /> {/* Render the Chat component */}
+                  <div className="button-container">
+                    <button onClick={() => setIsChatVisible(!isChatVisible)}>
+                      {isChatVisible ? 'Close Chat' : 'Open Chat'}
+                    </button>
+                    <button onClick={handleSignOut}>Sign Out</button>
                   </div>
-                  <button onClick={handleSignOut}>Sign Out</button>
+                  {roomUrl && (
+                    <div>
+                      <p>
+                        Meeting Room URL:{' '}
+                        <a href={roomUrl} target="_blank" rel="noopener noreferrer">
+                          {roomUrl}
+                        </a>
+                      </p>
+                    </div>
+                  )}
+                  {isChatVisible && (
+                    <div className="chat-container">
+                      <Chat />
+                    </div>
+                  )}
                 </div>
               ) : (
                 <Auth />
@@ -90,8 +141,11 @@ function App() {
             }
           />
           <Route path="/contacts" element={<Contacts />} />
+          <Route path="/room/:roomId" element={<MeetingRoom />} />
+          <Route path="/chat/:contactId" element={<ChatPage />} />
+          <Route path="/call/:contactId" element={<CallPage />} />
         </Routes>
-        <DatabaseTest /> {/* Add the DatabaseTest component at the bottom */}
+        <DatabaseTest />
       </div>
     </Router>
   );

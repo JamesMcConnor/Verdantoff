@@ -4,7 +4,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
-import { getDatabase } from "firebase/database";
+import { getDatabase, ref, onDisconnect, set } from "firebase/database";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -26,3 +26,16 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const analytics = getAnalytics(app);
 export const realtimeDB = getDatabase(app);
+
+// Manage presence
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    const userStatusRef = ref(realtimeDB, `presence/${user.uid}`);
+
+    // Mark user as online
+    set(userStatusRef, true);
+
+    // Handle user disconnect
+    onDisconnect(userStatusRef).set(false);
+  }
+});

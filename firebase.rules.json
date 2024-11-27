@@ -1,6 +1,44 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    "users": {
+      "$userId": {
+        ".read": "auth != null && auth.uid === $userId",
+        ".write": "auth != null && auth.uid === $userId"
+      }
+    },
+    "contacts": {
+      "$userId": {
+        ".read": "auth != null && auth.uid === $userId",
+        ".write": "auth != null && auth.uid === $userId"
+      }
+    },
+    "chat": {
+      "$chatId": {
+        ".read": "auth != null || root.child('chat').child($chatId).child('isPublic').val() === true",
+        ".write": "auth != null || root.child('chat').child($chatId).child('isPublic').val() === true"
+      }
+    },
+    "sessions": {
+      "$sessionId": {
+        ".read": "auth != null || root.child('sessions').child($sessionId).child('allowGuests').val() === true",
+        ".write": "auth != null && root.child('sessions').child($sessionId).child('allowGuests').val() === true"
+      }
+    },
+    "messages": {
+      "$roomId": {
+        ".read": "auth != null",
+        ".write": "auth != null && auth.uid === newData.child('sender').val()"
+      }
+    },
+    "presence": {
+      "$userId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    "test": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
   }
 }
