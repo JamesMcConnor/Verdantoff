@@ -1,5 +1,6 @@
 # Feature development pipeline
 name: Build and deploy to Development
+
 on:
   push:
     branches:
@@ -56,4 +57,4 @@ jobs:
           path: ./build
 
       - name: Deploy with rsync
-        run: rsync -avz ./build/ ${{ secrets.SSH_DEV_USER }}@${{ secrets.SSH_HOST }}:public/
+        run: rsync -avz ./build/ ${{ secrets.SSH_DEV_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_DEV_USER }}/your_project_directory/
